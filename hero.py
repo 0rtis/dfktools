@@ -4,6 +4,7 @@ import json
 import logging
 import sys
 
+CONTRACT_ADDRESS = '0x5f753dcdf9b1ad9aabc1346614d1f4746fd6ce5c'
 
 def transfer(hero_id, owner_private_key, owner_nonce, receiver_address, gas_price_gwei, rpc_address, hero_contract_abi, logger):
     """Tranfer a hero from the owner to the receiver. USE AT YOUR OWN RISK !"""
@@ -11,7 +12,7 @@ def transfer(hero_id, owner_private_key, owner_nonce, receiver_address, gas_pric
     account = w3.eth.account.privateKeyToAccount(owner_private_key)
     w3.eth.default_account = account.address
 
-    hero_contract_address = Web3.toChecksumAddress('0x5f753dcdf9b1ad9aabc1346614d1f4746fd6ce5c')
+    hero_contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     hero_contract = w3.eth.contract(hero_contract_address, abi=hero_contract_abi)
 
     owner = hero_contract.functions.ownerOf(hero_id).call()
@@ -38,7 +39,7 @@ def transfer(hero_id, owner_private_key, owner_nonce, receiver_address, gas_pric
 def read_from_contract(hero_id, rpc_address, hero_contract_abi):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    hero_contract_address = Web3.toChecksumAddress('0x5f753dcdf9b1ad9aabc1346614d1f4746fd6ce5c')
+    hero_contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     hero_contract = w3.eth.contract(hero_contract_address, abi=hero_contract_abi)
     hero_contract_entry = hero_contract.functions.getHero(hero_id).call()
 

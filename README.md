@@ -4,7 +4,7 @@
 
 ## DefiKingdoms hero's contract
 
-This is a simple toolbox to interact with the hero's contract of [DefiKingdoms](https://defikingdoms.com/)
+This is a simple toolbox to interact with the [Hero's contract](https://explorer.harmony.one/address/0x5f753dcdf9b1ad9aabc1346614d1f4746fd6ce5c) of [DefiKingdoms](https://defikingdoms.com/)
 
 *This software is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by the DefiKingdoms team.
 All product and company names are the registered trademarks of their original owners.
