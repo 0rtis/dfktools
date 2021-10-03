@@ -12,6 +12,7 @@ The use of any trade name or trademark is for identification and reference purpo
 
 
 ### Hero contract
+The hero contract is accessible with `hero.py`
 
 #### Quickstart
 ```
@@ -67,6 +68,7 @@ The owner of a hero can be retrieved with the method `get_owner`
 
 
 ### Profile contract
+The hero contract is accessible with `profile.py`
 
 #### Quickstart
 ```
