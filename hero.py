@@ -4,7 +4,8 @@ import json
 import logging
 import sys
 
-CONTRACT_ADDRESS = '0x5f753dcdf9b1ad9aabc1346614d1f4746fd6ce5c'
+HERO_CONTRACT_ADDRESS = '0x5f753dcdf9b1ad9aabc1346614d1f4746fd6ce5c'
+
 
 def transfer(hero_id, owner_private_key, owner_nonce, receiver_address, gas_price_gwei, rpc_address, hero_contract_abi, logger):
     """Tranfer a hero from the owner to the receiver. USE AT YOUR OWN RISK !"""
@@ -12,7 +13,7 @@ def transfer(hero_id, owner_private_key, owner_nonce, receiver_address, gas_pric
     account = w3.eth.account.privateKeyToAccount(owner_private_key)
     w3.eth.default_account = account.address
 
-    hero_contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    hero_contract_address = Web3.toChecksumAddress(HERO_CONTRACT_ADDRESS)
     hero_contract = w3.eth.contract(hero_contract_address, abi=hero_contract_abi)
 
     owner = hero_contract.functions.ownerOf(hero_id).call()
@@ -36,10 +37,19 @@ def transfer(hero_id, owner_private_key, owner_nonce, receiver_address, gas_pric
     logger.info(str(tx_receipt))
 
 
-def read_from_contract(hero_id, rpc_address, hero_contract_abi):
+def get_owner(hero_id, rpc_address, hero_contract_abi):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    hero_contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    hero_contract_address = Web3.toChecksumAddress(HERO_CONTRACT_ADDRESS)
+    hero_contract = w3.eth.contract(hero_contract_address, abi=hero_contract_abi)
+
+    return str(hero_contract.functions.ownerOf(hero_id).call())
+
+
+def get_hero(hero_id, rpc_address, hero_contract_abi):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+
+    hero_contract_address = Web3.toChecksumAddress(HERO_CONTRACT_ADDRESS)
     hero_contract = w3.eth.contract(hero_contract_address, abi=hero_contract_abi)
     hero_contract_entry = hero_contract.functions.getHero(hero_id).call()
 
@@ -282,6 +292,7 @@ if __name__ == "__main__":
 
     for i in range(1, 2074):
         logger.info("Processing hero #"+str(i))
-        hero = read_from_contract(i, rpc_server, hero_abi_json)
+        owner = get_owner(i, rpc_server, hero_abi_json)
+        hero = get_hero(i, rpc_server, hero_abi_json)
         readable_hero = human_readable_hero(hero, male_first_names, female_first_names, last_names)
-        logger.info(json.dumps(readable_hero, indent=4, sort_keys=False))
+        logger.info(json.dumps(readable_hero, indent=4, sort_keys=False) + "\n Owned by " + owner)
