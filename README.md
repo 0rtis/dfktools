@@ -11,7 +11,8 @@ All product and company names are the registered trademarks of their original ow
 The use of any trade name or trademark is for identification and reference purposes only and does not imply any association with the trademark holder of their product brand.*
 
 
-### Heroes
+### Hero contract
+
 #### Quickstart
 ```
 if __name__ == "__main__":
@@ -58,11 +59,14 @@ At the time of writing (October 3thd 2021), it is not yet possible to transfer h
 However, there is no limitation on the contract itself and heroes can be transferred with the `transfer` method
 
 #### Info
-Hero's data can be retrieved with the `read_from_contract` method. A more *human-friendly* format can be generated 
-by passing the result of `read_from_contract` to the `human_readable_hero` method
+Hero's data can be retrieved with the `get_hero` method. A more *human-friendly* format can be generated 
+by passing the result of `get_hero` to the `human_readable_hero` method.
+
+#### Owner
+The owner of a hero can be retrieved with the method `get_owner`
 
 
-### Profile
+### Profile contract
 
 #### Quickstart
 ```
@@ -86,8 +90,8 @@ if __name__ == "__main__":
     logger.info(json.dumps(profile, indent=4, sort_keys=False))
 ```
 
-#### In-game-profile
-In-game-profile can be retrieved with the `get_profile` method
+#### In-game profile
+In-game profile can be retrieved with the `get_profile` method
 
 
 <br/>
