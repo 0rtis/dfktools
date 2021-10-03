@@ -59,3 +59,11 @@ However, there is no limitation on the contract itself and heroes can be transfe
 ### Hero info
 Hero's data can be retrieved with the `read_from_contract` method. A more *human-friendly* format can be generated 
 by passing the result of `read_from_contract` to the `human_readable_hero` method
+
+<br/>
+<br/>
+
+
+*If you like this project, consider supporting future developments with a donation at 0xA68fBfa3E0c86D1f3fF071853df6DAe8753095E2*
+
+
