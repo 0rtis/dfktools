@@ -1,5 +1,5 @@
 [![GitHub license](https://img.shields.io/github/license/0rtis/dfk.svg?style=flat-square)](https://github.com/0rtis/dfk/blob/master/LICENSE)
-[![Follow @trwitter handle](https://img.shields.io/twitter/follow/0rtis.svg?style=flat-square)](https://twitter.com/intent/follow?screen_name=ortis95) 
+[![Follow @trwitter handle](https://img.shields.io/twitter/follow/ortis95.svg?style=flat-square)](https://twitter.com/intent/follow?screen_name=ortis95) 
 
 
 ## DefiKingdoms hero's contract
