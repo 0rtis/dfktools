@@ -68,7 +68,7 @@ The owner of a hero can be retrieved with the method `get_owner`
 
 
 ### Profile contract
-The hero contract is accessible with `profile.py`
+The profile contract is accessible with `profile.py`
 
 #### Quickstart
 ```
