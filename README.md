@@ -4,7 +4,7 @@
 
 ## DefiKingdoms contract
 
-This is a simple toolbox to interact with the contracts [DefiKingdoms](https://defikingdoms.com/)
+This is a simple toolbox to interact with the contracts of [DefiKingdoms](https://defikingdoms.com/)
 
 *This software is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by the DefiKingdoms team.
 All product and company names are the registered trademarks of their original owners.
@@ -94,6 +94,6 @@ In-game-profile can be retrieved with the `get_profile` method
 <br/>
 
 
-*If you like this project, consider supporting future developments with a donation at 0xA68fBfa3E0c86D1f3fF071853df6DAe8753095E2*
+*If you like this project, consider supporting future developments with a donation 0xA68fBfa3E0c86D1f3fF071853df6DAe8753095E2*
 
 
