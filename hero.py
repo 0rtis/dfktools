@@ -203,12 +203,9 @@ def human_readable_hero(raw_hero, hero_male_first_names, hero_female_first_names
     if not readable_hero['info']['subClass']:
         raise Exception("Subclass not found")
 
-    # visualGenes
-    visual_genes = {}
-    visual_genes['raw'] = readable_hero['info']['visualGenes']
 
+    # genes
     ALPHABET = '123456789abcdefghijkmnopqrstuvwx'
-
     def genesToKai(genes):
         BASE = len(ALPHABET)
 
@@ -229,8 +226,12 @@ def human_readable_hero(raw_hero, hero_male_first_names, hero_female_first_names
     def kai2dec(kai):
         return ALPHABET.index(kai)
 
-    raw_kai = "".join(genesToKai(visual_genes['raw']).split(' '))
-    traits = {
+    # visualGenes
+    visual_genes = {}
+    visual_genes['raw'] = readable_hero['info']['visualGenes']
+
+    visual_raw_kai = "".join(genesToKai(visual_genes['raw']).split(' '))
+    visual_traits = {
         0: 'gender',
         1: 'headAppendage',
         2: 'backAppendage',
@@ -244,15 +245,80 @@ def human_readable_hero(raw_hero, hero_male_first_names, hero_female_first_names
         10: 'backAppendageColor',
         11: 'visualUnknown2'
     }
-    for ki in range(0, len(raw_kai)):
-        trait = traits.get(int(ki / 4), None)
-        kai = raw_kai[ki]
+    for ki in range(0, len(visual_raw_kai)):
+        stat_trait = visual_traits.get(int(ki / 4), None)
+        kai = visual_raw_kai[ki]
         value_num = kai2dec(kai)
-
-        visual_genes[trait] = value_num
+        visual_genes[stat_trait] = value_num
 
     visual_genes['gender'] = 'Male' if visual_genes['gender'] == 1 else 'Female'
     readable_hero['info']['visualGenes'] = visual_genes
+
+    # statsGenes
+    stat_genes = {}
+    stat_genes['raw'] = readable_hero['info']['statGenes']
+
+    stat_raw_kai = "".join(genesToKai(stat_genes['raw']).split(' '))
+    stat_traits = {
+        0: 'class',
+        1: 'subClass',
+        2: 'profession',
+        3: 'passive1',
+        4: 'passive2',
+        5: 'active1',
+        6: 'active2',
+        7: 'statBoost1',
+        8: 'statBoost2',
+        9: 'statsUnknown1',
+        10: 'element',
+        11: 'statsUnknown2'
+    }
+    for ki in range(0, len(stat_raw_kai)):
+        stat_trait = stat_traits.get(int(ki / 4), None)
+        kai = stat_raw_kai[ki]
+        value_num = kai2dec(kai)
+        stat_genes[stat_trait] = value_num
+
+    stat_genes['class'] = _class.get(stat_genes['class'], None)
+    stat_genes['subClass'] = _class.get(stat_genes['subClass'], None)
+
+    professions = {
+        0: 'mining',
+        2: 'gardening',
+        4: 'fishing',
+        6: 'foraging',
+    }
+    stat_genes['profession'] = professions.get(stat_genes['profession'], None)
+
+    stats = {
+        0: 'strength',
+        2: 'agility',
+        4: 'intelligence',
+        6: 'wisdom',
+        8: 'luck',
+        10: 'vitality',
+        12: 'endurance',
+        14: 'dexterity'
+    }
+
+    stat_genes['statBoost1'] = stats.get(stat_genes['statBoost1'], None)
+    stat_genes['statBoost2'] = stats.get(stat_genes['statBoost2'], None)
+    stat_genes['statsUnknown1'] = stats.get(stat_genes['statsUnknown1'], None)
+    stat_genes['statsUnknown2'] = stats.get(stat_genes['statsUnknown2'], None)
+
+    elements = {
+        0: 'fire',
+        2: 'water',
+        4: 'earth',
+        6: 'wind',
+        8: 'lightning',
+        10: 'ice',
+        12: 'light',
+        14: 'dark',
+    }
+    stat_genes['element'] = elements.get(stat_genes['element'], None)
+
+    readable_hero['info']['statGenes'] = stat_genes
 
     # names
     readable_hero['info']['firstName'] = hero_male_first_names[readable_hero['info']['firstName']] if readable_hero['info']['visualGenes']['gender'] == 'Male' else hero_female_first_names[readable_hero['info']['firstName']]
@@ -290,7 +356,7 @@ if __name__ == "__main__":
 
     # transfer(1, 'private key of the owner', 'next nonce of owner account', 'receiver address', 200, rpc_server, hero_abi_json, logger)
 
-    for i in range(1, 2074):
+    for i in range(40, 2074):
         logger.info("Processing hero #"+str(i))
         owner = get_owner(i, rpc_server, hero_abi_json)
         hero = get_hero(i, rpc_server, hero_abi_json)
