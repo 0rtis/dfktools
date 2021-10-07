@@ -3,6 +3,7 @@ from web3 import Web3
 import json
 import logging
 import sys
+import dfk.lib.utils as utils
 
 HERO_CONTRACT_ADDRESS = '0x5f753dcdf9b1ad9aabc1346614d1f4746fd6ce5c'
 
@@ -63,10 +64,10 @@ def get_hero(hero_id, rpc_address, hero_contract_abi):
     summoning_info = {}
     summoning_info['summonedTime'] = hero_contract_entry[tuple_index][0]
     summoning_info['nextSummonTime'] = hero_contract_entry[tuple_index][1]
-    summoning_info['assistantId']= hero_contract_entry[tuple_index][2]
-    summoning_info['assistantId2']= hero_contract_entry[tuple_index][3]
-    summoning_info['summons']= hero_contract_entry[tuple_index][4]
-    summoning_info['maxSummons']= hero_contract_entry[tuple_index][5]
+    summoning_info['assistantId1'] = hero_contract_entry[tuple_index][2]
+    summoning_info['assistantId2'] = hero_contract_entry[tuple_index][3]
+    summoning_info['summons'] = hero_contract_entry[tuple_index][4]
+    summoning_info['maxSummons'] = hero_contract_entry[tuple_index][5]
 
     hero['summoningInfo'] = summoning_info
     tuple_index = tuple_index + 1
@@ -96,7 +97,7 @@ def get_hero(hero_id, rpc_address, hero_contract_abi):
     hero_state['xp'] = hero_contract_entry[tuple_index][4]
     hero_state['currentQuest'] = hero_contract_entry[tuple_index][5]
     hero_state['sp'] = hero_contract_entry[tuple_index][6]
-    hero_state['status'] = hero_contract_entry[tuple_index][6]
+    hero_state['status'] = hero_contract_entry[tuple_index][7]
 
     hero['state'] = hero_state
     tuple_index = tuple_index + 1
@@ -161,9 +162,9 @@ def get_hero(hero_id, rpc_address, hero_contract_abi):
     # HeroProfessions
     hero_professions = {}
     hero_professions['mining'] = hero_contract_entry[tuple_index][0]
-    hero_professions['gardening'] = hero_contract_entry[tuple_index][0]
-    hero_professions['foraging'] = hero_contract_entry[tuple_index][0]
-    hero_professions['fishing'] = hero_contract_entry[tuple_index][0]
+    hero_professions['gardening'] = hero_contract_entry[tuple_index][1]
+    hero_professions['foraging'] = hero_contract_entry[tuple_index][2]
+    hero_professions['fishing'] = hero_contract_entry[tuple_index][3]
 
     hero['professions'] = hero_professions
 
@@ -171,159 +172,18 @@ def get_hero(hero_id, rpc_address, hero_contract_abi):
 
 
 def human_readable_hero(raw_hero, hero_male_first_names, hero_female_first_names, hero_last_names):
-    rarity = {
-        0: "Common",
-        1: "Uncommon",
-        2: "Rare",
-        3: "Legendary",
-        4: "Mythic",
-    }
-    _class = {
-        0: "Warrior",
-        1: "Knight",
-        2: "Thief",
-        3: "Archer",
-        4: "Priest",
-        5: "Wizard",
-        6: "Monk",
-        7: "Pirate",
-        16: "Paladin",
-        17: "DarkKnight",
-        18: "Summoner",
-        19: "Ninja",
-    }
 
     readable_hero = copy.deepcopy(raw_hero)
 
-    readable_hero['info']['rarity'] = rarity.get(readable_hero['info']['rarity'], None)
-    readable_hero['info']['class'] = _class.get(readable_hero['info']['class'], None)
-    readable_hero['info']['subClass'] = _class.get(readable_hero['info']['subClass'], None)
-
-    if not readable_hero['info']['rarity']:
-        raise Exception("Rarity not found")
-
-    if not readable_hero['info']['class']:
-        raise Exception("Class not found")
-
-    if not readable_hero['info']['subClass']:
-        raise Exception("Subclass not found")
-
-
-    # genes
-    ALPHABET = '123456789abcdefghijkmnopqrstuvwx'
-    def genesToKai(genes):
-        BASE = len(ALPHABET)
-
-        buf = ''
-        while genes >= BASE:
-            mod = int(genes % BASE)
-            buf = ALPHABET[int(mod)] + buf
-            genes = (genes - mod) // BASE
-
-        # Add the last 4 (finally).
-        buf = ALPHABET[int(genes)] + buf
-
-        # Pad with leading 0s.
-        buf = buf.rjust(48, '1')
-
-        return ' '.join(buf[i:i + 4] for i in range(0, len(buf), 4))
-
-    def kai2dec(kai):
-        return ALPHABET.index(kai)
+    readable_hero['info']['rarity'] = utils.parse_rarity(readable_hero['info']['rarity'])
+    readable_hero['info']['class'] = utils.parse_class(readable_hero['info']['class'])
+    readable_hero['info']['subClass'] = utils.parse_class(readable_hero['info']['subClass'])
 
     # visualGenes
-    visual_genes = {}
-    visual_genes['raw'] = readable_hero['info']['visualGenes']
-
-    visual_raw_kai = "".join(genesToKai(visual_genes['raw']).split(' '))
-    visual_traits = {
-        0: 'gender',
-        1: 'headAppendage',
-        2: 'backAppendage',
-        3: 'background',
-        4: 'hairStyle',
-        5: 'hairColor',
-        6: 'visualUnknown1',
-        7: 'eyeColor',
-        8: 'skinColor',
-        9: 'appendageColor',
-        10: 'backAppendageColor',
-        11: 'visualUnknown2'
-    }
-    for ki in range(0, len(visual_raw_kai)):
-        stat_trait = visual_traits.get(int(ki / 4), None)
-        kai = visual_raw_kai[ki]
-        value_num = kai2dec(kai)
-        visual_genes[stat_trait] = value_num
-
-    visual_genes['gender'] = 'Male' if visual_genes['gender'] == 1 else 'Female'
-    readable_hero['info']['visualGenes'] = visual_genes
+    readable_hero['info']['visualGenes'] = utils.parse_visual_genes(readable_hero['info']['visualGenes'])
 
     # statsGenes
-    stat_genes = {}
-    stat_genes['raw'] = readable_hero['info']['statGenes']
-
-    stat_raw_kai = "".join(genesToKai(stat_genes['raw']).split(' '))
-    stat_traits = {
-        0: 'class',
-        1: 'subClass',
-        2: 'profession',
-        3: 'passive1',
-        4: 'passive2',
-        5: 'active1',
-        6: 'active2',
-        7: 'statBoost1',
-        8: 'statBoost2',
-        9: 'statsUnknown1',
-        10: 'element',
-        11: 'statsUnknown2'
-    }
-    for ki in range(0, len(stat_raw_kai)):
-        stat_trait = stat_traits.get(int(ki / 4), None)
-        kai = stat_raw_kai[ki]
-        value_num = kai2dec(kai)
-        stat_genes[stat_trait] = value_num
-
-    stat_genes['class'] = _class.get(stat_genes['class'], None)
-    stat_genes['subClass'] = _class.get(stat_genes['subClass'], None)
-
-    professions = {
-        0: 'mining',
-        2: 'gardening',
-        4: 'fishing',
-        6: 'foraging',
-    }
-    stat_genes['profession'] = professions.get(stat_genes['profession'], None)
-
-    stats = {
-        0: 'strength',
-        2: 'agility',
-        4: 'intelligence',
-        6: 'wisdom',
-        8: 'luck',
-        10: 'vitality',
-        12: 'endurance',
-        14: 'dexterity'
-    }
-
-    stat_genes['statBoost1'] = stats.get(stat_genes['statBoost1'], None)
-    stat_genes['statBoost2'] = stats.get(stat_genes['statBoost2'], None)
-    stat_genes['statsUnknown1'] = stats.get(stat_genes['statsUnknown1'], None)
-    stat_genes['statsUnknown2'] = stats.get(stat_genes['statsUnknown2'], None)
-
-    elements = {
-        0: 'fire',
-        2: 'water',
-        4: 'earth',
-        6: 'wind',
-        8: 'lightning',
-        10: 'ice',
-        12: 'light',
-        14: 'dark',
-    }
-    stat_genes['element'] = elements.get(stat_genes['element'], None)
-
-    readable_hero['info']['statGenes'] = stat_genes
+    readable_hero['info']['statGenes'] = utils.parse_stat_genes(readable_hero['info']['statGenes'])
 
     # names
     readable_hero['info']['firstName'] = hero_male_first_names[readable_hero['info']['firstName']] if readable_hero['info']['visualGenes']['gender'] == 'Male' else hero_female_first_names[readable_hero['info']['firstName']]
@@ -361,7 +221,7 @@ if __name__ == "__main__":
 
     # transfer(1, 'private key of the owner', 'next nonce of owner account', 'receiver address', 200, rpc_server, hero_abi_json, logger)
 
-    for i in range(40, 2074):
+    for i in range(1, 100):
         logger.info("Processing hero #"+str(i))
         owner = get_owner(i, rpc_server, hero_abi_json)
         hero = get_hero(i, rpc_server, hero_abi_json)
