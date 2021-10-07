@@ -64,8 +64,9 @@ def get_hero(hero_id, rpc_address, hero_contract_abi):
     summoning_info['summonedTime'] = hero_contract_entry[tuple_index][0]
     summoning_info['nextSummonTime'] = hero_contract_entry[tuple_index][1]
     summoning_info['assistantId']= hero_contract_entry[tuple_index][2]
-    summoning_info['summons']= hero_contract_entry[tuple_index][3]
-    summoning_info['maxSummons']= hero_contract_entry[tuple_index][4]
+    summoning_info['assistantId2']= hero_contract_entry[tuple_index][3]
+    summoning_info['summons']= hero_contract_entry[tuple_index][4]
+    summoning_info['maxSummons']= hero_contract_entry[tuple_index][5]
 
     hero['summoningInfo'] = summoning_info
     tuple_index = tuple_index + 1
@@ -186,6 +187,10 @@ def human_readable_hero(raw_hero, hero_male_first_names, hero_female_first_names
         5: "Wizard",
         6: "Monk",
         7: "Pirate",
+        16: "Paladin",
+        17: "DarkKnight",
+        18: "Summoner",
+        19: "Ninja",
     }
 
     readable_hero = copy.deepcopy(raw_hero)
