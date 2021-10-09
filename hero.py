@@ -47,6 +47,15 @@ def get_owner(hero_id, rpc_address, hero_contract_abi):
     return str(hero_contract.functions.ownerOf(hero_id).call())
 
 
+def get_users_heroes(user_address, rpc_address, hero_contract_abi):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+
+    hero_contract_address = Web3.toChecksumAddress(HERO_CONTRACT_ADDRESS)
+    hero_contract = w3.eth.contract(hero_contract_address, abi=hero_contract_abi)
+
+    return hero_contract.functions.getUserHeroes(Web3.toChecksumAddress(user_address)).call()
+
+
 def get_hero(hero_id, rpc_address, hero_contract_abi):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
@@ -64,8 +73,8 @@ def get_hero(hero_id, rpc_address, hero_contract_abi):
     summoning_info = {}
     summoning_info['summonedTime'] = hero_contract_entry[tuple_index][0]
     summoning_info['nextSummonTime'] = hero_contract_entry[tuple_index][1]
-    summoning_info['assistantId1'] = hero_contract_entry[tuple_index][2]
-    summoning_info['assistantId2'] = hero_contract_entry[tuple_index][3]
+    summoning_info['summonerId'] = hero_contract_entry[tuple_index][2]
+    summoning_info['assistantId'] = hero_contract_entry[tuple_index][3]
     summoning_info['summons'] = hero_contract_entry[tuple_index][4]
     summoning_info['maxSummons'] = hero_contract_entry[tuple_index][5]
 
