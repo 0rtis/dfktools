@@ -195,7 +195,7 @@ def human_readable_hero(raw_hero, hero_male_first_names, hero_female_first_names
     readable_hero['info']['statGenes'] = utils.parse_stat_genes(readable_hero['info']['statGenes'])
 
     # names
-    readable_hero['info']['firstName'] = hero_male_first_names[readable_hero['info']['firstName']] if readable_hero['info']['visualGenes']['gender'] == 'Male' else hero_female_first_names[readable_hero['info']['firstName']]
+    readable_hero['info']['firstName'] = hero_male_first_names[readable_hero['info']['firstName']] if readable_hero['info']['visualGenes']['gender'] == 'male' else hero_female_first_names[readable_hero['info']['firstName']]
     readable_hero['info']['lastName'] = hero_last_names[readable_hero['info']['lastName']]
 
     return readable_hero
