@@ -195,7 +195,7 @@ def human_readable_hero(raw_hero, hero_male_first_names, hero_female_first_names
     readable_hero['info']['statGenes'] = utils.parse_stat_genes(readable_hero['info']['statGenes'])
 
     # names
-    readable_hero['info']['firstName'] = hero_male_first_names[readable_hero['info']['firstName']] if readable_hero['info']['visualGenes']['gender'] == 'male' else hero_female_first_names[readable_hero['info']['firstName']]
+    readable_hero['info']['firstName'] = hero_male_first_names[readable_hero['info']['firstName'] + 1] if readable_hero['info']['visualGenes']['gender'] == 'male' else hero_female_first_names[readable_hero['info']['firstName']]
     readable_hero['info']['lastName'] = hero_last_names[readable_hero['info']['lastName']]
 
     return readable_hero
@@ -217,15 +217,15 @@ if __name__ == "__main__":
     logger.info("Hero contract ABI loaded")
 
     with open('femaleFirstName.json', 'r') as f:
-        female_first_names = json.load(f)
+        female_first_names = utils.parse_names(f.read())
     logger.info("Female hero first name loaded")
 
     with open('maleFirstName.json', 'r') as f:
-        male_first_names = json.load(f)
+        male_first_names = utils.parse_names(f.read())
     logger.info("Male hero first name loaded")
 
     with open('lastName.json', 'r') as f:
-        last_names = json.load(f)
+        last_names = utils.parse_names(f.read())
     logger.info("Hero last name loaded")
 
     # transfer(1, 'private key of the owner', 'next nonce of owner account', 'receiver address', 200, rpc_server, hero_abi_json, logger)

@@ -1,4 +1,6 @@
 
+import json
+
 FAIL_ON_NOT_FOUND = False
 
 ALPHABET = '123456789abcdefghijkmnopqrstuvwx'
@@ -187,3 +189,21 @@ def __genesToKai(genes):
 
 def __kai2dec(kai):
     return ALPHABET.index(kai)
+
+
+def parse_names(names_raw_string):
+    names_raw_string = names_raw_string\
+        .replace("\\xf3", "ó") \
+        .replace("\\xf2", "ò") \
+        .replace("\\xe9", "é") \
+        .replace("\\xe1", "á") \
+        .replace("\\xc9", "É") \
+        .replace("\\xe9", "é") \
+        .replace("\\xed", "í") \
+        .replace("\\xfa", "ú") \
+        .replace("\\xec", "ì")
+
+    if "\\x" in names_raw_string:
+        raise Exception("Unhandled unicode found")
+
+    return json.loads(names_raw_string)
