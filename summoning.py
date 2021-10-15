@@ -37,7 +37,9 @@ if __name__ == "__main__":
     with open('summoning.abi', 'r') as f:
         summoning_abi_json = f.read()
 
-    crystals = get_user_crystal_ids('user address', rpc_server, summoning_abi_json)
+    crystals = get_user_crystal_ids('0x2E7669F61eA77F02445A015FBdcFe2DE47083E02', rpc_server, summoning_abi_json)
+
+    logger.info("Crystal ids: " + str(crystals))
 
 
 
