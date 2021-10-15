@@ -27,7 +27,7 @@ def get_profile(address, rpc_address, profile_contract_abi):
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
 
-    logger = logging.getLogger("DFK profile")
+    logger = logging.getLogger("DFK-profile")
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 

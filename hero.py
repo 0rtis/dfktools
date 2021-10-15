@@ -204,7 +204,7 @@ def human_readable_hero(raw_hero, hero_male_first_names, hero_female_first_names
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
 
-    logger = logging.getLogger("DFK hero")
+    logger = logging.getLogger("DFK-hero")
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
