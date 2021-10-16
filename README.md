@@ -120,6 +120,12 @@ if __name__ == "__main__":
     logger.info("Crystal ids: " + str(crystals))
 ```
 
+#### Summoning crystal id
+Summoning crystal id can be retrieved with `get_user_crystal_ids` method
+
+#### Open summoning crystal
+Summoning crystal can be open with `open_crystal` method
+
 
 <br/>
 <br/>

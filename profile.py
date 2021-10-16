@@ -36,10 +36,10 @@ if __name__ == "__main__":
     logger.info("Using RPC server " + rpc_server)
 
     with open('profile.abi', 'r') as f:
-        profile_abi_json = f.read()
+        profile_abi = f.read()
     logger.info("Profile contract ABI loaded")
 
-    profile = get_profile('0x2E7669F61eA77F02445A015FBdcFe2DE47083E02', rpc_server, profile_abi_json)
+    profile = get_profile('0x2E7669F61eA77F02445A015FBdcFe2DE47083E02', rpc_server, profile_abi)
 
     logger.info(json.dumps(profile, indent=4, sort_keys=False))
 

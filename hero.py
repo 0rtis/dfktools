@@ -213,7 +213,7 @@ if __name__ == "__main__":
     logger.info("Using RPC server " + rpc_server)
 
     with open('hero.abi', 'r') as f:
-        hero_abi_json = f.read()
+        hero_abi = f.read()
     logger.info("Hero contract ABI loaded")
 
     with open('femaleFirstName.json', 'r') as f:
@@ -232,7 +232,7 @@ if __name__ == "__main__":
 
     for i in range(1, 100):
         logger.info("Processing hero #"+str(i))
-        owner = get_owner(i, rpc_server, hero_abi_json)
-        hero = get_hero(i, rpc_server, hero_abi_json)
+        owner = get_owner(i, rpc_server, hero_abi)
+        hero = get_hero(i, rpc_server, hero_abi)
         readable_hero = human_readable_hero(hero, male_first_names, female_first_names, last_names)
         logger.info(json.dumps(readable_hero, indent=4, sort_keys=False) + "\n Owned by " + owner)
