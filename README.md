@@ -10,54 +10,52 @@ This is a simple toolbox to interact with the contracts of [DefiKingdoms](https:
 All product and company names are the registered trademarks of their original owners.
 The use of any trade name or trademark is for identification and reference purposes only and does not imply any association with the trademark holder of their product brand.*
 
+<br/>
+
+*If you like this project, consider supporting future developments with a donation 0xA68fBfa3E0c86D1f3fF071853df6DAe8753095E2*
+
+<br/>
 
 ### Hero contract
-The hero contract is accessible with `hero.py`
+The hero contract is accessible with `hero/hero.py`
 
 #### Quickstart
 ```
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
 
-    logger = logging.getLogger("DFK hero")
+    logger = logging.getLogger("DFK-hero")
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
     rpc_server = 'https://api.harmony.one'
-
     logger.info("Using RPC server " + rpc_server)
 
-    with open('hero.abi', 'r') as f:
-        hero_abi_json = f.read()
-    logger.info("Hero contract ABI loaded")
-
-    with open('femaleFirstName.json', 'r') as f:
-        female_first_names = utils.parse_names(f.read())
+    with open('hero/femaleFirstName.json', 'r') as f:
+        female_first_names = hero_utils.parse_names(f.read())
     logger.info("Female hero first name loaded")
 
-    with open('maleFirstName.json', 'r') as f:
-        male_first_names = utils.parse_names(f.read())
+    with open('hero/maleFirstName.json', 'r') as f:
+        male_first_names = hero_utils.parse_names(f.read())
     logger.info("Male hero first name loaded")
 
-    with open('lastName.json', 'r') as f:
-        last_names = utils.parse_names(f.read())
+    with open('hero/lastName.json', 'r') as f:
+        last_names = hero_utils.parse_names(f.read())
     logger.info("Hero last name loaded")
 
     # transfer(1, 'private key of the owner', 'next nonce of owner account', 'receiver address', 200, rpc_server, hero_abi_json, logger)
 
-    for i in range(1, 2074):
+    for i in range(1, 100):
         logger.info("Processing hero #"+str(i))
-        owner = get_owner(i, rpc_server, hero_abi_json)
-        hero = get_hero(i, rpc_server, hero_abi_json)
-        readable_hero = human_readable_hero(hero, male_first_names, female_first_names, last_names)
+        owner = heroes.get_owner(i, rpc_server)
+        hero = heroes.get_hero(i, rpc_server)
+        readable_hero = heroes.human_readable_hero(hero, male_first_names, female_first_names, last_names)
         logger.info(json.dumps(readable_hero, indent=4, sort_keys=False) + "\n Owned by " + owner)
+
 ```
 
 #### Transfer
-**It is strongly recommended to wait for an official method to transfer heroes. Use the transfer function of this script at your own risk**
-
-At the time of writing (October 3thd 2021), it is not yet possible to transfer heroes from within the game.
-However, there is no limitation on the contract itself and heroes can be transferred with the `transfer` method
+Transfer a hero from one address to another
 
 #### Info
 Hero's data can be retrieved with the `get_hero` method. A more *human-friendly* format can be generated 
@@ -68,26 +66,21 @@ The owner of a hero can be retrieved with the method `get_owner`
 
 
 ### Profile contract
-The profile contract is accessible with `profile.py`
+The profile contract is accessible with `profile/profile.py`
 
 #### Quickstart
 ```
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
 
-    logger = logging.getLogger("DFK profile")
+    logger = logging.getLogger("DFK-profile")
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
     rpc_server = 'https://api.harmony.one'
-
     logger.info("Using RPC server " + rpc_server)
 
-    with open('profile.abi', 'r') as f:
-        profile_abi_json = f.read()
-    logger.info("Profile contract ABI loaded")
-
-    profile = get_profile('0x2E7669F61eA77F02445A015FBdcFe2DE47083E02', rpc_server, profile_abi_json)
+    profile = profiles.get_profile('0x2E7669F61eA77F02445A015FBdcFe2DE47083E02', rpc_server)
 
     logger.info(json.dumps(profile, indent=4, sort_keys=False))
 ```
@@ -97,7 +90,7 @@ In-game profile can be retrieved with the `get_profile` method
 
 
 ### Summoning contract
-The summoning contract is accessible with `summoning.py`
+The summoning contract is accessible with `summoning/summoning.py`
 
 #### Quickstart
 ```
@@ -109,13 +102,9 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
     rpc_server = 'https://api.harmony.one'
-
     logger.info("Using RPC server " + rpc_server)
 
-    with open('summoning.abi', 'r') as f:
-        summoning_abi_json = f.read()
-
-    crystals = get_user_crystal_ids('0x2E7669F61eA77F02445A015FBdcFe2DE47083E02', rpc_server, summoning_abi_json)
+    crystals = summoning.get_user_crystal_ids('0x2E7669F61eA77F02445A015FBdcFe2DE47083E02', rpc_server)
 
     logger.info("Crystal ids: " + str(crystals))
 ```
@@ -127,10 +116,84 @@ Summoning crystal id can be retrieved with `get_user_crystal_ids` method
 Summoning crystal can be open with `open_crystal` method
 
 
-<br/>
-<br/>
+### Auction contract
+The sale auction contract is accessible with `auction/sale/sale_auctions.py`
+Rent auctions can be listed with `auction/rent/rent_auctions.py`
+
+#### Quickstart
+```
+if __name__ == "__main__":
+    log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
+
+    logger = logging.getLogger("DFK-auctions")
+    logger.setLevel(logging.DEBUG)
+    logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
+
+    rpc_server = 'https://api.harmony.one'
+    logger.info("Using RPC server " + rpc_server)
+
+    graphql = 'https://graph.defikingdoms.com/subgraphs/name/defikingdoms/api2'
+
+    auctions = sales.get_recent_open_auctions(graphql, 10)
+    logger.info("Recent sale auctions:")
+    for auction in auctions:
+        logger.info(str(auction))
+
+    # sale.bid_hero(hero_id, ether2wei(100), prv_key, nonce, gas_price_gwei, rpc_server, logger)
+
+    logger.info("\n")
+    logger.info("Recent rental auctions:")
+    auctions = rental.get_recent_open_auctions(graphql, 10)
+    for auction in auctions:
+        logger.info(str(auction))
+```
+
+#### Sale auction
+`bid_hero` and `get_auction` interact directly with the contract.
+`get_recent_open_auctions` and `get_hero_open_auctions` use Graphql.
+
+#### Rent auction
+`get_recent_open_auctions` and `get_hero_open_auctions` use Graphql.
 
 
-*If you like this project, consider supporting future developments with a donation 0xA68fBfa3E0c86D1f3fF071853df6DAe8753095E2*
+
+### Wishing well quest contract
+The wishing well quest contract is accessible with `quest/wishing_well.py`
+
+#### Quickstart
+```
+if __name__ == "__main__":
+    log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
+
+    logger = logging.getLogger("DFK-wishing well quest")
+    logger.setLevel(logging.DEBUG)
+    logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
+
+    rpc_server = 'https://api.harmony.one'
+    logger.info("Using RPC server " + rpc_server)
+
+    level = wishing_well.quest_level(rpc_server)
+    logger.info("Quest level "+str(level))
+
+    hero_id = 1
+    stamina = wishing_well.get_current_stamina(hero_id, rpc_server)
+    logger.info("Current stamina on hero " + str(hero_id) + ": " + str(stamina))
+
+    # wishing_well.start_quest(hero_id, 5, private_key, nonce, gas_price_gwei, rpc_server, logger)
+    # quest_id = hero_to_quest(hero_id, rpc_server)
+    # nonce = nonce + 1
+    # complete_quest(hero_id, prv, nonce, gas_price_gwei, rpc_server, logger)
+```
+
+#### Questing flow
+The quest requires at least 5 stamina to complete. Check the current stamina of a given hero with `get_current_stamina`.
+Start the quest with `start_quest`. The second parameter is the number of attempt. To optimize the cost of gas, it is recommended
+to use a hero at full stamina (25) and do 5 attempts every call.
+
+Once the quest is started, you can retrieve the quest_id with `hero_to_quest`.
+There is a delay of 10-30 seconds before you can complete the quest with `complete_quest`
+
+
+
 
 
