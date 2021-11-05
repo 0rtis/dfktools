@@ -198,7 +198,6 @@ def parse_names(names_raw_string):
         .replace("\\xe9", "é") \
         .replace("\\xe1", "á") \
         .replace("\\xc9", "É") \
-        .replace("\\xe9", "é") \
         .replace("\\xed", "í") \
         .replace("\\xfa", "ú") \
         .replace("\\xec", "ì")
