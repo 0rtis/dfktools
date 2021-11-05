@@ -182,7 +182,7 @@ if __name__ == "__main__":
     logger.info("Current stamina on hero " + str(hero_id) + ": " + str(stamina))
 
     # w3 = Web3(Web3.HTTPProvider(rpc_server))
-    # account_address = w3.eth.account.privateKeyToAccount(prv).address
+    # account_address = w3.eth.account.privateKeyToAccount(private_key).address
     # w3.eth.getTransactionCount(account_address)
     # wishing_well.start_quest(hero_id, 5, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, rpc_server, logger)
     # quest_id = hero_to_quest(hero_id, rpc_server)
