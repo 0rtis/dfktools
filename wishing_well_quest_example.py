@@ -20,11 +20,13 @@ if __name__ == "__main__":
     stamina = wishing_well.get_current_stamina(hero_id, rpc_server)
     logger.info("Current stamina on hero " + str(hero_id) + ": " + str(stamina))
 
-    # wishing_well.start_quest(hero_id, 5, private_key, nonce, gas_price_gwei, rpc_server, logger)
+    # w3 = Web3(Web3.HTTPProvider(rpc_server))
+    # account_address = w3.eth.account.privateKeyToAccount(prv).address
+    # w3.eth.getTransactionCount(account_address)
+    # wishing_well.start_quest(hero_id, 5, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, rpc_server, logger)
     # quest_id = hero_to_quest(hero_id, rpc_server)
     # time.sleep(30)
-    # nonce = nonce + 1
-    # complete_quest(hero_id, prv, nonce, gas_price_gwei, rpc_server, logger)
+    # complete_quest(hero_id, prv, w3.eth.getTransactionCount(account_address), gas_price_gwei, rpc_server, logger)
 
 
 
