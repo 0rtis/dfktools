@@ -118,6 +118,7 @@ Summoning crystal can be open with `open_crystal` method
 
 ### Auction contract
 The sale auction contract is accessible with `auction/sale/sale_auctions.py`
+
 Rent auctions can be listed with `auction/rent/rent_auctions.py`
 
 #### Quickstart
@@ -150,6 +151,7 @@ if __name__ == "__main__":
 
 #### Sale auction
 `bid_hero` and `get_auction` interact directly with the contract.
+
 `get_recent_open_auctions` and `get_hero_open_auctions` use Graphql.
 
 #### Rent auction
@@ -181,12 +183,13 @@ if __name__ == "__main__":
 
     # wishing_well.start_quest(hero_id, 5, private_key, nonce, gas_price_gwei, rpc_server, logger)
     # quest_id = hero_to_quest(hero_id, rpc_server)
+    # time.sleep(30)
     # nonce = nonce + 1
     # complete_quest(hero_id, prv, nonce, gas_price_gwei, rpc_server, logger)
 ```
 
 #### Questing flow
-The quest requires at least 5 stamina to complete. Check the current stamina of a given hero with `get_current_stamina`.
+The wishing well quest requires at least 5 stamina to complete. Check the current stamina of any given hero with `get_current_stamina`.
 Start the quest with `start_quest`. The second parameter is the number of attempt. To optimize the cost of gas, it is recommended
 to use a hero at full stamina (25) and do 5 attempts every call.
 

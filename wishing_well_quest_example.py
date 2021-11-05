@@ -22,8 +22,8 @@ if __name__ == "__main__":
 
     # wishing_well.start_quest(hero_id, 5, private_key, nonce, gas_price_gwei, rpc_server, logger)
     # quest_id = hero_to_quest(hero_id, rpc_server)
-    # nonce = nonce + 1
     # time.sleep(30)
+    # nonce = nonce + 1
     # complete_quest(hero_id, prv, nonce, gas_price_gwei, rpc_server, logger)
 
 
