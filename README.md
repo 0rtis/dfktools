@@ -104,13 +104,19 @@ if __name__ == "__main__":
     rpc_server = 'https://api.harmony.one'
     logger.info("Using RPC server " + rpc_server)
 
-    crystals = summoning.get_user_crystal_ids('0x2E7669F61eA77F02445A015FBdcFe2DE47083E02', rpc_server)
+    #summoning.summon_crystal(hero_id_1, hero_id_2, hero1_tears, hero2_tears, private_key, nonce, gas_price_gwei, 30, rpc_address, logger)
 
+    crystals = summoning.get_user_crystal_ids('0x2E7669F61eA77F02445A015FBdcFe2DE47083E02', rpc_server)
     logger.info("Crystal ids: " + str(crystals))
+
+    #summoning.open_crystal(crystals[0], private_key, nonce, gas_price_gwei, 30, rpc_address, logger)
 ```
 
-#### Summoning crystal id
-Summoning crystal id can be retrieved with `get_user_crystal_ids` method
+#### Create crystal
+Summoning crystal are created with `summon_crystal` method
+
+#### Crystal id
+Crystal id can be retrieved with `get_user_crystal_ids` method
 
 #### Open summoning crystal
 Summoning crystal can be open with `open_crystal` method
