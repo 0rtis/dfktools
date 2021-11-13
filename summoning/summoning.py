@@ -1,6 +1,3 @@
-import logging
-import sys
-
 from web3 import Web3
 
 CONTRACT_ADDRESS = '0xa2D001C829328aa06a2DB2740c05ceE1bFA3c6bb'

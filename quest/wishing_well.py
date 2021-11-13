@@ -1,3 +1,5 @@
+import time
+
 from web3 import Web3
 
 
@@ -49,7 +51,7 @@ ABI = """
         """
 
 
-def start_quest(hero_id, attempts, private_key, nonce, gas_price_gwei, rpc_address,logger):
+def start_quest(hero_id, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
@@ -68,13 +70,14 @@ def start_quest(hero_id, attempts, private_key, nonce, gas_price_gwei, rpc_addre
     logger.info("Transaction successfully sent !")
     logger.info(
         "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
-    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=24 * 3600,
+
+    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=3)
     logger.info("Transaction mined !")
     logger.info(str(tx_receipt))
 
 
-def complete_quest(hero_id, private_key, nonce, gas_price_gwei, rpc_address, logger):
+def complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
@@ -93,7 +96,7 @@ def complete_quest(hero_id, private_key, nonce, gas_price_gwei, rpc_address, log
     logger.info("Transaction successfully sent !")
     logger.info(
         "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
-    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=24 * 3600,
+    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=3)
     logger.info("Transaction mined !")
     logger.info(str(tx_receipt))
