@@ -156,7 +156,7 @@ if __name__ == "__main__":
 #### Mix genes
 Statistics and visual of summoned hero can be forecasted with the `mix_genes` method.
 Note that `mix_genes` is pseudo random and the resulting traits will be different for each block.
-However, a statistical analysis can be used to optimize the summoning the desirable traits
+However, a statistical analysis can be used to optimize the summoning of desirable traits
 
 ### Auction contract
 The sale auction contract is accessible with `auction/sale/sale_auctions.py`
