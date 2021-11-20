@@ -14,7 +14,7 @@ if __name__ == "__main__":
     rpc_server = 'https://api.harmony.one'
     logger.info("Using RPC server " + rpc_server)
 
-    graphql = 'https://graph.defikingdoms.com/subgraphs/name/defikingdoms/api2'
+    graphql = 'http://graph3.defikingdoms.com/subgraphs/name/defikingdoms/apiv5'
 
     auctions = sales.get_recent_open_auctions(graphql, 10)
     logger.info("Recent sale auctions:")

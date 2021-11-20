@@ -11,24 +11,20 @@ AUCTIONS_OPEN_GRAPHQL_QUERY = """
                               id
                               owner {
                                 owner
+                              }                        
+                              statGenes
+                              generation
+                              rarity
+                              mainClass
+                              subClass
+                              summons
+                              maxSummons
+                              summonerId {
+                                id
                               }
-                              info {
-                                statGenes
-                                generation
-                                rarity
-                                mainClass
-                                subClass
+                              assistantId {
+                                id
                               }
-                              summoningInfo {
-                                summons
-                                maxSummons
-                                summonerId {
-                                  id
-                                }
-                                assistantId {
-                                  id
-                                }
-                              }                            
                             }
                             startingPrice
                             endingPrice

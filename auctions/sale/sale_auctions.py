@@ -1,5 +1,6 @@
 import requests
 from web3 import Web3
+import urllib.parse
 
 SALE_AUCTIONS_CONTRACT_ADDRESS = '0x13a65B9F8039E2c032Bc022171Dc05B30c3f2892'
 
@@ -81,23 +82,19 @@ AUCTIONS_OPEN_GRAPHQL_QUERY = """
                               owner {
                                 owner
                               }
-                              info {
-                                statGenes
-                                generation
-                                rarity
-                                mainClass
-                                subClass
+                              statGenes
+                              generation
+                              rarity
+                              mainClass
+                              subClass
+                              summons
+                              maxSummons
+                              summonerId {
+                                id
                               }
-                              summoningInfo {
-                                summons
-                                maxSummons
-                                summonerId {
-                                  id
-                                }
-                                assistantId {
-                                  id
-                                }
-                              }                            
+                              assistantId {
+                                id
+                              }
                             }
                             startingPrice
                             endingPrice
@@ -126,23 +123,20 @@ AUCTIONS_TOKEN_IDS_GRAPHQL_QUERY = """
                               owner {
                                 owner
                               }
-                              info {
-                                statGenes
-                                generation
-                                rarity
-                                mainClass
-                                subClass
+                              
+                              statGenes
+                              generation
+                              rarity
+                              mainClass
+                              subClass
+                              summons
+                              maxSummons
+                              summonerId {
+                                id
                               }
-                              summoningInfo {
-                                summons
-                                maxSummons
-                                summonerId {
-                                  id
-                                }
-                                assistantId {
-                                  id
-                                }
-                              }                            
+                              assistantId {
+                                id
+                              }
                             }
                             startingPrice
                             endingPrice
@@ -205,6 +199,7 @@ def get_auction(token_id, rpc_address):
 def get_recent_open_auctions(graphql_address, count=1000):
 
     r = requests.post(graphql_address, json={'query': AUCTIONS_OPEN_GRAPHQL_QUERY % count})
+
     if r.status_code != 200:
         raise Exception("HTTP error " + str(r.status_code) + ": " + r.text)
     data = r.json()
