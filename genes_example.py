@@ -23,7 +23,6 @@ if __name__ == "__main__":
 
     bnum = w3.eth.block_number
     for i in range(10):
-        print(str(bnum))
         offspring_stat_genes = genes.mix_genes(hero1['info']['statGenes'], hero2['info']['statGenes'], bnum, rpc_server)
         offspring_visual_genes = genes.mix_genes(hero1['info']['visualGenes'], hero2['info']['visualGenes'], bnum, rpc_server)
         stats = hero_utils.parse_stat_genes(offspring_stat_genes)
