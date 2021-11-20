@@ -122,6 +122,43 @@ Crystal id can be retrieved with `get_user_crystal_ids` method
 Summoning crystal can be open with `open_crystal` method
 
 
+### Gene science contract
+The gene science contract is accessible with `genes/gene_science.py`
+
+#### Quickstart
+```
+if __name__ == "__main__":
+    log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
+
+    logger = logging.getLogger("DFK-genes")
+    logger.setLevel(logging.DEBUG)
+    logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
+
+    rpc_server = 'https://api.harmony.one'
+    logger.info("Using RPC server " + rpc_server)
+    w3 = Web3(Web3.HTTPProvider(rpc_server))
+
+    hero1 = heroes.get_hero(1, rpc_server)
+    hero2 = heroes.get_hero(2, rpc_server)
+
+    bnum = w3.eth.block_number
+    for i in range(10):
+        print(str(bnum))
+        offspring_stat_genes = genes.mix_genes(hero1['info']['statGenes'], hero2['info']['statGenes'], bnum, rpc_server)
+        offspring_visual_genes = genes.mix_genes(hero1['info']['visualGenes'], hero2['info']['visualGenes'], bnum, rpc_server)
+        stats = hero_utils.parse_stat_genes(offspring_stat_genes)
+        visual = hero_utils.parse_visual_genes(offspring_visual_genes)
+        logger.info("Iteration " + str(i) + "\n\tStats:\t" + str(stats) + "\n\tVisual:\t" + str(visual))
+        while w3.eth.block_number == bnum:
+            time.sleep(2)
+        bnum = w3.eth.block_number
+```
+
+#### Mix genes
+Statistics and visual of summoned hero can be forecasted with the `mix_genes` method.
+Note that `mix_genes` is pseudo random and the resulting traits will be different for each block.
+However, a statistical analysis can be used to optimize the summoning the desirable traits
+
 ### Auction contract
 The sale auction contract is accessible with `auction/sale/sale_auctions.py`
 
