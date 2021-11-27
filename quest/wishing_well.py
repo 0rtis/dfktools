@@ -103,24 +103,22 @@ def complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_secon
 
     return tx_receipt
 
-def quest_tears(rpc_address, tx_receipt, logger):
+
+def parse_complete_quest_receipt(tx_receipt, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
+
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
-    results = contract.events.QuestReward().processReceipt(tx_receipt)
-    logger.info(results)
 
-    return sum([result.args.itemQuantity for result in results])
+    quest_result = {}
 
+    quest_reward = contract.events.QuestReward().processReceipt(tx_receipt)
+    quest_result['tear'] = sum([result.args.itemQuantity for result in quest_reward])
 
-def quest_xp(rpc_address, tx_receipt, logger):
-    w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
-    contract = w3.eth.contract(contract_address, abi=ABI)
-    results = contract.events.QuestXP().processReceipt(tx_receipt)
-    logger.info(results)
-    
-    return sum([result.args.xpEarned for result in results])
+    quest_xp = contract.events.QuestXP().processReceipt(tx_receipt)
+    quest_result['xp'] = sum([result.args.xpEarned for result in quest_xp])
+
+    return quest_result
 
 
 def quest_level(rpc_address):

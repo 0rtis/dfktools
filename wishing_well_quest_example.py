@@ -29,9 +29,8 @@ if __name__ == "__main__":
     #time.sleep(60)
     #tx_receipt = wishing_well.complete_quest(hero_id, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, 30, rpc_server, logger)
 
-    #tears = wishing_well.quest_tears(rpc_server, tx_receipt, logger)
-    #xp = wishing_well.quest_xp(rpc_server, tx_receipt, logger)
-    #logger.info("Quest earned " + str(tears) + " tears and " + str(xp) + " xp")
+    #quest_result = wishing_well.parse_complete_quest_receipt(tx_receipt, rpc_server)
+    #logger.info("Quest earned " + str(quest_result['tear']) + " tears and " + str(quest_result['xp']) + " xp")
 
 
 
