@@ -24,9 +24,9 @@ if __name__ == "__main__":
     # account_address = w3.eth.account.privateKeyToAccount(private_key).address
     # w3.eth.getTransactionCount(account_address)
     # wishing_well.start_quest(hero_id, 5, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, 30, rpc_server, logger)
-    # quest_id = hero_to_quest(hero_id, rpc_server)
+    # quest_id = wishing_well.hero_to_quest(hero_id, rpc_server)
     # time.sleep(30)
-    # complete_quest(hero_id, prv, w3.eth.getTransactionCount(account_address), gas_price_gwei, 30, rpc_server, logger)
+    # wishing_well.complete_quest(hero_id, prv, w3.eth.getTransactionCount(account_address), gas_price_gwei, 30, rpc_server, logger)
 
 
 
