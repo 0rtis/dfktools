@@ -78,11 +78,11 @@ def summon_crystal(summoner_id, assistant_id, summoner_tears, assistant_tears, p
     tx = contract.functions.summonCrystal(summoner_id, assistant_id, summoner_tears, assistant_tears, '0x0000000000000000000000000000000000000000').buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
-    logger.info("Signing transaction")
+    logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
-    logger.info("Sending transaction " + str(tx))
+    logger.debug("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-    logger.info("Transaction successfully sent !")
+    logger.debug("Transaction successfully sent !")
     logger.info(
         "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
@@ -102,11 +102,11 @@ def open_crystal(crystal_id, private_key, nonce, gas_price_gwei, tx_timeout_seco
     logger.info("Opening crystal "+str(crystal_id))
     tx = contract.functions.open(crystal_id).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
-    logger.info("Signing transaction")
+    logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
-    logger.info("Sending transaction " + str(tx))
+    logger.debug("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-    logger.info("Transaction successfully sent !")
+    logger.debug("Transaction successfully sent !")
     logger.info(
         "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
@@ -115,8 +115,84 @@ def open_crystal(crystal_id, private_key, nonce, gas_price_gwei, tx_timeout_seco
     logger.info(str(tx_receipt))
 
 
+def is_on_rent(hero_id, rpc_address):
+
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+
+    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    return contract.functions.isOnAuction(hero_id).call()
 
 
+def get_rent_auction(hero_id, rpc_address):
 
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+
+    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    ret = contract.functions.getAuction(hero_id).call()
+
+    auction = {}
+    auction['auctionId'] = ret[0]
+    auction['seller'] = ret[1]
+    auction['startingPrice'] = ret[2]
+    auction['endingPrice'] = ret[3]
+    auction['duration'] = ret[4]
+    auction['startedAt'] = ret[5]
+
+    return auction
+
+
+def put_hero_for_rent(hero_id, price_gwei, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+    account = w3.eth.account.privateKeyToAccount(private_key)
+    w3.eth.default_account = account.address
+
+    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    logger.info("Renting hero " + str(hero_id) + " for " + str(price_gwei/1000000000000000000) + " JEWEL")
+
+    tx = contract.functions.createAuction(hero_id, price_gwei, price_gwei, 60, '0x0000000000000000000000000000000000000000').buildTransaction(
+        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+
+    logger.debug("Signing transaction")
+    signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
+    logger.debug("Sending transaction " + str(tx))
+    ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+    logger.debug("Transaction successfully sent !")
+    logger.info(
+        "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
+    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
+                                                     poll_latency=3)
+    logger.info("Transaction mined !")
+    logger.info(str(tx_receipt))
+
+
+def cancel_rent(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+    account = w3.eth.account.privateKeyToAccount(private_key)
+    w3.eth.default_account = account.address
+
+    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    logger.info("Cancel renting of hero " + str(hero_id))
+
+    tx = contract.functions.cancelAuction(hero_id).buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+
+    logger.debug("Signing transaction")
+    signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
+    logger.debug("Sending transaction " + str(tx))
+    ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+    logger.debug("Transaction successfully sent !")
+    logger.info(
+        "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
+    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
+                                                     poll_latency=3)
+    logger.info("Transaction mined !")
+    logger.info(str(tx_receipt))
 
 

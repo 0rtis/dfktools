@@ -63,11 +63,11 @@ def start_quest(hero_id, attempts, private_key, nonce, gas_price_gwei, tx_timeou
     tx = contract.functions.startQuest(hero_id, attempts).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
-    logger.info("Signing transaction")
+    logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
-    logger.info("Sending transaction " + str(tx))
+    logger.debug("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-    logger.info("Transaction successfully sent !")
+    logger.debug("Transaction successfully sent !")
     logger.info(
         "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
 
@@ -85,15 +85,15 @@ def complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_secon
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    logger.info("Completing quest with hero id " + str(hero_id))
+    logger.debug("Completing quest with hero id " + str(hero_id))
     tx = contract.functions.completeQuest(hero_id).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
-    logger.info("Signing transaction")
+    logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
-    logger.info("Sending transaction " + str(tx))
+    logger.debug("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-    logger.info("Transaction successfully sent !")
+    logger.debug("Transaction successfully sent !")
     logger.info(
         "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,

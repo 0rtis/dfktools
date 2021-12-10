@@ -121,6 +121,10 @@ Crystal id can be retrieved with `get_user_crystal_ids` method
 #### Open summoning crystal
 Summoning crystal can be open with `open_crystal` method
 
+#### Rent auction
+Put a hero up for hire with `put_hero_for_rent`  and cancel with `cancel_rent`
+Use `is_on_rent` and `get_rent_auction` to monitor auction
+
 
 ### Gene science contract
 The gene science contract is accessible with `genes/gene_science.py`
@@ -201,10 +205,51 @@ if __name__ == "__main__":
 
 
 
-### Wishing well quest contract
-The wishing well quest contract is accessible with `quest/wishing_well.py`
+### Quest
+All quest contracts are located in module `quest`
 
 #### Quickstart
+```
+if __name__ == "__main__":
+    log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
+
+    logger = logging.getLogger("DFK-quest")
+    logger.setLevel(logging.DEBUG)
+    logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
+
+    rpc_server = 'https://api.harmony.one'
+    logger.info("Using RPC server " + rpc_server)
+
+    private_key = None  # set private key
+    gas_price_gwei = 15
+    tx_timeout = 30
+    w3 = Web3(Web3.HTTPProvider(rpc_server))
+    account_address = w3.eth.account.privateKeyToAccount(private_key).address
+
+    quest_contract = fishing.CONTRACT_ADDRESS  # foraging.CONTRACT_ADDRESS
+    quest = Quest(quest_contract, rpc_server, logger)
+
+    my_heroes_id = [1, 2, 3, 4]
+    quest.start_quest(my_heroes_id, 3, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
+    quest_info = quest_utils.parse_quest(quest.get_hero_quest(my_heroes_id[0]))
+
+    logger.info(
+        "Waiting " + str(quest_info['completeAtTime'] - time.time()) + " secs to complete quest " + str(quest_info))
+    while time.time() < quest_info['completeAtTime']:
+        time.sleep(2)
+    
+    tx_receipt = quest.complete_quest(my_heroes_id[0], private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
+    quest_result = quest.parse_complete_quest_receipt(tx_receipt)
+    logger.info("Rewards: " + str(quest_result))
+```
+
+#### Questing flow
+Each quest requires at least 7 stamina to complete. Check the current stamina of any given hero with `get_current_stamina`.
+Start the quest with `start_quest`. The second parameter is the number of attempt. To optimize the cost of gas, it is recommended
+to use a hero at full stamina and do 3 attempts every call.
+
+
+#### Legacy wishing well quest
 ```
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
@@ -235,15 +280,6 @@ if __name__ == "__main__":
     #logger.info("Quest earned " + str(quest_result['tear']) + " tears and " + str(quest_result['xp']) + " xp")
 
 ```
-
-#### Questing flow
-The wishing well quest requires at least 5 stamina to complete. Check the current stamina of any given hero with `get_current_stamina`.
-Start the quest with `start_quest`. The second parameter is the number of attempt. To optimize the cost of gas, it is recommended
-to use a hero at full stamina (25) and do 5 attempts every call.
-
-Once the quest is started, you can retrieve the quest_id with `hero_to_quest`.
-There is a delay of 10-30 seconds before you can complete the quest with `complete_quest`
-
 
 
 
