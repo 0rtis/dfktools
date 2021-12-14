@@ -73,7 +73,6 @@ def start_quest(quest_address, hero_ids, attempts, private_key, nonce, gas_price
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=3)
     logger.info("Transaction mined !")
-    logger.info(str(tx_receipt))
 
 
 def complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
@@ -98,7 +97,6 @@ def complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_secon
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=3)
     logger.info("Transaction mined !")
-    logger.info(str(tx_receipt))
 
     return tx_receipt
 
@@ -142,7 +140,6 @@ def cancel_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=3)
     logger.info("Transaction mined !")
-    logger.info(str(tx_receipt))
 
     return tx_receipt
 
