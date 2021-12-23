@@ -2,13 +2,12 @@ from . import quest_core
 
 
 class Quest:
-    def __init__(self, quest_address, rpc_address, logger):
-        self.quest_address = quest_address
+    def __init__(self, rpc_address, logger):
         self.rpc_address = rpc_address
         self.logger = logger
 
-    def start_quest(self, hero_ids, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds):
-        return quest_core.start_quest(self.quest_address, hero_ids, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds, self.rpc_address, self.logger)
+    def start_quest(self, quest_address, hero_ids, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds):
+        return quest_core.start_quest(quest_address, hero_ids, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds, self.rpc_address, self.logger)
 
     def complete_quest(self, hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds):
         return quest_core.complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, self.rpc_address, self.logger)

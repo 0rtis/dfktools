@@ -16,15 +16,15 @@ if __name__ == "__main__":
 
     graphql = 'http://graph3.defikingdoms.com/subgraphs/name/defikingdoms/apiv5'
 
-    auctions = sales.get_recent_open_auctions(graphql, 10)
-    logger.info("Recent sale auctions:")
+    auctions = sales.get_open_auctions(graphql, 0, 10)
+    logger.info("Sale auctions:")
     for auction in auctions:
         logger.info(str(auction))
 
-    # sale.bid_hero(hero_id, ether2wei(100), prv_key, nonce, gas_price_gwei, rpc_server, logger)
+    # sale.bid_hero(hero_id, ether2wei(100), prv_key, nonce, gas_price_gwei, 30, rpc_server, logger)
 
     logger.info("\n")
-    logger.info("Recent rental auctions:")
-    auctions = rental.get_recent_open_auctions(graphql, 10)
+    logger.info("Rental auctions:")
+    auctions = rental.get_open_auctions(graphql, 0, 10)
     for auction in auctions:
         logger.info(str(auction))

@@ -23,11 +23,11 @@ if __name__ == "__main__":
     w3 = Web3(Web3.HTTPProvider(rpc_server))
     account_address = w3.eth.account.privateKeyToAccount(private_key).address
 
-    quest_contract = fishing.CONTRACT_ADDRESS  # foraging.CONTRACT_ADDRESS
-    quest = Quest(quest_contract, rpc_server, logger)
+    quest = Quest(rpc_server, logger)
 
+    quest_contract = fishing.CONTRACT_ADDRESS  # foraging.CONTRACT_ADDRESS
     my_heroes_id = [1, 2, 3, 4]
-    quest.start_quest(my_heroes_id, 3, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
+    quest.start_quest(quest_contract, my_heroes_id, 3, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
     quest_info = quest_utils.parse_quest(quest.get_hero_quest(my_heroes_id[0]))
 
     logger.info(

@@ -72,7 +72,7 @@ ABI = """
 
 AUCTIONS_OPEN_GRAPHQL_QUERY = """
                         query {
-                          saleAuctions(first: %d, orderBy: startedAt, orderDirection: desc, where: {open: true}) {
+                          saleAuctions(skip: %d, first: %d, orderBy: startedAt, orderDirection: desc, where: {open: true}) {
                             id
                             seller {
                                 name
@@ -87,6 +87,15 @@ AUCTIONS_OPEN_GRAPHQL_QUERY = """
                               rarity
                               mainClass
                               subClass
+                              strength
+                              intelligence
+                              wisdom
+                              luck
+                              agility
+                              vitality
+                              endurance
+                              dexterity
+                              level
                               summons
                               maxSummons
                               summonerId {
@@ -154,7 +163,7 @@ AUCTIONS_TOKEN_IDS_GRAPHQL_QUERY = """
                         """
 
 
-def bid_hero(token_id, bid_amount_wei, private_key, nonce, gas_price_gwei, rpc_address, logger):
+def bid_hero(token_id, bid_amount_wei, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
@@ -173,10 +182,18 @@ def bid_hero(token_id, bid_amount_wei, private_key, nonce, gas_price_gwei, rpc_a
     logger.info("Transaction successfully sent !")
     logger.info(
         "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
-    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=24 * 3600,
+    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=3)
     logger.info("Transaction mined !")
     logger.info(str(tx_receipt))
+
+
+def is_on_auction(token_id, rpc_address):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+
+    sales_auction_contract_address = Web3.toChecksumAddress(SALE_AUCTIONS_CONTRACT_ADDRESS)
+    sales_auction_contract = w3.eth.contract(sales_auction_contract_address, abi=ABI)
+    return sales_auction_contract.functions.isOnAuction(token_id).call()
 
 
 def get_auction(token_id, rpc_address):
@@ -184,7 +201,7 @@ def get_auction(token_id, rpc_address):
 
     sales_auction_contract_address = Web3.toChecksumAddress(SALE_AUCTIONS_CONTRACT_ADDRESS)
     sales_auction_contract = w3.eth.contract(sales_auction_contract_address, abi=ABI)
-    result = sales_auction_contract.functions.getAuction(token_id)
+    result = sales_auction_contract.functions.getAuction(token_id).call()
     auction = {}
     auction['id'] = result[0]
     auction['owner'] = result[1]
@@ -196,9 +213,9 @@ def get_auction(token_id, rpc_address):
     return auction
 
 
-def get_recent_open_auctions(graphql_address, count=1000):
+def get_open_auctions(graphql_address, skip=0, count=1000):
 
-    r = requests.post(graphql_address, json={'query': AUCTIONS_OPEN_GRAPHQL_QUERY % count})
+    r = requests.post(graphql_address, json={'query': AUCTIONS_OPEN_GRAPHQL_QUERY % (skip, count)})
 
     if r.status_code != 200:
         raise Exception("HTTP error " + str(r.status_code) + ": " + r.text)
@@ -224,5 +241,5 @@ def wei2ether(wei):
 
 
 def ether2wei(ether):
-    return ether * 1000000000000000000
+    return int(ether * 1000000000000000000)
 

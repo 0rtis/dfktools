@@ -231,7 +231,7 @@ def get_hero(hero_id, rpc_address):
     return hero
 
 
-def human_readable_hero(raw_hero, hero_male_first_names, hero_female_first_names, hero_last_names):
+def human_readable_hero(raw_hero, hero_male_first_names=None, hero_female_first_names=None, hero_last_names=None):
     readable_hero = copy.deepcopy(raw_hero)
 
     readable_hero['info']['rarity'] = utils.parse_rarity(readable_hero['info']['rarity'])
@@ -245,9 +245,14 @@ def human_readable_hero(raw_hero, hero_male_first_names, hero_female_first_names
     readable_hero['info']['statGenes'] = utils.parse_stat_genes(readable_hero['info']['statGenes'])
 
     # names
-    readable_hero['info']['firstName'] = hero_male_first_names[readable_hero['info']['firstName']] if \
-        readable_hero['info']['visualGenes']['gender'] == 'male' else hero_female_first_names[
-        readable_hero['info']['firstName']]
-    readable_hero['info']['lastName'] = hero_last_names[readable_hero['info']['lastName']]
+    if readable_hero['info']['visualGenes']['gender'] == 'male':
+        if hero_male_first_names is not None:
+            readable_hero['info']['firstName'] = hero_male_first_names[readable_hero['info']['firstName']]
+    else:
+        if hero_female_first_names is not None:
+            readable_hero['info']['firstName'] = hero_female_first_names[readable_hero['info']['firstName']]
+
+    if hero_last_names is not None:
+        readable_hero['info']['lastName'] = hero_last_names[readable_hero['info']['lastName']]
 
     return readable_hero

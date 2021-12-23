@@ -2,7 +2,7 @@ import requests
 
 AUCTIONS_OPEN_GRAPHQL_QUERY = """
                         query {
-                          assistingAuctions(first: %d, orderBy: startedAt, orderDirection: desc, where: {open: true}) {
+                          assistingAuctions(skip: %d, first: %d, orderBy: startedAt, orderDirection: desc, where: {open: true}) {
                             id
                             seller {
                                 name
@@ -42,9 +42,9 @@ AUCTIONS_OPEN_GRAPHQL_QUERY = """
                         """
 
 
-def get_recent_open_auctions(graphql_address, count=1000):
+def get_open_auctions(graphql_address, skip=0, count=1000):
 
-    r = requests.post(graphql_address, json={'query': AUCTIONS_OPEN_GRAPHQL_QUERY % count})
+    r = requests.post(graphql_address, json={'query': AUCTIONS_OPEN_GRAPHQL_QUERY % (skip, count)})
     if r.status_code != 200:
         raise Exception("HTTP error " + str(r.status_code) + ": " + r.text)
     data = r.json()

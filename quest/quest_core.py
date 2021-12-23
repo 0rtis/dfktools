@@ -58,7 +58,7 @@ def start_quest(quest_address, hero_ids, attempts, private_key, nonce, gas_price
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    logger.info("Starting quest with hero ids " + str(hero_ids))
+    #logger.info("Starting quest with hero ids " + str(hero_ids))
     tx = contract.functions.startQuest(hero_ids, quest_address, attempts).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
@@ -83,7 +83,7 @@ def complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_secon
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    logger.info("Completing quest with hero id " + str(hero_id))
+    #logger.info("Completing quest with hero id " + str(hero_id))
     tx = contract.functions.completeQuest(hero_id).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
@@ -126,7 +126,7 @@ def cancel_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    logger.info("Cancelling quest with hero id " + str(hero_id))
+    #logger.info("Cancelling quest with hero id " + str(hero_id))
     tx = contract.functions.cancelQuest(hero_id).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
