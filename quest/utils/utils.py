@@ -14,16 +14,7 @@ def parse_type(id):
     return value
 
 
-def parse_quests(raw_quests):
-    if raw_quests is None:
-        return None
-    quests = []
-    for rq in raw_quests:
-        quests.append(parse_quest(rq))
-    return quests
-
-
-def parse_quest(raw_quest):
+def human_readable_quest(raw_quest):
     if raw_quest is None:
         return None
 

@@ -1,6 +1,6 @@
 import copy
 from web3 import Web3
-from .utils import utils
+from .utils import utils as hero_utils
 
 CONTRACT_ADDRESS = '0x5f753dcdf9b1ad9aabc1346614d1f4746fd6ce5c'
 
@@ -59,6 +59,10 @@ ABI = """
              """
 
 
+def block_explorer_link(txid):
+    return 'https://explorer.harmony.one/tx/' + str(txid)
+
+
 def transfer(hero_id, owner_private_key, owner_nonce, receiver_address, gas_price_gwei, rpc_address, logger):
     """Transfer a hero from the owner to the receiver. USE AT YOUR OWN RISK !"""
     w3 = Web3(Web3.HTTPProvider(rpc_address))
@@ -81,8 +85,7 @@ def transfer(hero_id, owner_private_key, owner_nonce, receiver_address, gas_pric
     logger.debug("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
-    logger.info(
-        "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
+    logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=24 * 3600,
                                                      poll_latency=3)
     logger.info("Transaction mined !")
@@ -234,15 +237,15 @@ def get_hero(hero_id, rpc_address):
 def human_readable_hero(raw_hero, hero_male_first_names=None, hero_female_first_names=None, hero_last_names=None):
     readable_hero = copy.deepcopy(raw_hero)
 
-    readable_hero['info']['rarity'] = utils.parse_rarity(readable_hero['info']['rarity'])
-    readable_hero['info']['class'] = utils.parse_class(readable_hero['info']['class'])
-    readable_hero['info']['subClass'] = utils.parse_class(readable_hero['info']['subClass'])
+    readable_hero['info']['rarity'] = hero_utils.parse_rarity(readable_hero['info']['rarity'])
+    readable_hero['info']['class'] = hero_utils.parse_class(readable_hero['info']['class'])
+    readable_hero['info']['subClass'] = hero_utils.parse_class(readable_hero['info']['subClass'])
 
     # visualGenes
-    readable_hero['info']['visualGenes'] = utils.parse_visual_genes(readable_hero['info']['visualGenes'])
+    readable_hero['info']['visualGenes'] = hero_utils.parse_visual_genes(readable_hero['info']['visualGenes'])
 
     # statsGenes
-    readable_hero['info']['statGenes'] = utils.parse_stat_genes(readable_hero['info']['statGenes'])
+    readable_hero['info']['statGenes'] = hero_utils.parse_stat_genes(readable_hero['info']['statGenes'])
 
     # names
     if readable_hero['info']['visualGenes']['gender'] == 'male':

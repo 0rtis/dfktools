@@ -1,6 +1,5 @@
 import requests
 from web3 import Web3
-import urllib.parse
 
 SALE_AUCTIONS_CONTRACT_ADDRESS = '0x13a65B9F8039E2c032Bc022171Dc05B30c3f2892'
 
@@ -163,6 +162,10 @@ AUCTIONS_TOKEN_IDS_GRAPHQL_QUERY = """
                         """
 
 
+def block_explorer_link(txid):
+    return 'https://explorer.harmony.one/tx/' + str(txid)
+
+
 def bid_hero(token_id, bid_amount_wei, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
@@ -180,8 +183,7 @@ def bid_hero(token_id, bid_amount_wei, private_key, nonce, gas_price_gwei, tx_ti
     logger.info("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.info("Transaction successfully sent !")
-    logger.info(
-        "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
+    logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=3)
     logger.info("Transaction mined !")

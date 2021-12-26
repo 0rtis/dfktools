@@ -9,6 +9,9 @@ class Quest:
     def start_quest(self, quest_address, hero_ids, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds):
         return quest_core.start_quest(quest_address, hero_ids, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds, self.rpc_address, self.logger)
 
+    def start_quest_with_data(self, quest_address, data, hero_ids, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds):
+        return quest_core.start_quest_with_data(quest_address, data, hero_ids, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds, self.rpc_address, self.logger)
+
     def complete_quest(self, hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds):
         return quest_core.complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, self.rpc_address, self.logger)
 
@@ -21,6 +24,9 @@ class Quest:
     def hero_to_quest_id(self, hero_id):
         return quest_core.hero_to_quest_id(hero_id, self.rpc_address)
 
+    def is_hero_questing(self, hero_id):
+        return self.hero_to_quest_id(hero_id) > 0
+
     def get_active_quest(self, address):
         return quest_core.get_active_quest(address, self.rpc_address)
 
@@ -29,6 +35,9 @@ class Quest:
 
     def get_quest(self, quest_id):
         return quest_core.get_quest(quest_id, self.rpc_address)
+
+    def get_quest_data(self, quest_id):
+        return quest_core.get_quest_data(quest_id, self.rpc_address)
 
     def quest_address_to_type(self, quest_address):
         return quest_core.quest_address_to_type(quest_address, self.rpc_address)

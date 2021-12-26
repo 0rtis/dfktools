@@ -57,6 +57,10 @@ ABI = """
         """
 
 
+def block_explorer_link(txid):
+    return 'https://explorer.harmony.one/tx/' + str(txid)
+
+
 def get_user_crystal_ids(user_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
@@ -84,7 +88,7 @@ def summon_crystal(summoner_id, assistant_id, summoner_tears, assistant_tears, p
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=3)
     logger.info("Transaction mined !")
@@ -108,7 +112,7 @@ def open_crystal(crystal_id, private_key, nonce, gas_price_gwei, tx_timeout_seco
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=3)
     logger.info("Transaction mined !")
@@ -164,7 +168,7 @@ def put_hero_for_rent(hero_id, price_gwei, private_key, nonce, gas_price_gwei, t
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=3)
     logger.info("Transaction mined !")
@@ -189,7 +193,7 @@ def cancel_rent(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds,
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=3)
     logger.info("Transaction mined !")

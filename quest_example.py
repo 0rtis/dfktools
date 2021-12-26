@@ -28,7 +28,7 @@ if __name__ == "__main__":
     quest_contract = fishing.CONTRACT_ADDRESS  # foraging.CONTRACT_ADDRESS
     my_heroes_id = [1, 2, 3, 4]
     quest.start_quest(quest_contract, my_heroes_id, 3, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
-    quest_info = quest_utils.parse_quest(quest.get_hero_quest(my_heroes_id[0]))
+    quest_info = quest_utils.human_readable_quest(quest.get_hero_quest(my_heroes_id[0]))
 
     logger.info(
         "Waiting " + str(quest_info['completeAtTime'] - time.time()) + " secs to complete quest " + str(quest_info))

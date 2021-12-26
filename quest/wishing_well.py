@@ -1,5 +1,3 @@
-import time
-
 from web3 import Web3
 
 
@@ -51,6 +49,10 @@ ABI = """
         """
 
 
+def block_explorer_link(txid):
+    return 'https://explorer.harmony.one/tx/' + str(txid)
+
+
 def start_quest(hero_id, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
@@ -69,7 +71,7 @@ def start_quest(hero_id, attempts, private_key, nonce, gas_price_gwei, tx_timeou
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
 
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=3)
@@ -95,7 +97,7 @@ def complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_secon
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction https://explorer.harmony.one/tx/" + str(signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=3)
     logger.info("Transaction mined !")
