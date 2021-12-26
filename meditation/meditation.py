@@ -151,13 +151,13 @@ def get_hero_meditation(hero_id, rpc_address):
     return result
 
 
-def get_meditation(mediation_id, rpc_address):
+def get_meditation(meditation_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    result = contract.functions.getMeditation(mediation_id).call()
+    result = contract.functions.getMeditation(meditation_id).call()
     if result[0] == 0:
         return None
     return result
