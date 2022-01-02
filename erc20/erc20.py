@@ -22,19 +22,41 @@ DFKSWFTHSL = "0xCdfFe898E687E941b124dfB7d24983266492eF1d"
 
 
 ABI = """
-        [{"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]
+        [
+            {"constant":true,"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},
+            {"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"pure","type":"function"},
+            {"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"pure","type":"function"}
+        ]
         """
 
 
 def eth2gwei(eth):
-    return eth * 1000000000000000000
+    return int(eth * 1000000000000000000)
 
 
 def gwei2eth(gwei):
     return gwei / 1000000000000000000
 
 
-def balance(address, token_address, rpc_address):
+def symbol(token_address, rpc_address):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+
+    contract_address = Web3.toChecksumAddress(token_address)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    return contract.functions.symbol().call()
+
+
+def decimals(token_address, rpc_address):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+
+    contract_address = Web3.toChecksumAddress(token_address)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    return contract.functions.decimals().call()
+
+
+def balance_of(address, token_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(token_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
