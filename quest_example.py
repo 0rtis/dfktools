@@ -4,8 +4,13 @@ import time
 from web3 import Web3
 from quest import foraging
 from quest import fishing
+from quest import gardening
 from quest.quest import Quest
 from quest.utils import utils as quest_utils
+import gardens.master_gardener
+
+
+ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
@@ -38,3 +43,19 @@ if __name__ == "__main__":
     tx_receipt = quest.complete_quest(my_heroes_id[0], private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
     quest_result = quest.parse_complete_quest_receipt(tx_receipt)
     logger.info("Rewards: " + str(quest_result))
+
+
+    # gardening quest
+    pool_id = 0  # See gardens.master_gardener
+    quest_data = (pool_id, 0, 0, 0, 0, 0, '', '', ZERO_ADDRESS, ZERO_ADDRESS, ZERO_ADDRESS, ZERO_ADDRESS)
+    my_gardener_heroes_id = [5]
+    quest.start_quest_with_data(gardening.CONTRACT_ADDRESS, quest_data, my_gardener_heroes_id, 1, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
+    quest_info = quest_utils.human_readable_quest(quest.get_hero_quest(my_heroes_id[0]))
+
+    logger.info(
+        "Waiting " + str(quest_info['completeAtTime'] - time.time()) + " secs to complete gardening quest " + str(quest_info))
+    while time.time() < quest_info['completeAtTime']:
+        time.sleep(2)
+
+    quest.complete_quest(my_gardener_heroes_id[0], private_key, w3.eth.getTransactionCount(account_address),
+                                      gas_price_gwei, tx_timeout)

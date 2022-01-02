@@ -30,12 +30,12 @@ ABI = """
         """
 
 
-def eth2gwei(eth):
-    return int(eth * 1000000000000000000)
+def wei2eth(w3, wei):
+    return w3.fromWei(wei, 'ether')
 
 
-def gwei2eth(gwei):
-    return gwei / 1000000000000000000
+def eth2wei(w3, eth):
+    return w3.toWei(eth, 'ether')
 
 
 def symbol(token_address, rpc_address):

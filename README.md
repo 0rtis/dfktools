@@ -226,27 +226,48 @@ if __name__ == "__main__":
     w3 = Web3(Web3.HTTPProvider(rpc_server))
     account_address = w3.eth.account.privateKeyToAccount(private_key).address
 
-    quest_contract = fishing.CONTRACT_ADDRESS  # foraging.CONTRACT_ADDRESS
-    quest = Quest(quest_contract, rpc_server, logger)
+    quest = Quest(rpc_server, logger)
 
+    quest_contract = fishing.CONTRACT_ADDRESS  # foraging.CONTRACT_ADDRESS
     my_heroes_id = [1, 2, 3, 4]
-    quest.start_quest(my_heroes_id, 3, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
-    quest_info = quest_utils.parse_quest(quest.get_hero_quest(my_heroes_id[0]))
+    quest.start_quest(quest_contract, my_heroes_id, 3, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
+    quest_info = quest_utils.human_readable_quest(quest.get_hero_quest(my_heroes_id[0]))
 
     logger.info(
         "Waiting " + str(quest_info['completeAtTime'] - time.time()) + " secs to complete quest " + str(quest_info))
     while time.time() < quest_info['completeAtTime']:
         time.sleep(2)
-    
+
     tx_receipt = quest.complete_quest(my_heroes_id[0], private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
     quest_result = quest.parse_complete_quest_receipt(tx_receipt)
     logger.info("Rewards: " + str(quest_result))
+
+
+    # gardening quest
+    pool_id = 0  # See gardens.master_gardener
+    quest_data = (pool_id, 0, 0, 0, 0, 0, '', '', ZERO_ADDRESS, ZERO_ADDRESS, ZERO_ADDRESS, ZERO_ADDRESS)
+    my_gardener_heroes_id = [5]
+    quest.start_quest_with_data(gardening.CONTRACT_ADDRESS, quest_data, my_gardener_heroes_id, 1, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
+    quest_info = quest_utils.human_readable_quest(quest.get_hero_quest(my_heroes_id[0]))
+
+    logger.info(
+        "Waiting " + str(quest_info['completeAtTime'] - time.time()) + " secs to complete gardening quest " + str(quest_info))
+    while time.time() < quest_info['completeAtTime']:
+        time.sleep(2)
+
+    quest.complete_quest(my_gardener_heroes_id[0], private_key, w3.eth.getTransactionCount(account_address),
+                                      gas_price_gwei, tx_timeout)
 ```
 
-#### Questing flow
+#### Foraging & Fishing quest
 Each quest requires at least 7 stamina to complete. Check the current stamina of any given hero with `get_current_stamina`.
 Start the quest with `start_quest`. The second parameter is the number of attempt. To optimize the cost of gas, it is recommended
 to use a hero at full stamina and do 3 attempts every call.
+
+
+#### Gardening & Mining quest
+Gardening and mining quest can be started with just one stamina. 
+Mining quest can be done with up to 6 heroes while only 1 hero at a time can be sent to a particular garden (liquidity pool).
 
 
 #### Legacy wishing well quest
@@ -282,7 +303,7 @@ if __name__ == "__main__":
 ```
 
 
-### JEWEL & Items
+### ERC20 tokens
 In game items are available in module `items`
 
 #### Quickstart
@@ -290,16 +311,18 @@ In game items are available in module `items`
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
 
-    logger = logging.getLogger("DFK-items")
+    logger = logging.getLogger("DFK-erc20")
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
     rpc_server = 'https://api.harmony.one'
     logger.info("Using RPC server " + rpc_server)
 
-    balance = items.balance('0x2E7669F61eA77F02445A015FBdcFe2DE47083E02', items.JEWEL, rpc_server)
-    balance = items.gwei2eth(balance)
-    logger.info(str(balance) + " JEWEL")
+    symbol = tokens.symbol(tokens.JEWEL, rpc_server)
+    decimal = tokens.decimals(tokens.JEWEL, rpc_server)
+    balance = tokens.balance_of('0x2E7669F61eA77F02445A015FBdcFe2DE47083E02', tokens.JEWEL, rpc_server)
+    balance = tokens.gwei2eth(balance)
+    logger.info(str(balance) + " " + symbol)
 ```
 #### Balance
 Use `balance` to retrieve the balance of an item for the specified address
@@ -345,6 +368,41 @@ if __name__ == "__main__":
 #### Hero level up
 Use `start_meditation` and `complete_meditation` to level up a hero. Make sure to have enough rune for the hero's level with `get_required_runes`
 
+
+
+### Gardens staking
+Gardens staking contract  is located in module `gardens`
+
+#### Quickstart
+```
+if __name__ == "__main__":
+    log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
+
+    logger = logging.getLogger("DFK-gardens")
+    logger.setLevel(logging.DEBUG)
+    logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
+
+    rpc_server = 'https://api.harmony.one'
+    logger.info("Using RPC server " + rpc_server)
+
+    w3 = Web3(Web3.HTTPProvider(rpc_server))
+
+    user_address = '0x2E7669F61eA77F02445A015FBdcFe2DE47083E02'
+
+    for pool_id in range(0, master_gardener.pool_length(rpc_server)):
+        pool_info = utils.human_readable_pool_info(master_gardener.pool_info(pool_id, rpc_server))
+        logger.info(str(pool_info))
+        garden = Garden(pool_info['address'], rpc_server, logger)
+        logger.info("Id:\t" + str(garden.id()))
+        logger.info("Symbol:\t" + garden.symbol())
+        logger.info("Pair:\t" + tokens.symbol(garden.token_0(), rpc_server) + "-" + tokens.symbol(garden.token_1(), rpc_server))
+        logger.info("Total Supply:\t" + str(w3.fromWei(garden.total_supply(), 'ether')))
+        user = utils.human_readable_user_info(garden.user_info(user_address))
+        logger.info("LP balance:\t" + str(w3.fromWei(Garden.user_info_lp_balance(user), 'ether')))
+        logger.info("Pool share :\t" + str(round(100 * Garden.user_info_lp_balance(user)/garden.total_supply(), 2)) + "%")
+```
+#### Garden
+The wrapper class `gardens.poolGarden` can be used to easily request data from a specific garden
 
 
 
