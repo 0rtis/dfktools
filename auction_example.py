@@ -21,7 +21,7 @@ if __name__ == "__main__":
     for auction in auctions:
         logger.info(str(auction))
 
-    # sale.bid_hero(hero_id, ether2wei(100), prv_key, nonce, gas_price_gwei, 30, rpc_server, logger)
+    # sales.bid_hero(hero_id, ether2wei(100), prv_key, nonce, gas_price_gwei, 30, rpc_server, logger)
 
     logger.info("\n")
     logger.info("Rental auctions:")
