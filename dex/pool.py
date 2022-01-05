@@ -1,7 +1,5 @@
 from web3 import Web3
-from .master_gardener import pool_id1 as master_gardener_pool_id1
-from .master_gardener import user_info as master_gardener_user_info
-from .utils import utils
+from .utils.utils import swap_expected_amount1
 
 ABI = '''
     [
@@ -96,6 +94,22 @@ def total_supply(pool_address, rpc_address):
     return contract.functions.totalSupply().call()
 
 
+def get_reserves(pool_address, rpc_address):
+    '''
+    Returns the reserves of token0 and token1 used to price trades and distribute liquidity.
+    Also returns the block.timestamp (mod 2**32) of the last block during which an interaction occurred for the pair.
+    :param pool_address:
+    :param rpc_address:
+    :return: reserve0, reserve1, blockTimestampLast
+    '''
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+
+    contract_address = Web3.toChecksumAddress(pool_address)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    return contract.functions.getReserves().call()
+
+
 def balance_of(pool_address, owner_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
@@ -123,61 +137,50 @@ def price_1_cumulative_last(pool_address, rpc_address):
     return contract.functions.price1CumulativeLast().call()
 
 
-class Garden:
-    def __init__(self, garden_address, rpc_address, logger):
-        self.garden_address = garden_address
+class Pool:
+    def __init__(self, pool_address, rpc_address, logger):
+        self.pool_address = pool_address
         self.rpc_address = rpc_address
         self.logger = logger
 
-        self.id_value = None
         self.symbol_value = None
         self.token_0_value = None
         self.token_1_value = None
 
-    def id(self):
-        if self.id_value is None:
-            self.id_value = master_gardener_pool_id1(self.garden_address, self.rpc_address) - 1
-        return self.id_value
-
     def symbol(self):
         if self.symbol_value is None:
-            self.symbol_value = symbol(self.garden_address, self.rpc_address)
+            self.symbol_value = symbol(self.pool_address, self.rpc_address)
         return self.symbol_value
 
     def token_0(self):
         if self.token_0_value is None:
-            self.token_0_value = token_0(self.garden_address, self.rpc_address)
+            self.token_0_value = token_0(self.pool_address, self.rpc_address)
         return self.token_0_value
 
     def token_1(self):
         if self.token_1_value is None:
-            self.token_1_value = token_1(self.garden_address, self.rpc_address)
+            self.token_1_value = token_1(self.pool_address, self.rpc_address)
         return self.token_1_value
 
     def decimals(self):
-        return decimals(self.garden_address, self.rpc_address)
+        return decimals(self.pool_address, self.rpc_address)
 
     def total_supply(self):
-        return total_supply(self.garden_address, self.rpc_address)
-
-    def user_info(self, address):
-        return master_gardener_user_info(self.id(), address, self.rpc_address)
+        return total_supply(self.pool_address, self.rpc_address)
 
     def balance_of(self, address):
-        return balance_of(self.garden_address, address, self.rpc_address)
+        return balance_of(self.pool_address, address, self.rpc_address)
 
     def price_0_cumulative_last(self):
-        return price_0_cumulative_last(self.garden_address, self.rpc_address)
+        return price_0_cumulative_last(self.pool_address, self.rpc_address)
 
     def price_1_cumulative_last(self):
-        return price_1_cumulative_last(self.garden_address, self.rpc_address)
+        return price_1_cumulative_last(self.pool_address, self.rpc_address)
 
-    @staticmethod
-    def user_info_lp_balance(user_info):
-        if user_info is None:
-            return None
+    def swap_expected_amount1(self, amount0):
+        reserves = get_reserves(self.pool_address, self.rpc_address)
+        return swap_expected_amount1(reserves[0], reserves[1], amount0)
 
-        if type(user_info) == tuple or type(user_info) == list:
-            user_info = utils.human_readable_user_info(user_info)
-
-        return user_info['amount']
+    def swap_expected_amount0(self, amount1):
+        reserves = get_reserves(self.pool_address, self.rpc_address)
+        return swap_expected_amount1(reserves[1], reserves[0], amount1)

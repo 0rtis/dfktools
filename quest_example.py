@@ -7,7 +7,7 @@ from quest import fishing
 from quest import gardening
 from quest.quest import Quest
 from quest.utils import utils as quest_utils
-import gardens.master_gardener
+import dex.master_gardener
 
 
 ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'

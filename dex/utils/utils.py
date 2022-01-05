@@ -1,4 +1,11 @@
 
+def swap_expected_amount1(reserve0, reserve1, amount0_wei=1):
+    p = reserve0 / reserve1
+    amount1_wei = amount0_wei / p
+    p2 = (reserve0 + amount0_wei) / (reserve1 - amount1_wei)
+    return (amount1_wei + amount0_wei / p2) / 2
+
+
 def human_readable_pool_info(pool_info):
     if pool_info is None:
         return None

@@ -16,9 +16,11 @@ if __name__ == "__main__":
 
     w3 = Web3(Web3.HTTPProvider(rpc_server))
 
-    symbol = tokens.symbol(tokens.JEWEL, rpc_server)
-    decimal = tokens.decimals(tokens.JEWEL, rpc_server)
-    balance = tokens.balance_of('0x2E7669F61eA77F02445A015FBdcFe2DE47083E02', tokens.JEWEL, rpc_server)
+    token_address = tokens.JEWEL
+    name = tokens.name(token_address, rpc_server)
+    symbol = tokens.symbol(token_address, rpc_server)
+    decimal = tokens.decimals(token_address, rpc_server)
+    balance = tokens.balance_of('0x2E7669F61eA77F02445A015FBdcFe2DE47083E02', token_address, rpc_server)
     balance = tokens.wei2eth(w3, balance)
-    logger.info(str(balance) + " " + symbol)
+    logger.info(name + " -> " + str(balance) + " " + symbol)
 
