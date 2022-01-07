@@ -87,6 +87,8 @@ def start_quest(quest_address, hero_ids, attempts, private_key, nonce, gas_price
                                                      poll_latency=3)
     logger.info("Transaction mined !")
 
+    return tx_receipt
+
 
 def start_quest_with_data(quest_address, data, hero_ids, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
@@ -116,6 +118,8 @@ def start_quest_with_data(quest_address, data, hero_ids, attempts, private_key, 
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=3)
     logger.info("Transaction mined !")
+
+    return tx_receipt
 
 
 def complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
