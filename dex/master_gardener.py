@@ -1,4 +1,6 @@
 from web3 import Web3
+from .uniswap_v2_pair import UniswapV2Pair
+from .utils.utils import human_readable_user_info
 
 CONTRACT_ADDRESS = '0xDB30643c71aC9e2122cA0341ED77d09D5f99F924'
 
@@ -126,3 +128,58 @@ def user_info(pool_id, user_address, rpc_address):
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.userInfo(pool_id, user_address).call()
+
+
+class Garden:
+    def __init__(self, uniswap_v2_pair, rpc_address, logger):
+        self.uniswap_v2_pair = uniswap_v2_pair
+        if type(self.uniswap_v2_pair) != UniswapV2Pair:
+            raise Exception("Invalid type for uniswap_v2_pair")
+
+        if not Garden.is_garden(uniswap_v2_pair.address, rpc_address):
+            raise Exception("Pair " + uniswap_v2_pair.address + " is not a garden")
+
+        self.rpc_address = rpc_address
+        self.logger = logger
+
+        self.id_value = None
+
+    def id(self):
+        if self.id_value is None:
+            self.id_value = pool_id1(self.uniswap_v2_pair.address, self.rpc_address) - 1
+        return self.id_value
+
+    def symbol(self):
+        return self.uniswap_v2_pair.symbol()
+
+    def token_0(self):
+        return self.uniswap_v2_pair.token_0()
+
+    def token_1(self):
+        return self.uniswap_v2_pair.token_1()
+
+    def decimals(self):
+        return self.uniswap_v2_pair.decimals()
+
+    def total_supply(self):
+        return self.uniswap_v2_pair.total_supply()
+
+    def user_info(self, address):
+        return user_info(self.id(), address, self.rpc_address)
+
+    def balance(self, address):
+        return Garden.user_info_lp_balance(self.user_info(address))
+
+    @staticmethod
+    def is_garden(pair_address, rpc_address):
+        return pool_id1(pair_address, rpc_address) > 0
+
+    @staticmethod
+    def user_info_lp_balance(user_info):
+        if user_info is None:
+            return None
+
+        if type(user_info) == tuple or type(user_info) == list:
+            user_info = human_readable_user_info(user_info)
+
+        return user_info['amount']
