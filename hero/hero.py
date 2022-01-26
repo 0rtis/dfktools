@@ -110,6 +110,15 @@ def get_users_heroes(user_address, rpc_address):
     return contract.functions.getUserHeroes(Web3.toChecksumAddress(user_address)).call()
 
 
+def is_approved_for_all(owner, operator, rpc_address):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+
+    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    return contract.functions.isApprovedForAll(Web3.toChecksumAddress(owner), Web3.toChecksumAddress(operator)).call()
+
+
 def get_hero(hero_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
