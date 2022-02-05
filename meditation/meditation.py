@@ -184,12 +184,12 @@ def profile_active_meditations(address, id, rpc_address):
 def stat2id(label):
     stats = {
         'strength': 0,
-        'agility': 2,
-        'intelligence': 4,
-        'wisdom': 6,
-        'luck': 8,
-        'vitality': 10,
-        'endurance': 12,
-        'dexterity': 14
+        'agility': 1,
+        'intelligence': 2,
+        'wisdom': 3,
+        'luck': 4,
+        'vitality': 5,
+        'endurance': 6,
+        'dexterity': 7
     }
     return stats.get(label, None)

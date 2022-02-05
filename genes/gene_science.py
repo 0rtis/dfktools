@@ -20,6 +20,3 @@ def mix_genes(genes1, genes2, block_number, rpc_address):
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     return contract.functions.mixGenes(genes1, genes2, block_number).call()
-
-
-
