@@ -64,7 +64,6 @@ def block_explorer_link(txid):
 
 
 def transfer(hero_id, owner_private_key, owner_nonce, receiver_address, gas_price_gwei, rpc_address, logger):
-    """Transfer a hero from the owner to the receiver. USE AT YOUR OWN RISK !"""
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(owner_private_key)
     w3.eth.default_account = account.address

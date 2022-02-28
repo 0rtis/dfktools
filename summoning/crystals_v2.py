@@ -1,0 +1,119 @@
+from web3 import Web3
+
+CONTRACT_ADDRESS = '0xf4d3ae202c9ae516f7eb1db5aff19bf699a5e355'
+
+ABI = """
+        [
+            {"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":false,"internalType":"uint256","name":"crystalId","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"heroId","type":"uint256"}],"name":"CrystalOpen","type":"event"},
+            {"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"crystalId","type":"uint256"},{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":false,"internalType":"uint256","name":"summonerId","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"assistantId","type":"uint256"},{"indexed":false,"internalType":"uint16","name":"generation","type":"uint16"},{"indexed":false,"internalType":"uint256","name":"createdBlock","type":"uint256"},{"indexed":false,"internalType":"uint8","name":"summonerTears","type":"uint8"},{"indexed":false,"internalType":"uint8","name":"assistantTears","type":"uint8"},{"indexed":false,"internalType":"address","name":"bonusItem","type":"address"}],"name":"CrystalSummoned","type":"event"},
+            {"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},
+            {"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"previousAdminRole","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"newAdminRole","type":"bytes32"}],"name":"RoleAdminChanged","type":"event"},
+            {"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleGranted","type":"event"},
+            {"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleRevoked","type":"event"},
+            {"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},
+            {"inputs"::[],"name":"DEFAULT_ADMIN_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[],"name":"MODERATOR_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[],"name":"baseCooldown","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[],"name":"baseSummonFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[{"components":[{"internalType":"uint256","name":"id","type":"uint256"},{"components":[{"internalType":"uint256","name":"summonedTime","type":"uint256"},{"internalType":"uint256","name":"nextSummonTime","type":"uint256"},{"internalType":"uint256","name":"summonerId","type":"uint256"},{"internalType":"uint256","name":"assistantId","type":"uint256"},{"internalType":"uint32","name":"summons","type":"uint32"},{"internalType":"uint32","name":"maxSummons","type":"uint32"}],"internalType":"struct IHeroTypes.SummoningInfo","name":"summoningInfo","type":"tuple"},{"components":[{"internalType":"uint256","name":"statGenes","type":"uint256"},{"internalType":"uint256","name":"visualGenes","type":"uint256"},{"internalType":"enum IHeroTypes.Rarity","name":"rarity","type":"uint8"},{"internalType":"bool","name":"shiny","type":"bool"},{"internalType":"uint16","name":"generation","type":"uint16"},{"internalType":"uint32","name":"firstName","type":"uint32"},{"internalType":"uint32","name":"lastName","type":"uint32"},{"internalType":"uint8","name":"shinyStyle","type":"uint8"},{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"uint8","name":"subClass","type":"uint8"}],"internalType":"struct IHeroTypes.HeroInfo","name":"info","type":"tuple"},{"components":[{"internalType":"uint256","name":"staminaFullAt","type":"uint256"},{"internalType":"uint256","name":"hpFullAt","type":"uint256"},{"internalType":"uint256","name":"mpFullAt","type":"uint256"},{"internalType":"uint16","name":"level","type":"uint16"},{"internalType":"uint64","name":"xp","type":"uint64"},{"internalType":"address","name":"currentQuest","type":"address"},{"internalType":"uint8","name":"sp","type":"uint8"},{"internalType":"enum IHeroTypes.HeroStatus","name":"status","type":"uint8"}],"internalType":"struct IHeroTypes.HeroState","name":"state","type":"tuple"},{"components":[{"internalType":"uint16","name":"strength","type":"uint16"},{"internalType":"uint16","name":"intelligence","type":"uint16"},{"internalType":"uint16","name":"wisdom","type":"uint16"},{"internalType":"uint16","name":"luck","type":"uint16"},{"internalType":"uint16","name":"agility","type":"uint16"},{"internalType":"uint16","name":"vitality","type":"uint16"},{"internalType":"uint16","name":"endurance","type":"uint16"},{"internalType":"uint16","name":"dexterity","type":"uint16"},{"internalType":"uint16","name":"hp","type":"uint16"},{"internalType":"uint16","name":"mp","type":"uint16"},{"internalType":"uint16","name":"stamina","type":"uint16"}],"internalType":"struct IHeroTypes.HeroStats","name":"stats","type":"tuple"},{"components":[{"internalType":"uint16","name":"strength","type":"uint16"},{"internalType":"uint16","name":"intelligence","type":"uint16"},{"internalType":"uint16","name":"wisdom","type":"uint16"},{"internalType":"uint16","name":"luck","type":"uint16"},{"internalType":"uint16","name":"agility","type":"uint16"},{"internalType":"uint16","name":"vitality","type":"uint16"},{"internalType":"uint16","name":"endurance","type":"uint16"},{"internalType":"uint16","name":"dexterity","type":"uint16"},{"internalType":"uint16","name":"hpSm","type":"uint16"},{"internalType":"uint16","name":"hpRg","type":"uint16"},{"internalType":"uint16","name":"hpLg","type":"uint16"},{"internalType":"uint16","name":"mpSm","type":"uint16"},{"internalType":"uint16","name":"mpRg","type":"uint16"},{"internalType":"uint16","name":"mpLg","type":"uint16"}],"internalType":"struct IHeroTypes.HeroStatGrowth","name":"primaryStatGrowth","type":"tuple"},{"components":[{"internalType":"uint16","name":"strength","type":"uint16"},{"internalType":"uint16","name":"intelligence","type":"uint16"},{"internalType":"uint16","name":"wisdom","type":"uint16"},{"internalType":"uint16","name":"luck","type":"uint16"},{"internalType":"uint16","name":"agility","type":"uint16"},{"internalType":"uint16","name":"vitality","type":"uint16"},{"internalType":"uint16","name":"endurance","type":"uint16"},{"internalType":"uint16","name":"dexterity","type":"uint16"},{"internalType":"uint16","name":"hpSm","type":"uint16"},{"internalType":"uint16","name":"hpRg","type":"uint16"},{"internalType":"uint16","name":"hpLg","type":"uint16"},{"internalType":"uint16","name":"mpSm","type":"uint16"},{"internalType":"uint16","name":"mpRg","type":"uint16"},{"internalType":"uint16","name":"mpLg","type":"uint16"}],"internalType":"struct IHeroTypes.HeroStatGrowth","name":"secondaryStatGrowth","type":"tuple"},{"components":[{"internalType":"uint16","name":"mining","type":"uint16"},{"internalType":"uint16","name":"gardening","type":"uint16"},{"internalType":"uint16","name":"foraging","type":"uint16"},{"internalType":"uint16","name":"fishing","type":"uint16"}],"internalType":"struct IHeroTypes.HeroProfessions","name":"professions","type":"tuple"}],"internalType":"struct IHeroTypes.Hero","name":"_hero","type":"tuple"}],"name":"calculateSummoningCost","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[],"name":"cooldownPerGen","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[{"internalType":"address","name":"_owner","type":"address"},{"internalType":"uint256","name":"_summonerId","type":"uint256"},{"internalType":"uint256","name":"_assistantId","type":"uint256"},{"internalType":"uint16","name":"_generation","type":"uint16"},{"internalType":"uint8","name":"_summonerBonusTears","type":"uint8"},{"internalType":"uint8","name":"_assistantBonusTears","type":"uint8"},{"internalType":"address","name":"_bonusItem","type":"address"},{"internalType":"uint32","name":"_maxSummons","type":"uint32"}],"name":"createCrystal","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[],"name":"crystalIdOffset","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[{"internalType":"uint256","name":"","type":"uint256"}],"name":"crystals","outputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"summonerId","type":"uint256"},{"internalType":"uint256","name":"assistantId","type":"uint256"},{"internalType":"uint16","name":"generation","type":"uint16"},{"internalType":"uint256","name":"createdBlock","type":"uint256"},{"internalType":"uint256","name":"heroId","type":"uint256"},{"internalType":"uint8","name":"summonerTears","type":"uint8"},{"internalType":"uint8","name":"assistantTears","type":"uint8"},{"internalType":"address","name":"bonusItem","type":"address"},{"internalType":"uint32","name":"maxSummons","type":"uint32"},{"internalType":"uint32","name":"firstName","type":"uint32"},{"internalType":"uint32","name":"lastName","type":"uint32"},{"internalType":"uint8","name":"shinyStyle","type":"uint8"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[{"internalType":"uint256","name":"_rarityRoll","type":"uint256"},{"internalType":"uint256","name":"_rarityMod","type":"uint256"}],"name":"determineRarity","outputs":[{"internalType":"enum IHeroTypes.Rarity","name":"","type":"uint8"}],"stateMutability":"pure","type":"function"},
+            {"inputs"::[],"name":"enabled","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[{"internalType":"uint256","name":"_crystalId","type":"uint256"}],"name":"getCrystal","outputs":[{"components":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"summonerId","type":"uint256"},{"internalType":"uint256","name":"assistantId","type":"uint256"},{"internalType":"uint16","name":"generation","type":"uint16"},{"internalType":"uint256","name":"createdBlock","type":"uint256"},{"internalType":"uint256","name":"heroId","type":"uint256"},{"internalType":"uint8","name":"summonerTears","type":"uint8"},{"internalType":"uint8","name":"assistantTears","type":"uint8"},{"internalType":"address","name":"bonusItem","type":"address"},{"internalType":"uint32","name":"maxSummons","type":"uint32"},{"internalType":"uint32","name":"firstName","type":"uint32"},{"internalType":"uint32","name":"lastName","type":"uint32"},{"internalType":"uint8","name":"shinyStyle","type":"uint8"}],"internalType":"struct ICrystalTypes.HeroCrystal","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleAdmin","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[{"internalType":"address","name":"_address","type":"address"}],"name":"getUserCrystals","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"grantRole","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"hasRole","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[],"name":"increasePerGen","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[],"name":"increasePerSummon","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[{"internalType":"address","name":"_heroCoreAddress","type":"address"},{"internalType":"address","name":"_geneScienceAddress","type":"address"},{"internalType":"address","name":"_jewelTokenAddress","type":"address"},{"internalType":"address","name":"_gaiaTearsAddress","type":"address"},{"internalType":"address","name":"_statScienceAddress","type":"address"},{"internalType":"uint256","name":"_crystalIdOffset","type":"uint256"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[],"name":"jewelToken","outputs":[{"internalType":"contract IJewelToken","name":"","type":"address"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[],"name":"newSummonCooldown","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[{"internalType":"uint256","name":"_crystalId","type":"uint256"}],"name":"open","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"renounceRole","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"revokeRole","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[{"internalType":"address[]","name":"_feeAddresses","type":"address[]"},{"internalType":"uint256[]","name":"_feePercents","type":"uint256[]"}],"name":"setFees","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[{"internalType":"address","name":"_geneScienceAddress","type":"address"}],"name":"setGeneScienceAddress","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[{"internalType":"address","name":"_statScienceAddress","type":"address"}],"name":"setStatScienceAddress","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[{"internalType":"uint256","name":"_newSummonCooldown","type":"uint256"},{"internalType":"uint256","name":"_baseCooldown","type":"uint256"},{"internalType":"uint256","name":"_cooldownPerGen","type":"uint256"}],"name":"setSummonCooldowns","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[{"internalType":"uint256","name":"_baseSummonFee","type":"uint256"},{"internalType":"uint256","name":"_increasePerSummon","type":"uint256"},{"internalType":"uint256","name":"_increasePerGen","type":"uint256"}],"name":"setSummonFees","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[],"name":"statScience","outputs":[{"internalType":"contract IStatScience","name":"","type":"address"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[{"internalType":"uint256","name":"_summonerId","type":"uint256"},{"internalType":"uint256","name":"_assistantId","type":"uint256"},{"internalType":"uint16","name":"_summonerTears","type":"uint16"},{"internalType":"uint16","name":"_assistantTears","type":"uint16"},{"internalType":"address","name":"_bonusItem","type":"address"}],"name":"summonCrystal","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[{"internalType":"uint256","name":"_summonerId","type":"uint256"},{"internalType":"uint256","name":"_assistantId","type":"uint256"},{"internalType":"uint16","name":"_summonerTears","type":"uint16"},{"internalType":"uint16","name":"_assistantTears","type":"uint16"},{"internalType":"address","name":"_bonusItem","type":"address"},{"internalType":"address","name":"_assistingAuctionAddress","type":"address"}],"name":"summonCrystalWithAuction","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[{"internalType":"uint256","name":"_summonerId","type":"uint256"},{"internalType":"uint256","name":"_assistantId","type":"uint256"},{"internalType":"uint16","name":"_summonerTears","type":"uint16"},{"internalType":"uint16","name":"_assistantTears","type":"uint16"},{"internalType":"address","name":"_bonusItem","type":"address"},{"internalType":"address","name":"_assistingAuctionAddress","type":"address"}],"name":"summonCrystalWithAuctionOld","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[],"name":"toggleEnabled","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[],"name":"totalCrystals","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs"::[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs"::[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"userCrystals","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}
+        ]
+        """
+
+
+def block_explorer_link(txid):
+    return 'https://explorer.harmony.one/tx/' + str(txid)
+
+
+def get_user_crystal_ids(user_address, rpc_address):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+
+    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    return contract.functions.getUserCrystals(Web3.toChecksumAddress(user_address)).call()
+
+
+def summon_crystal(summoner_id, assistant_id, summoner_tears, assistant_tears, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+    account = w3.eth.account.privateKeyToAccount(private_key)
+    w3.eth.default_account = account.address
+
+    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    logger.info("Summoning with " + str(summoner_id) + " & "+str(assistant_id))
+    tx = contract.functions.summonCrystal(summoner_id, assistant_id, summoner_tears, assistant_tears, '0x0000000000000000000000000000000000000000').buildTransaction(
+        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+
+    logger.debug("Signing transaction")
+    signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
+    logger.debug("Sending transaction " + str(tx))
+    ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+    logger.debug("Transaction successfully sent !")
+    logger.info(
+        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
+                                                     poll_latency=3)
+    logger.info("Transaction mined !")
+    logger.info(str(tx_receipt))
+
+
+def open_crystal(crystal_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+    account = w3.eth.account.privateKeyToAccount(private_key)
+    w3.eth.default_account = account.address
+
+    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    logger.info("Opening crystal "+str(crystal_id))
+    tx = contract.functions.open(crystal_id).buildTransaction(
+        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    logger.debug("Signing transaction")
+    signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
+    logger.debug("Sending transaction " + str(tx))
+    ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+    logger.debug("Transaction successfully sent !")
+    logger.info(
+        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
+                                                     poll_latency=3)
+    logger.info("Transaction mined !")
+    logger.info(str(tx_receipt))
+
+
