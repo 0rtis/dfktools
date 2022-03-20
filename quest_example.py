@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     quest = Quest(rpc_server, logger)
 
-    quest_contract = fishing.QUEST_CONTRACT_ADDRESS  # foraging.CONTRACT_ADDRESS
+    quest_contract = fishing.QUEST_CONTRACT_ADDRESS  # foraging.QUEST_CONTRACT_ADDRESS
     my_heroes_id = [1, 2, 3, 4]
     quest.start_quest(quest_contract, my_heroes_id, 3, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
     quest_info = quest_utils.human_readable_quest(quest.get_hero_quest(my_heroes_id[0]))
