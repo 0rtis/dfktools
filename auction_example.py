@@ -43,7 +43,7 @@ if __name__ == "__main__":
         auction = auction_utils.human_readable_auction(land_auction.auctions(i))
         logger.info("Auction index " + str(i) + ": " + str(auction))
 
-    auction = land_auction.get_auction(33)
+    auction = land_auction.get_auction(48)
     auction = auction_utils.human_readable_auction(auction)
     logger.info(str(auction))
     logger.info(str(land_auction.is_on_auction(33)))

@@ -100,7 +100,7 @@ def start_meditation(hero_id, stat1, stat2, stat3, attunement_crystal_address, p
     logger.debug("Transaction successfully sent !")
     logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=3)
+                                                     poll_latency=2)
     logger.info("Transaction mined !")
 
     return tx_receipt
@@ -124,7 +124,7 @@ def complete_meditation(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_
     logger.debug("Transaction successfully sent !")
     logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=3)
+                                                     poll_latency=2)
     logger.info("Transaction mined !")
 
     return tx_receipt

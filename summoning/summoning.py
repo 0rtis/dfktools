@@ -90,7 +90,7 @@ def summon_crystal(summoner_id, assistant_id, summoner_tears, assistant_tears, p
     logger.info(
         "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=3)
+                                                     poll_latency=2)
     logger.info("Transaction mined !")
     logger.info(str(tx_receipt))
 
@@ -114,7 +114,7 @@ def open_crystal(crystal_id, private_key, nonce, gas_price_gwei, tx_timeout_seco
     logger.info(
         "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=3)
+                                                     poll_latency=2)
     logger.info("Transaction mined !")
     logger.info(str(tx_receipt))
 
@@ -170,7 +170,7 @@ def put_hero_for_rent(hero_id, price_gwei, private_key, nonce, gas_price_gwei, t
     logger.info(
         "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=3)
+                                                     poll_latency=2)
     logger.info("Transaction mined !")
     logger.info(str(tx_receipt))
 
@@ -195,7 +195,7 @@ def cancel_rent(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds,
     logger.info(
         "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=3)
+                                                     poll_latency=2)
     logger.info("Transaction mined !")
     logger.info(str(tx_receipt))
 

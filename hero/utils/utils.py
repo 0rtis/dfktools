@@ -23,12 +23,12 @@ _class = {
     6: "monk",
     7: "pirate",
     16: "paladin",
-    17: "darkKnight",
+    17: "darkknight",
     18: "summoner",
     19: "ninja",
     24: "dragoon",
     25: "sage",
-    28: "dreadKnight"
+    28: "dreadknight"
 }
 
 visual_traits = {
@@ -205,6 +205,22 @@ def parse_visual_genes(genes):
 
     visual_genes['gender'] = 'male' if visual_genes['gender'] == 1 else 'female'
     return visual_genes
+
+
+def hero2str(hero):
+
+    if isinstance(hero['info']['class'], int):
+        c = parse_class(hero['info']['class'])
+        sc = parse_class(hero['info']['subClass'])
+        r = parse_rarity(hero['info']['rarity'])
+        l = hero['state']['level']
+    else:
+        c = hero['info']['class']
+        sc = hero['info']['subClass']
+        r = hero['info']['rarity']
+        l = hero['state']['level']
+
+    return str(hero['id']) + " " + r.title() + " " + c.title() + "/" + sc.title() + " lvl " + str(l)
 
 
 def __genesToKai(genes):
