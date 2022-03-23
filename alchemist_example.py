@@ -1,6 +1,7 @@
 import logging
 import sys
 from web3 import Web3
+import dex.erc20 as erc20
 import alchemist.alchemist as alchemist
 
 
@@ -14,7 +15,7 @@ if __name__ == "__main__":
     rpc_server = 'https://api.harmony.one'
     logger.info("Using RPC server " + rpc_server)
 
-    stamina_vial_address = '0x959ba19508827d1ed2333B1b503Bd5ab006C710e'
+    stamina_vial_address = erc20.symbol2address('DFKSTMNPTN')
 
     # request recipe for one potion
     potion = alchemist.get_potion(stamina_vial_address, rpc_server)

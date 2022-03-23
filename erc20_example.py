@@ -13,8 +13,7 @@ if __name__ == "__main__":
 
     rpc_server = 'https://api.harmony.one'
     logger.info("Using RPC server " + rpc_server)
-    import dex.extend as ext
-    ext.contact2symbol('')
+
     w3 = Web3(Web3.HTTPProvider(rpc_server))
 
     token_address = tokens.JEWEL
