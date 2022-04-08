@@ -60,9 +60,9 @@ def bid(auction_address, token_id, bid_amount_wei, private_key, nonce, gas_price
     w3.eth.default_account = account.address
 
     auction_contract_address = Web3.toChecksumAddress(auction_address)
-    sales_auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
+    auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
 
-    tx = sales_auction_contract.functions.bid(token_id, bid_amount_wei).buildTransaction(
+    tx = auction_contract.functions.bid(token_id, bid_amount_wei).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.info("Signing transaction")
@@ -72,7 +72,7 @@ def bid(auction_address, token_id, bid_amount_wei, private_key, nonce, gas_price
     logger.info("Transaction successfully sent !")
     logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=3)
+                                                     poll_latency=2)
     logger.info("Transaction mined !")
     logger.info(str(tx_receipt))
 
@@ -83,9 +83,9 @@ def create_auction(auction_address, token_id, starting_price_wei, ending_price_w
     w3.eth.default_account = account.address
 
     auction_contract_address = Web3.toChecksumAddress(auction_address)
-    sales_auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
+    auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
 
-    tx = sales_auction_contract.functions.createAuction(token_id, starting_price_wei, ending_price_wei, duration, winner).buildTransaction(
+    tx = auction_contract.functions.createAuction(token_id, starting_price_wei, ending_price_wei, duration, winner).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.info("Signing transaction")
@@ -95,7 +95,7 @@ def create_auction(auction_address, token_id, starting_price_wei, ending_price_w
     logger.info("Transaction successfully sent !")
     logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=3)
+                                                     poll_latency=2)
     logger.info("Transaction mined !")
     logger.info(str(tx_receipt))
 
@@ -106,9 +106,9 @@ def cancel_auction(auction_address, token_id, private_key, nonce, gas_price_gwei
     w3.eth.default_account = account.address
 
     auction_contract_address = Web3.toChecksumAddress(auction_address)
-    sales_auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
+    auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
 
-    tx = sales_auction_contract.functions.cancelAuction(token_id).buildTransaction(
+    tx = auction_contract.functions.cancelAuction(token_id).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.info("Signing transaction")
@@ -118,7 +118,7 @@ def cancel_auction(auction_address, token_id, private_key, nonce, gas_price_gwei
     logger.info("Transaction successfully sent !")
     logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=3)
+                                                     poll_latency=2)
     logger.info("Transaction mined !")
     logger.info(str(tx_receipt))
 
@@ -127,46 +127,46 @@ def is_on_auction(auction_address, token_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
     auction_contract_address = Web3.toChecksumAddress(auction_address)
-    sales_auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
-    return sales_auction_contract.functions.isOnAuction(token_id).call()
+    auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
+    return auction_contract.functions.isOnAuction(token_id).call()
 
 
 def get_auction(auction_address, token_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
     auction_contract_address = Web3.toChecksumAddress(auction_address)
-    sales_auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
-    return sales_auction_contract.functions.getAuction(token_id).call()
+    auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
+    return auction_contract.functions.getAuction(token_id).call()
 
 
 def get_auctions(auction_address, token_ids, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
     auction_contract_address = Web3.toChecksumAddress(auction_address)
-    sales_auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
-    return sales_auction_contract.functions.getAuctions(token_ids).call()
+    auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
+    return auction_contract.functions.getAuctions(token_ids).call()
 
 
 def total_auctions(auction_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
     auction_contract_address = Web3.toChecksumAddress(auction_address)
-    sales_auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
-    return sales_auction_contract.functions.totalAuctions().call()
+    auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
+    return auction_contract.functions.totalAuctions().call()
 
 
 def get_user_auctions(auction_address, user, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
     auction_contract_address = Web3.toChecksumAddress(auction_address)
-    sales_auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
-    return sales_auction_contract.functions.getUserAuctions(Web3.toChecksumAddress(user)).call()
+    auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
+    return auction_contract.functions.getUserAuctions(Web3.toChecksumAddress(user)).call()
 
 
 def auctions(auction_address, index, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
     auction_contract_address = Web3.toChecksumAddress(auction_address)
-    sales_auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
-    return sales_auction_contract.functions.auctions(index).call()
+    auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
+    return auction_contract.functions.auctions(index).call()
 

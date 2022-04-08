@@ -2,7 +2,7 @@ import copy
 from web3 import Web3
 from .utils import utils as hero_utils
 
-CONTRACT_ADDRESS = '0x5f753dcdf9b1ad9aabc1346614d1f4746fd6ce5c'
+CONTRACT_ADDRESS = '0x5F753dcDf9b1AD9AabC1346614D1f4746fd6Ce5C'
 
 ABI = """
             [
@@ -86,7 +86,7 @@ def transfer(hero_id, owner_private_key, owner_nonce, receiver_address, gas_pric
     logger.debug("Transaction successfully sent !")
     logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=24 * 3600,
-                                                     poll_latency=3)
+                                                     poll_latency=2)
     logger.info("Transaction mined !")
     logger.info(str(tx_receipt))
 

@@ -130,7 +130,7 @@ def swap_exact_tokens_for_tokens(amount_in, amount_out_min, path, to, deadline, 
         "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
 
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=3)
+                                                     poll_latency=2)
     logger.info("Transaction mined !")
 
     return tx_receipt
@@ -173,7 +173,7 @@ def swap_exact_tokens_for_eth(amount_in, amount_out_min, path, to, deadline, pri
         "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
 
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=3)
+                                                     poll_latency=2)
     logger.info("Transaction mined !")
 
     return tx_receipt

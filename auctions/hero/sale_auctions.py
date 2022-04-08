@@ -71,7 +71,7 @@ ABI = """
 
 AUCTIONS_OPEN_GRAPHQL_QUERY = """
                         query {
-                          saleAuctions(skip: %d, first: %d, orderBy: startedAt, orderDirection: desc, where: {open: true}) {
+                          saleAuctions(skip: %d, first: %d, orderBy: startedAt, orderDirection: desc, where: {open: true, winner: null}) {
                             id
                             seller {
                                 name
@@ -185,7 +185,7 @@ def bid_hero(token_id, bid_amount_wei, private_key, nonce, gas_price_gwei, tx_ti
     logger.info("Transaction successfully sent !")
     logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=3)
+                                                     poll_latency=2)
     logger.info("Transaction mined !")
     logger.info(str(tx_receipt))
 
@@ -209,7 +209,7 @@ def create_auction(token_id, starting_price_wei, ending_price_wei, duration, win
     logger.info("Transaction successfully sent !")
     logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=3)
+                                                     poll_latency=2)
     logger.info("Transaction mined !")
     logger.info(str(tx_receipt))
 
@@ -232,7 +232,7 @@ def cancel_auction(token_id, private_key, nonce, gas_price_gwei, tx_timeout_seco
     logger.info("Transaction successfully sent !")
     logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=3)
+                                                     poll_latency=2)
     logger.info("Transaction mined !")
     logger.info(str(tx_receipt))
 
@@ -283,6 +283,38 @@ def get_hero_open_auctions(graphql_address, hero_ids):
         raise Exception("HTTP error " + str(r.status_code) + ": " + r.text)
     data = r.json()
     return data['data']['saleAuctions']
+
+
+def auction2hero(auction):
+    ah = auction['tokenId']
+
+    hero = {}
+    hero['id'] = ah['id']
+    hero['info'] = {}
+    hero['info']['class'] = ah['mainClass'].lower()
+    hero['info']['subClass'] = ah['subClass'].lower()
+    hero['info']['rarity'] = ah['rarity']
+    hero['info']['level'] = ah['level']
+    hero['info']['statGenes'] = ah['statGenes']
+    hero['info']['generation'] = ah['generation']
+
+    hero['stats'] = {}
+    hero['stats']['strength'] = ah['strength']
+    hero['stats']['agility'] = ah['agility']
+    hero['stats']['intelligence'] = ah['intelligence']
+    hero['stats']['wisdom'] = ah['wisdom']
+    hero['stats']['luck'] = ah['luck']
+    hero['stats']['vitality'] = ah['vitality']
+    hero['stats']['endurance'] = ah['endurance']
+    hero['stats']['dexterity'] = ah['dexterity']
+
+    hero['summoningInfo'] = {}
+    hero['summoningInfo']['summonerId'] = ah['summonerId']
+    hero['summoningInfo']['assistantId'] = ah['assistantId']
+    hero['summoningInfo']['maxSummons'] = ah['maxSummons']
+    hero['summoningInfo']['summons'] = ah['summons']
+
+    return hero
 
 
 def wei2ether(wei):
