@@ -12,15 +12,15 @@ class Quest:
     def start_quest_with_data(self, quest_address, data, hero_ids, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds):
         return quest_core.start_quest_with_data(quest_address, data, hero_ids, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds, self.rpc_address, self.logger)
 
-    def complete_quest(self, hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds):
-        return quest_core.complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, self.rpc_address, self.logger)
+    def complete_quest(self, hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address=self.rpc_address):
+        return quest_core.complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, self.logger)
 
     def parse_complete_quest_receipt(self, tx_receipt):
         return quest_core.parse_complete_quest_receipt(tx_receipt, self.rpc_address)
 
     def cancel_quest(self, hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds):
         return quest_core.cancel_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, self.rpc_address, self.logger)
-    
+
     def hero_to_quest_id(self, hero_id):
         return quest_core.hero_to_quest_id(hero_id, self.rpc_address)
 
