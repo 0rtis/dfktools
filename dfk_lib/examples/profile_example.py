@@ -1,7 +1,7 @@
 import logging
 import json
 import sys
-import profile.profile as profiles
+import dfk_lib.profile.profile as profiles
 
 
 if __name__ == "__main__":

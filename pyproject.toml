@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "dfk_lib"
+version = "0.1.0"
+description = "Toolbox to interact with the contracts of DefiKingdoms"
+authors = ["0rtis <ortis@ortis.io>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+web3 = "^5.28.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

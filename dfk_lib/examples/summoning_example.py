@@ -1,6 +1,6 @@
 import logging
 import sys
-import summoning.summoning as summoning
+from dfk_lib.summoning import summoning
 
 
 if __name__ == "__main__":

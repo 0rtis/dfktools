@@ -2,12 +2,12 @@ import logging
 import sys
 import time
 from web3 import Web3
-from quest import foraging
-from quest import fishing
-from quest import gardening
-from quest.quest import Quest
-from quest.utils import utils as quest_utils
-import dex.master_gardener
+from dfk_lib.quest import foraging
+from dfk_lib.quest import fishing
+from dfk_lib.quest import gardening
+from dfk_lib.quest.quest import Quest
+from dfk_lib.quest.utils import utils as quest_utils
+import dfk_lib.dex.master_gardener
 
 
 ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'

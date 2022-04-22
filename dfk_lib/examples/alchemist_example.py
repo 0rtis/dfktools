@@ -1,8 +1,8 @@
 import logging
 import sys
 from web3 import Web3
-import dex.erc20 as erc20
-import alchemist.alchemist as alchemist
+from dfk_lib.dex import erc20
+from dfk_lib.alchemist import alchemist
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-import dex.erc20 as tokens
+import dfk_lib.dex.erc20 as tokens
 import logging
 import sys
 from web3 import Web3

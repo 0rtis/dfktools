@@ -1,10 +1,10 @@
 import logging
 import sys
-import auctions.hero.sale_auctions as hero_sales
-import auctions.hero.rent_auctions as hero_rental
-from auctions.auction import Auction
-import auctions.land as land_auction
-import auctions.utils.utils as auction_utils
+import dfk_lib.auctions.hero.sale_auctions as hero_sales
+import dfk_lib.auctions.hero.rent_auctions as hero_rental
+from dfk_lib.auctions.auction import Auction
+import dfk_lib.auctions.land as land_auction
+import dfk_lib.auctions.utils.utils as auction_utils
 
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'

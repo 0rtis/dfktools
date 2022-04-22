@@ -1,7 +1,7 @@
 import logging
 import sys
-import land.utils.utils as land_utils
-import land.land as land
+import dfk_lib.land.utils.utils as land_utils
+import dfk_lib.land.land as land
 
 
 if __name__ == "__main__":

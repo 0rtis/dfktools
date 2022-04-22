@@ -2,7 +2,7 @@ import logging
 from web3 import Web3
 import sys
 import time
-import meditation.meditation as meditation
+import dfk_lib.meditation.meditation as meditation
 
 
 if __name__ == "__main__":

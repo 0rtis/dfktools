@@ -2,9 +2,9 @@ import logging
 from web3 import Web3
 import sys
 import time
-import hero.hero as heroes
-import hero.utils.utils as hero_utils
-import genes.gene_science as genes
+import dfk_lib.hero.hero as heroes
+import dfk_lib.hero.utils.utils as hero_utils
+import dfk_lib.genes.gene_science as genes
 
 
 if __name__ == "__main__":

@@ -2,12 +2,12 @@ import logging
 import sys
 import time
 from web3 import Web3
-import dex.uniswap_v2_factory as market_place_factory
-import dex.uniswap_v2_router as market_place_router
-import dex.master_gardener as gardens
-import dex.uniswap_v2_pair as pool
-import dex.utils.utils as utils
-import dex.erc20 as erc20
+import dfk_lib.dex.uniswap_v2_factory as market_place_factory
+import dfk_lib.dex.uniswap_v2_router as market_place_router
+import dfk_lib.dex.master_gardener as gardens
+import dfk_lib.dex.uniswap_v2_pair as pool
+import dfk_lib.dex.utils.utils as utils
+import dfk_lib.dex.erc20 as erc20
 
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
