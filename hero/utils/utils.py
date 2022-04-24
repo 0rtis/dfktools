@@ -237,6 +237,7 @@ def __genesToKai(genes):
 
     # Pad with leading 1s.
     buf = buf.rjust(48, '1')
+    buf = buf[0:48]
 
     return ' '.join(buf[i:i + 4] for i in range(0, len(buf), 4))
 
