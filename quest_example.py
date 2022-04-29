@@ -37,7 +37,7 @@ if __name__ == "__main__":
     my_heroes_id = [1, 2, 3, 4]
     attempts = 3
     level = 1
-    questV2.start_quest(quest_contract, my_heroes_id, 3, attempts, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
+    questV2.start_quest(quest_contract, my_heroes_id, attempts, level, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
     quest_info = quest_utils.human_readable_quest(questV2.get_hero_quest(my_heroes_id[0]))
 
     logger.info(

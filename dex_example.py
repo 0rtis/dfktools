@@ -8,7 +8,7 @@ import dex.master_gardener as gardens
 import dex.uniswap_v2_pair as pool
 import dex.utils.utils as utils
 import dex.erc20 as erc20
-import dex.erc1155 as erc1155
+import dex.item_erc1155 as erc1155
 
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
