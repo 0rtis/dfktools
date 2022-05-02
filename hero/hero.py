@@ -91,22 +91,23 @@ def transfer(hero_id, owner_private_key, owner_nonce, receiver_address, gas_pric
     logger.info(str(tx_receipt))
 
 
-def get_owner(hero_id, rpc_address):
+def get_owner(hero_id, rpc_address, block_identifier="latest"):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    return str(contract.functions.ownerOf(hero_id).call())
+    return str(contract.functions.ownerOf(hero_id).call(block_identifier=block_identifier))
 
 
-def get_users_heroes(user_address, rpc_address):
+def get_users_heroes(user_address, rpc_address, block_identifier="latest"):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    return contract.functions.getUserHeroes(Web3.toChecksumAddress(user_address)).call()
+    return contract.functions.getUserHeroes(Web3.toChecksumAddress(user_address)).call(
+        block_identifier=block_identifier)
 
 
 def is_approved_for_all(owner, operator, rpc_address):
@@ -118,12 +119,12 @@ def is_approved_for_all(owner, operator, rpc_address):
     return contract.functions.isApprovedForAll(Web3.toChecksumAddress(owner), Web3.toChecksumAddress(operator)).call()
 
 
-def get_hero(hero_id, rpc_address):
+def get_hero(hero_id, rpc_address, block_identifier="latest"):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
-    contract_entry = contract.functions.getHero(hero_id).call()
+    contract_entry = contract.functions.getHero(hero_id).call(block_identifier=block_identifier)
 
     hero = {}
     tuple_index = 0
