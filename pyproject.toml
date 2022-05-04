@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dfk_lib"
-version = "0.1.0"
+version = "1.0.0"
 description = "Toolbox to interact with the contracts of DefiKingdoms"
 authors = ["0rtis <ortis@ortis.io>"]
 license = "MIT"

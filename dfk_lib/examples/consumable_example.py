@@ -1,7 +1,7 @@
 import logging
 import sys
 from web3 import Web3
-from dfk_lib.consumable import consumable
+import dfk_lib.consumable.consumable as consumable
 
 
 if __name__ == "__main__":
