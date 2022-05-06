@@ -1,6 +1,7 @@
 from web3 import Web3
 
-CONTRACT_ADDRESS = '0x65dea93f7b886c33a78c10343267dd39727778c2'
+SERENDALE_CONTRACT_ADDRESS = '0x65dea93f7b886c33a78c10343267dd39727778c2'
+CRYSTALVALE_CONTRACT_ADDRESS = '0x8101CfFBec8E045c3FAdC3877a1D30f97d301209'
 
 ABI = """
         [
@@ -57,83 +58,97 @@ ABI = """
         """
 
 
-def block_explorer_link(txid):
-    return 'https://explorer.harmony.one/tx/' + str(txid)
+def block_explorer_link(contract_address, txid):
+    if contract_address == SERENDALE_CONTRACT_ADDRESS:
+        return 'https://explorer.harmony.one/tx/' + str(txid)
+    elif contract_address == CRYSTALVALE_CONTRACT_ADDRESS:
+        return 'https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/tx/' + str(txid)
+    else:
+        return str(txid)
 
 
-def get_user_crystal_ids(user_address, rpc_address):
+def get_user_crystal_ids(contract_address, user_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.getUserCrystals(Web3.toChecksumAddress(user_address)).call()
 
 
-def summon_crystal(summoner_id, assistant_id, summoner_tears, assistant_tears, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def summon_crystal(contract_address, summoner_id, assistant_id, summoner_tears, assistant_tears, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger=None):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
-
-    logger.info("Summoning with " + str(summoner_id) + " & "+str(assistant_id))
+    if logger is not None:
+        logger.info("Summoning with " + str(summoner_id) + " & "+str(assistant_id))
     tx = contract.functions.summonCrystal(summoner_id, assistant_id, summoner_tears, assistant_tears, '0x0000000000000000000000000000000000000000').buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
-
-    logger.debug("Signing transaction")
+    if logger is not None:
+        logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
-    logger.debug("Sending transaction " + str(tx))
+    if logger is not None:
+        logger.debug("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-    logger.debug("Transaction successfully sent !")
-    logger.info(
-        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+    if logger is not None:
+        logger.debug("Transaction successfully sent !")
+        logger.info(
+            "Waiting for transaction " + block_explorer_link(contract_address, signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
-    logger.info("Transaction mined !")
-    logger.info(str(tx_receipt))
+    if logger is not None:
+        logger.info("Transaction mined !")
+        logger.info(str(tx_receipt))
+    return tx_receipt
 
 
-def open_crystal(crystal_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def open_crystal(contract_address, crystal_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger=None):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
-
-    logger.info("Opening crystal "+str(crystal_id))
+    if logger is not None:
+        logger.info("Opening crystal "+str(crystal_id))
     tx = contract.functions.open(crystal_id).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
-    logger.debug("Signing transaction")
+    if logger is not None:
+        logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
-    logger.debug("Sending transaction " + str(tx))
+    if logger is not None:
+        logger.debug("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-    logger.debug("Transaction successfully sent !")
-    logger.info(
-        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+    if logger is not None:
+        logger.debug("Transaction successfully sent !")
+        logger.info(
+            "Waiting for transaction " + block_explorer_link(contract_address, signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
-    logger.info("Transaction mined !")
-    logger.info(str(tx_receipt))
+    if logger is not None:
+        logger.info("Transaction mined !")
+        logger.info(str(tx_receipt))
+    return tx_receipt
 
 
-def is_on_rent(hero_id, rpc_address):
+def is_on_rent(contract_address, hero_id, rpc_address):
 
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.isOnAuction(hero_id).call()
 
 
-def get_rent_auction(hero_id, rpc_address):
+def get_rent_auction(contract_address, hero_id, rpc_address):
 
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     ret = contract.functions.getAuction(hero_id).call()
@@ -149,54 +164,61 @@ def get_rent_auction(hero_id, rpc_address):
     return auction
 
 
-def put_hero_for_rent(hero_id, price_gwei, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def put_hero_for_rent(contract_address, hero_id, price_gwei, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger=None):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
-
-    logger.info("Renting hero " + str(hero_id) + " for " + str(price_gwei/1000000000000000000) + " JEWEL")
+    if logger is not None:
+        logger.info("Renting hero " + str(hero_id) + " for " + str(price_gwei/1000000000000000000) + " JEWEL")
 
     tx = contract.functions.createAuction(hero_id, price_gwei, price_gwei, 60, '0x0000000000000000000000000000000000000000').buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
-
-    logger.debug("Signing transaction")
+    if logger is not None:
+        logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
-    logger.debug("Sending transaction " + str(tx))
+    if logger is not None:
+        logger.debug("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-    logger.debug("Transaction successfully sent !")
-    logger.info(
-        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+    if logger is not None:
+        logger.debug("Transaction successfully sent !")
+        logger.info(
+            "Waiting for transaction " + block_explorer_link(contract_address, signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
-    logger.info("Transaction mined !")
-    logger.info(str(tx_receipt))
+    if logger is not None:
+        logger.info("Transaction mined !")
+        logger.info(str(tx_receipt))
+    return tx_receipt
 
 
-def cancel_rent(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def cancel_rent(contract_address, hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger=None):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
-
-    logger.info("Cancel renting of hero " + str(hero_id))
+    if logger is not None:
+        logger.info("Cancel renting of hero " + str(hero_id))
 
     tx = contract.functions.cancelAuction(hero_id).buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
-
-    logger.debug("Signing transaction")
+    if logger is not None:
+        logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
-    logger.debug("Sending transaction " + str(tx))
+    if logger is not None:
+        logger.debug("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-    logger.debug("Transaction successfully sent !")
-    logger.info(
-        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+    if logger is not None:
+        logger.debug("Transaction successfully sent !")
+        logger.info(
+            "Waiting for transaction " + block_explorer_link(contract_address, signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
-    logger.info("Transaction mined !")
-    logger.info(str(tx_receipt))
-
+    if logger is not None:
+        logger.info("Transaction mined !")
+        logger.info(str(tx_receipt))
+    return tx_receipt
 
