@@ -1,7 +1,9 @@
 import requests
 from web3 import Web3
 
-SALE_AUCTIONS_CONTRACT_ADDRESS = '0x13a65B9F8039E2c032Bc022171Dc05B30c3f2892'
+SERENDALE_CONTRACT_ADDRESS = '0x13a65B9F8039E2c032Bc022171Dc05B30c3f2892'
+CRYSTLAVALE_CONTRACT_ADDRESS = '0xc390fAA4C7f66E4D62E59C231D5beD32Ff77BEf0'
+
 
 ABI = """
         [
@@ -166,89 +168,103 @@ def block_explorer_link(txid):
     return 'https://explorer.harmony.one/tx/' + str(txid)
 
 
-def bid_hero(token_id, bid_amount_wei, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def bid_hero(contract_address, token_id, bid_amount_wei, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger=None):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    sales_auction_contract_address = Web3.toChecksumAddress(SALE_AUCTIONS_CONTRACT_ADDRESS)
+    sales_auction_contract_address = Web3.toChecksumAddress(contract_address)
     sales_auction_contract = w3.eth.contract(sales_auction_contract_address, abi=ABI)
 
-    logger.info("Biding " + str(wei2ether(bid_amount_wei)) + " on hero id " + str(token_id))
+    if logger is not None:
+        logger.info("Biding " + str(wei2ether(bid_amount_wei)) + " on hero id " + str(token_id))
     tx = sales_auction_contract.functions.bid(token_id, bid_amount_wei).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
-    logger.info("Signing transaction")
+    if logger is not None:
+        logger.info("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
-    logger.info("Sending transaction " + str(tx))
+    if logger is not None:
+        logger.info("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-    logger.info("Transaction successfully sent !")
-    logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
-    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=2)
-    logger.info("Transaction mined !")
-    logger.info(str(tx_receipt))
+    if logger is not None:
+        logger.info("Transaction successfully sent !")
+        logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds, poll_latency=2)
+
+    if logger is not None:
+        logger.info("Transaction mined !")
+        logger.info(str(tx_receipt))
+
+    return tx_receipt
 
 
-def create_auction(token_id, starting_price_wei, ending_price_wei, duration, winner, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def create_auction(contract_address, token_id, starting_price_wei, ending_price_wei, duration, winner, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger=None):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    sales_auction_contract_address = Web3.toChecksumAddress(SALE_AUCTIONS_CONTRACT_ADDRESS)
+    sales_auction_contract_address = Web3.toChecksumAddress(contract_address)
     sales_auction_contract = w3.eth.contract(sales_auction_contract_address, abi=ABI)
 
-    logger.info("Auctioning " + str(token_id) + " (starting price=" + str(wei2ether(starting_price_wei)) + ", ending price=" + str(wei2ether(ending_price_wei)) + ", duration=" + str(duration) + ", private sale buyer=" + str(winner) + ")")
+    if logger is not None:
+        logger.info("Auctioning " + str(token_id) + " (starting price=" + str(wei2ether(starting_price_wei)) + ", ending price=" + str(wei2ether(ending_price_wei)) + ", duration=" + str(duration) + ", private sale buyer=" + str(winner) + ")")
     tx = sales_auction_contract.functions.createAuction(token_id, starting_price_wei, ending_price_wei, duration, winner).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
-
-    logger.info("Signing transaction")
+    if logger is not None:
+        logger.info("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
-    logger.info("Sending transaction " + str(tx))
+    if logger is not None:
+        logger.info("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-    logger.info("Transaction successfully sent !")
-    logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
-    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=2)
-    logger.info("Transaction mined !")
-    logger.info(str(tx_receipt))
+    if logger is not None:
+        logger.info("Transaction successfully sent !")
+        logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds, poll_latency=2)
+    if logger is not None:
+        logger.info("Transaction mined !")
+        logger.info(str(tx_receipt))
+    return tx_receipt
 
 
-def cancel_auction(token_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def cancel_auction(contract_address, token_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger=None):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    sales_auction_contract_address = Web3.toChecksumAddress(SALE_AUCTIONS_CONTRACT_ADDRESS)
+    sales_auction_contract_address = Web3.toChecksumAddress(contract_address)
     sales_auction_contract = w3.eth.contract(sales_auction_contract_address, abi=ABI)
 
     tx = sales_auction_contract.functions.cancelAuction(token_id).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
-
-    logger.info("Signing transaction")
+    if logger is not None:
+        logger.info("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
-    logger.info("Sending transaction " + str(tx))
+    if logger is not None:
+        logger.info("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
-    logger.info("Transaction successfully sent !")
-    logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
-    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
-                                                     poll_latency=2)
-    logger.info("Transaction mined !")
-    logger.info(str(tx_receipt))
+    if logger is not None:
+        logger.info("Transaction successfully sent !")
+        logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds, poll_latency=2)
+    if logger is not None:
+        logger.info("Transaction mined !")
+        logger.info(str(tx_receipt))
+    return tx_receipt
 
 
-def is_on_auction(token_id, rpc_address):
+def is_on_auction(contract_address, token_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    sales_auction_contract_address = Web3.toChecksumAddress(SALE_AUCTIONS_CONTRACT_ADDRESS)
+    sales_auction_contract_address = Web3.toChecksumAddress(contract_address)
     sales_auction_contract = w3.eth.contract(sales_auction_contract_address, abi=ABI)
     return sales_auction_contract.functions.isOnAuction(token_id).call()
 
 
-def get_auction(token_id, rpc_address):
+def get_auction(contract_address, token_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    sales_auction_contract_address = Web3.toChecksumAddress(SALE_AUCTIONS_CONTRACT_ADDRESS)
+    sales_auction_contract_address = Web3.toChecksumAddress(contract_address)
     sales_auction_contract = w3.eth.contract(sales_auction_contract_address, abi=ABI)
     result = sales_auction_contract.functions.getAuction(token_id).call()
     auction = {}

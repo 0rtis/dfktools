@@ -25,10 +25,7 @@ class Auction:
         return auction_core.get_auction(self.auction_address, token_id, self.rpc_address)
 
     def get_auctions(self, token_ids):
-        return auction_core.get_auction(self.auction_address, token_ids, self.rpc_address)
-
-    def get_auctions(self, token_ids):
-        return auction_core.get_auction(self.auction_address, token_ids, self.rpc_address)
+        return auction_core.get_auctions(self.auction_address, token_ids, self.rpc_address)
 
     def get_user_auctions(self, user):
         return auction_core.get_user_auctions(self.auction_address, user, self.rpc_address)
