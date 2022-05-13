@@ -1,6 +1,6 @@
 import logging
 import sys
-import quest.wishing_well as wishing_well
+import quests.wishing_well as wishing_well
 from web3 import Web3
 import time
 

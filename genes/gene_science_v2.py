@@ -20,3 +20,19 @@ def mix_genes(genes1, genes2, block_number, crystal_id, rpc_address):
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     return contract.functions.mixGenes(genes1, genes2, crystal_id, block_number).call()
+
+
+def decode(genes, rpc_address):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+
+    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+    return contract.functions.decode(genes).call()
+
+
+def expressing_traits(genes, rpc_address):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+
+    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+    return contract.functions.expressingTraits(genes).call()

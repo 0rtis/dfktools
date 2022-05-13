@@ -4,7 +4,7 @@ import sys
 import time
 import hero.hero as heroes
 import hero.utils.utils as hero_utils
-import genes.gene_science as genes
+import genes.gene_science_v2 as genes_v2
 
 
 if __name__ == "__main__":
@@ -21,10 +21,11 @@ if __name__ == "__main__":
     hero1 = heroes.get_hero(1, rpc_server)
     hero2 = heroes.get_hero(2, rpc_server)
 
+    crystal_id = 404404
     bnum = w3.eth.block_number
     for i in range(100):
-        offspring_stat_genes = genes.mix_genes(hero1['info']['statGenes'], hero2['info']['statGenes'], bnum, rpc_server)
-        offspring_visual_genes = genes.mix_genes(hero1['info']['visualGenes'], hero2['info']['visualGenes'], bnum, rpc_server)
+        offspring_stat_genes = genes_v2.mix_genes(hero1['info']['statGenes'], hero2['info']['statGenes'], bnum, crystal_id, rpc_server)
+        offspring_visual_genes = genes_v2.mix_genes(hero1['info']['visualGenes'], hero2['info']['visualGenes'], bnum, crystal_id, rpc_server)
         stats = hero_utils.parse_stat_genes(offspring_stat_genes)
         visual = hero_utils.parse_visual_genes(offspring_visual_genes)
         logger.info("Iteration " + str(i) + "\n\tStats:\t" + str(stats) + "\n\tVisual:\t" + str(visual))

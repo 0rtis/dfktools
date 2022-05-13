@@ -8,6 +8,7 @@ import dex.master_gardener as gardens
 import dex.uniswap_v2_pair as pool
 import dex.utils.utils as utils
 import dex.erc20 as erc20
+import dex.item_erc1155 as erc1155
 
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
@@ -32,9 +33,11 @@ if __name__ == "__main__":
     liquidity_pool_token0_address = liquidity_pool.token_0()
     liquidity_pool_token0 = erc20.symbol(liquidity_pool_token0_address, rpc_server)
     logger.info(liquidity_pool_token0 + " user balance:\t" + str(erc20.wei2eth(w3, erc20.balance_of(user_address, liquidity_pool_token0_address, rpc_server))))
+    logger.info(liquidity_pool_token0 + " pool balance:\t" + str(erc20.wei2eth(w3, erc20.balance_of(liquidity_pool_address, liquidity_pool_token0_address, rpc_server))))
     liquidity_pool_token1_address = liquidity_pool.token_1()
     liquidity_pool_token1 = erc20.symbol(liquidity_pool_token1_address, rpc_server)
     logger.info(liquidity_pool_token1 + " user balance:\t" + str(erc20.wei2eth(w3, erc20.balance_of(user_address, liquidity_pool_token1_address, rpc_server))))
+    logger.info(liquidity_pool_token1 + " pool balance:\t" + str(erc20.wei2eth(w3, erc20.balance_of(liquidity_pool_address, liquidity_pool_token1_address, rpc_server))))
     amount_token1 = 1
     amount_token0 = erc20.wei2eth(w3, liquidity_pool.expected_amount0(erc20.eth2wei(w3, amount_token1)))
     logger.info(liquidity_pool_symbol + " " + liquidity_pool_token0 + "-" + liquidity_pool_token1 + " @ " + str(amount_token0) + " " + liquidity_pool_token0 + " per " + liquidity_pool_token1)
