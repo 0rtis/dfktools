@@ -5,6 +5,8 @@ FAIL_ON_NOT_FOUND = False
 
 ALPHABET = '123456789abcdefghijkmnopqrstuvwx'
 
+CRYSTALEVALE_HERO_OFFSET = 1_000_000_000_000
+
 rarity = {
     0: "common",
     1: "uncommon",
@@ -22,10 +24,13 @@ _class = {
     5: "wizard",
     6: "monk",
     7: "pirate",
+    8: "berserker",
+    9: "seer",
     16: "paladin",
     17: "darkknight",
     18: "summoner",
     19: "ninja",
+    20: "shapeshifter",
     24: "dragoon",
     25: "sage",
     28: "dreadknight"
@@ -89,6 +94,14 @@ elements = {
     12: 'light',
     14: 'dark',
 }
+
+
+def cv2sd_cv_hero_id(cv_hero_id):
+    return cv_hero_id - CRYSTALEVALE_HERO_OFFSET
+
+
+def sd2cv_cv_hero_id(cv_hero_id):
+    return cv_hero_id + CRYSTALEVALE_HERO_OFFSET
 
 
 def parse_rarity(id):
@@ -237,6 +250,7 @@ def __genesToKai(genes):
 
     # Pad with leading 1s.
     buf = buf.rjust(48, '1')
+    buf = buf[0:48]
 
     return ' '.join(buf[i:i + 4] for i in range(0, len(buf), 4))
 

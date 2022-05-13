@@ -193,3 +193,19 @@ def stat2id(label):
         'dexterity': 7
     }
     return stats.get(label, None)
+
+
+def xp_per_Level(level):
+    next_level = level + 1
+    if level < 6:
+        return next_level * 1000
+    elif level < 9:
+        return 4000 + (next_level - 5) * 2000
+    elif level < 16:
+        return 12000 + (next_level - 9) * 4000
+    elif level < 36:
+        return 40000 + (next_level - 16) * 5000
+    elif level < 56:
+        return 140000 + (next_level - 36) * 7500
+    else:
+        return 290000 + (next_level - 56) * 10000

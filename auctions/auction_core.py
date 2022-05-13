@@ -51,7 +51,7 @@ ABI = """
 
 
 def block_explorer_link(txid):
-    return 'https://explorer.harmony.one/tx/' + str(txid)
+    return 'https://explorer.harmony.one/tx/' + str(txid) + ' or https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/tx/' + str(txid)
 
 
 def bid(auction_address, token_id, bid_amount_wei, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
