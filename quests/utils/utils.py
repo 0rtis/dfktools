@@ -18,6 +18,8 @@ def human_readable_quest(raw_quest):
     if raw_quest is None:
         return None
 
+    v2 = False
+    
     quest = {}
     i = 0
     quest['id'] = raw_quest[i]
@@ -26,14 +28,21 @@ def human_readable_quest(raw_quest):
     i = i + 1
     if isinstance(raw_quest[i], int):
         quest['level'] = raw_quest[i]  # v2
+        v2 = True
         i = i + 1
     quest['heroes'] = raw_quest[i]
     i = i + 1
     quest['player'] = raw_quest[i]
     i = i + 1
-    quest['startTime'] = raw_quest[i]
+    if not v2:
+        quest['startTime'] = raw_quest[i]
+    else:
+        quest['startBlock'] = raw_quest[i]
     i = i + 1
-    quest['startBlock'] = raw_quest[i]
+    if not v2:
+        quest['startBlock'] = raw_quest[i]
+    else:
+        quest['startTime'] = raw_quest[i]
     i = i + 1
     quest['completeAtTime'] = raw_quest[i]
     i = i + 1
