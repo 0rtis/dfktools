@@ -2,13 +2,10 @@ import logging
 import sys
 import time
 from web3 import Web3
-from quests.professions import gardening
-from quests.training import dancing
-import quests.quest_v2 as quest_v2
-import quests.quest_v1 as quest_v1
-from quests.utils import utils as quest_utils
-import dex.master_gardener
-
+import quests.professions.gardening as gardening
+import quests.training.dancing as dancing
+import quests.quest_v2 as quest_v2, quests.quest_v1 as quest_v1
+import quests.utils.utils as quest_utils
 
 ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 

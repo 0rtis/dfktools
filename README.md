@@ -1,5 +1,7 @@
+[![GitHub license](https://img.shields.io/github/stars/0rtis?style=flat-square)](https://github.com/0rtis)
 [![GitHub license](https://img.shields.io/github/license/0rtis/dfk.svg?style=flat-square)](https://github.com/0rtis/dfk/blob/master/LICENSE)
-[![Follow @trwitter handle](https://img.shields.io/twitter/follow/ortis95.svg?style=flat-square)](https://twitter.com/intent/follow?screen_name=ortis95) 
+[![GitHub license](https://img.shields.io/discord/932350221256638564?label=discord)](https://discord.gg/BMWKgZSXqJ)
+[![Follow @trwitter handle](https://img.shields.io/twitter/follow/Knockturn_io.svg?style=flat-square)](https://twitter.com/intent/follow?screen_name=ortis95)
 
 
 ## DefiKingdoms contract
@@ -17,7 +19,6 @@ The use of any trade name or trademark is for identification and reference purpo
 - Delegating ONE to our Harmony node **one1s7v3eq6l03zvjlt4h05pz8l6nmq306hyqf6hk0**
 - Delegating ADA to our [Cardano node [KTA]](https://pooltool.io/pool/991a64a6e3d866f4af4e0a2bfd61c15486a47ccc352e61e8a6b4fef8) **991a64a6e3d866f4af4e0a2bfd61c15486a47ccc352e61e8a6b4fef8**
 - Making a donation to **0xA68fBfa3E0c86D1f3fF071853df6DAe8753095E2**
-
 
 <br/>
 
@@ -39,7 +40,7 @@ The owner of a hero can be retrieved with the method `get_owner`
 
 
 ### Profile contract
-The profile contract is accessible with [profile/profile.py](https://github.com/0rtis/dfk/blob/master/profile/profile.py)
+The profile contract is accessible with [profile/profile_v2.py](https://github.com/0rtis/dfk/blob/master/profile/profile_v2.py)
 
 #### Quickstart
 [profile_example.py](https://github.com/0rtis/dfk/blob/master/profile_example.py)

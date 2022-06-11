@@ -1,8 +1,7 @@
 import logging
 import json
 import sys
-import profile.profile as profiles
-
+import profile.profile_v2 as profiles
 
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'

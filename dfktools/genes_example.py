@@ -2,10 +2,9 @@ import logging
 from web3 import Web3
 import sys
 import time
-import hero.hero as heroes
 import hero.utils.utils as hero_utils
-import genes.gene_science_v2 as genes_v2
-
+import genes.gene_science_v2 as genes_v2, hero.hero_core as heroes
+from defikingdoms import realm as realm
 
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
@@ -18,8 +17,8 @@ if __name__ == "__main__":
     logger.info("Using RPC server " + rpc_server)
     w3 = Web3(Web3.HTTPProvider(rpc_server))
 
-    hero1 = heroes.get_hero(1, rpc_server)
-    hero2 = heroes.get_hero(2, rpc_server)
+    hero1 = heroes.get_hero(heroes.SERENDALE_CONTRACT_ADDRESS, 1, rpc_server)
+    hero2 = heroes.get_hero(heroes.SERENDALE_CONTRACT_ADDRESS, 2, rpc_server)
 
     crystal_id = 404404
     bnum = w3.eth.block_number

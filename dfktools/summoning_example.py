@@ -2,7 +2,6 @@ import logging
 import sys
 import summoning.summoning as summoning
 
-
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
 

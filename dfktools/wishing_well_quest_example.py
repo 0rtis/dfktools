@@ -1,8 +1,6 @@
 import logging
 import sys
 import quests.wishing_well as wishing_well
-from web3 import Web3
-import time
 
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'

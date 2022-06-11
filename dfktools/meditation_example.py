@@ -4,7 +4,6 @@ import sys
 import time
 import meditation.meditation as meditation
 
-
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
 
@@ -28,11 +27,11 @@ if __name__ == "__main__":
     hero_id = 1
     required_runes = meditation.get_required_runes(level, rpc_server)
     meditation.start_meditation(1, meditation.stat2id('strength'), meditation.stat2id('endurance'), meditation.stat2id('luck'),
-                               meditation.ZERO_ADDRESS, private_key, w3.eth.getTransactionCount(account_address),
-                               gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
+                                meditation.ZERO_ADDRESS, private_key, w3.eth.getTransactionCount(account_address),
+                                gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
     hero_meditation = meditation.get_hero_meditation(hero_id, rpc_server)
     logger.info("Pending meditation "+str(hero_meditation))
     time.sleep(5)
     meditation.complete_meditation(hero_id, private_key, w3.eth.getTransactionCount(account_address),
-                                  gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
+                                   gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
 

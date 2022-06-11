@@ -1,8 +1,8 @@
 import logging
 import sys
+import hero.utils.utils as hero_utils
 import auctions.hero.sale_auctions as hero_sales
 import auctions.hero.rent_auctions as hero_rental
-import hero.utils.utils as hero_utils
 from auctions.auction import Auction
 import auctions.land as land_auction
 import auctions.utils.utils as auction_utils
@@ -17,7 +17,7 @@ if __name__ == "__main__":
     rpc_server = 'https://api.harmony.one'
     logger.info("Using RPC server " + rpc_server)
 
-    graphql = 'http://graph3.defikingdoms.com/subgraphs/name/defikingdoms/apiv5'
+    graphql = 'https://defi-kingdoms-community-api-gateway-co06z8vi.uc.gateway.dev/graphql'
 
     auctions = hero_sales.get_open_auctions(graphql, 0, 10)
     logger.info("Hero sale auctions:")
@@ -32,13 +32,13 @@ if __name__ == "__main__":
         logger.info(str(auction))
 
     # serendale hero auction
-    logger.info(hero_sales.get_auction(hero_sales.SERENDALE_CONTRACT_ADDRESS, 181373, 'https://api.harmony.one'))
+    #logger.info(hero_sales.get_auction(hero_sales.SERENDALE_CONTRACT_ADDRESS, 181373, 'https://api.harmony.one'))
     # hero_sales.bid_hero(hero_sales.SERENDALE_CONTRACT_ADDRESS, 181373, hero_sales.ether2wei(100), 'prv key', 'nonce', 50, 30)
 
 
     # crystalvale hero auction
-    cv_hero_auctions = Auction(hero_sales.CRYSTLAVALE_CONTRACT_ADDRESS, 'https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc', logger)
-    logger.info(auction_utils.human_readable_auction(cv_hero_auctions.get_auction(hero_utils.sd2cv_cv_hero_id(250))))
+    #cv_hero_auctions = Auction(hero_sales.CRYSTLAVALE_CONTRACT_ADDRESS, 'https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc', logger)
+    #logger.info(auction_utils.human_readable_auction(cv_hero_auctions.get_auction(hero_utils.sd2cv_cv_hero_id(250))))
     # cv_hero_auctions.bid_hero(hero_utils.sd2cv_cv_hero_id(250), hero_sales.ether2wei(100), 'prv key', 'nonce', 50, 30)
 
 

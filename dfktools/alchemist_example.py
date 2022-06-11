@@ -4,7 +4,6 @@ from web3 import Web3
 import dex.erc20 as erc20
 import alchemist.alchemist as alchemist
 
-
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
 

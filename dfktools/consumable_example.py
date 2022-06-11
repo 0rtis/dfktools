@@ -3,7 +3,6 @@ import sys
 from web3 import Web3
 import consumable.consumable as consumable
 
-
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
 

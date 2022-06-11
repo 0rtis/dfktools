@@ -13,7 +13,7 @@ class Auction:
 
     def create_auction(self, token_id, starting_price_wei, ending_price_wei, duration, winner, private_key, nonce, gas_price_gwei, tx_timeout_seconds):
         return auction_core.create_auction(self.auction_address, token_id, starting_price_wei, ending_price_wei, duration, winner, private_key, nonce, gas_price_gwei,
-                         tx_timeout_seconds, self.rpc_address, self.logger)
+                                           tx_timeout_seconds, self.rpc_address, self.logger)
 
     def cancel_auction(self, token_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds):
         return auction_core.cancel_auction(self.auction_address, token_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, self.rpc_address, self.logger)

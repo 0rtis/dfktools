@@ -1,14 +1,11 @@
 import logging
 import sys
-import time
 from web3 import Web3
 import dex.uniswap_v2_factory as market_place_factory
-import dex.uniswap_v2_router as market_place_router
 import dex.master_gardener as gardens
 import dex.uniswap_v2_pair as pool
 import dex.utils.utils as utils
 import dex.erc20 as erc20
-import dex.item_erc1155 as erc1155
 
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
@@ -32,12 +29,16 @@ if __name__ == "__main__":
     liquidity_pool_symbol = liquidity_pool.symbol()
     liquidity_pool_token0_address = liquidity_pool.token_0()
     liquidity_pool_token0 = erc20.symbol(liquidity_pool_token0_address, rpc_server)
-    logger.info(liquidity_pool_token0 + " user balance:\t" + str(erc20.wei2eth(w3, erc20.balance_of(user_address, liquidity_pool_token0_address, rpc_server))))
-    logger.info(liquidity_pool_token0 + " pool balance:\t" + str(erc20.wei2eth(w3, erc20.balance_of(liquidity_pool_address, liquidity_pool_token0_address, rpc_server))))
+    logger.info(liquidity_pool_token0 + " user balance:\t" + str(
+        erc20.wei2eth(w3, erc20.balance_of(user_address, liquidity_pool_token0_address, rpc_server))))
+    logger.info(liquidity_pool_token0 + " pool balance:\t" + str(
+        erc20.wei2eth(w3, erc20.balance_of(liquidity_pool_address, liquidity_pool_token0_address, rpc_server))))
     liquidity_pool_token1_address = liquidity_pool.token_1()
     liquidity_pool_token1 = erc20.symbol(liquidity_pool_token1_address, rpc_server)
-    logger.info(liquidity_pool_token1 + " user balance:\t" + str(erc20.wei2eth(w3, erc20.balance_of(user_address, liquidity_pool_token1_address, rpc_server))))
-    logger.info(liquidity_pool_token1 + " pool balance:\t" + str(erc20.wei2eth(w3, erc20.balance_of(liquidity_pool_address, liquidity_pool_token1_address, rpc_server))))
+    logger.info(liquidity_pool_token1 + " user balance:\t" + str(
+        erc20.wei2eth(w3, erc20.balance_of(user_address, liquidity_pool_token1_address, rpc_server))))
+    logger.info(liquidity_pool_token1 + " pool balance:\t" + str(
+        erc20.wei2eth(w3, erc20.balance_of(liquidity_pool_address, liquidity_pool_token1_address, rpc_server))))
     amount_token1 = 1
     amount_token0 = erc20.wei2eth(w3, liquidity_pool.expected_amount0(erc20.eth2wei(w3, amount_token1)))
     logger.info(liquidity_pool_symbol + " " + liquidity_pool_token0 + "-" + liquidity_pool_token1 + " @ " + str(amount_token0) + " " + liquidity_pool_token0 + " per " + liquidity_pool_token1)
@@ -53,11 +54,12 @@ if __name__ == "__main__":
     staking_pool_token1 = erc20.symbol(staking_pool.token_1(), rpc_server)
     staking_pool_total_supply = staking_pool.total_supply()
     logger.info(staking_pool_symbol + " " + staking_pool_token0 + "-" + staking_pool_token1 + ", total supply="
-                + str(erc20.wei2eth(w3,staking_pool_total_supply)))
+                + str(erc20.wei2eth(w3, staking_pool_total_supply)))
     staking_pool_user = utils.human_readable_user_info(staking_pool.user_info(user_address))
     staking_pool_balance = gardens.Garden.user_info_lp_balance(staking_pool_user)
     staking_pool_share = staking_pool_balance/staking_pool_total_supply
-    logger.info("LP staked user balance:\t" + str(erc20.wei2eth(w3, staking_pool_balance)) + " (pool share " + str(round(100 * staking_pool_share, 2)) + "%)")
+    logger.info("LP staked user balance:\t" + str(
+        erc20.wei2eth(w3, staking_pool_balance)) + " (pool share " + str(round(100 * staking_pool_share, 2)) + "%)")
 
     # Swap JEWEL for ONE
     #private_key = None #set private key of to swap coin from

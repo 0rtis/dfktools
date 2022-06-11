@@ -1,5 +1,4 @@
 from . import hero_core
-from .utils import utils as hero_utils
 
 
 class Hero:

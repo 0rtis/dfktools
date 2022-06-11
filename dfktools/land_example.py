@@ -3,7 +3,6 @@ import sys
 import land.utils.utils as land_utils
 import land.land as land
 
-
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
 
