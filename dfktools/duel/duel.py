@@ -85,6 +85,62 @@ def get_duel_history(address,rpc_address):
     return duels
 
 
+def get_active_duels(address,rpc_address):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+    contract_entry = contract.functions.getActiveDuels(Web3.toChecksumAddress(address)).call()
+
+    duels = []
+
+    for item in contract_entry:
+        duel = {}
+        if(item[0] == 0): break;
+        duel['id'] = item[0]
+        duel['player1'] = str(item[1])
+        duel['player2'] = str(item[2])
+        duel['player1DuelEntry'] = item[3]
+        duel['player2DuelEntry'] = item[4]
+        duel['winner'] = str(item[5])
+        duel['player1Heroes'] = item[6]
+        duel['player2Heroes'] = item[7]
+        duel['startBlock'] = item[8]
+        duel['duelType'] = item[9]
+        duel['status'] = item[10]
+
+        duels.append(duel)
+
+    return duels
+
+
+def get_challenges(address,rpc_address):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+    contract_entry = contract.functions.getChallenges(Web3.toChecksumAddress(address)).call()
+
+    duels = []
+
+    for item in contract_entry:
+        duel = {}
+        if(item[0] == 0): break;
+        duel['id'] = item[0]
+        duel['player1'] = str(item[1])
+        duel['player2'] = str(item[2])
+        duel['player1DuelEntry'] = item[3]
+        duel['player2DuelEntry'] = item[4]
+        duel['winner'] = str(item[5])
+        duel['player1Heroes'] = item[6]
+        duel['player2Heroes'] = item[7]
+        duel['startBlock'] = item[8]
+        duel['duelType'] = item[9]
+        duel['status'] = item[10]
+
+        duels.append(duel)
+
+    return duels
+
+
 def get_duel_index_p1(duel_id,rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
