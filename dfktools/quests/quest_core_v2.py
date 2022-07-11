@@ -1,6 +1,7 @@
 from web3 import Web3
 
-CONTRACT_ADDRESS = '0xAa9a289ce0565E4D6548e63a441e7C084E6B52F6'
+SERENDALE_CONTRACT_ADDRESS = '0xAa9a289ce0565E4D6548e63a441e7C084E6B52F6'
+CRYSTALVALE_CONTRACT_ADDRESS = '0xE9AbfBC143d7cef74b5b793ec5907fa62ca53154'
 
 ABI = """
         [
@@ -61,16 +62,21 @@ ABI = """
         """
 
 
-def block_explorer_link(txid):
-    return 'https://explorer.harmony.one/tx/' + str(txid)
+def block_explorer_link(contract_address, txid):
+    if contract_address == SERENDALE_CONTRACT_ADDRESS:
+        return 'https://explorer.harmony.one/tx/' + str(txid)
+    elif contract_address == CRYSTALVALE_CONTRACT_ADDRESS:
+        return 'https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/tx/' + str(txid)
+    else:
+        return str(txid)
 
 
-def start_quest(quest_address, hero_ids, attempts, level, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def start_quest(contract_address, quest_address, hero_ids, attempts, level, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     #logger.info("Starting quest with hero ids " + str(hero_ids))
@@ -92,12 +98,12 @@ def start_quest(quest_address, hero_ids, attempts, level, private_key, nonce, ga
     return tx_receipt
 
 
-def start_quests(quest_addresses, hero_idss, attempts, levels, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def start_quests(contract_address, quest_addresses, hero_idss, attempts, levels, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     tx = contract.functions.multiStartQuest(quest_addresses, hero_idss, attempts, levels).buildTransaction(
@@ -118,12 +124,12 @@ def start_quests(quest_addresses, hero_idss, attempts, levels, private_key, nonc
     return tx_receipt
 
 
-def complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def complete_quest(contract_address ,hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     tx = contract.functions.completeQuest(hero_id).buildTransaction(
@@ -143,10 +149,10 @@ def complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_secon
     return tx_receipt
 
 
-def parse_complete_quest_receipt(tx_receipt, rpc_address):
+def parse_complete_quest_receipt(contract_address, tx_receipt, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     quest_result = {}
@@ -160,12 +166,12 @@ def parse_complete_quest_receipt(tx_receipt, rpc_address):
     return quest_result
 
 
-def cancel_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def cancel_quest(contract_address, hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     tx = contract.functions.cancelQuest(hero_id).buildTransaction(
@@ -185,12 +191,12 @@ def cancel_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds
     return tx_receipt
 
 
-def cancel_quests(hero_ids, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def cancel_quests(contract_address, hero_ids, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     tx = contract.functions.multiCancelQuest(hero_ids).buildTransaction(
@@ -210,29 +216,29 @@ def cancel_quests(hero_ids, private_key, nonce, gas_price_gwei, tx_timeout_secon
     return tx_receipt
 
 
-def hero_to_quest_id(hero_id, rpc_address):
+def hero_to_quest_id(contract_address, hero_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.heroToQuest(hero_id).call()
 
     return result
 
 
-def get_active_quest(address, rpc_address):
+def get_active_quest(contract_address, address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.getAccountActiveQuests(address).call()
 
     return result
 
 
-def get_hero_quest(hero_id, rpc_address):
+def get_hero_quest(contract_address, hero_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.getHeroQuest(hero_id).call()
 
@@ -242,20 +248,20 @@ def get_hero_quest(hero_id, rpc_address):
     return result
 
 
-def get_quests(rpc_address):
+def get_quests(contract_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.getQuestContracts().call()
 
     return result
 
 
-def get_quest(quest_id, rpc_address):
+def get_quest(contract_address, quest_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.getQuest(quest_id).call()
 
@@ -265,40 +271,40 @@ def get_quest(quest_id, rpc_address):
     return result
 
 
-def is_quest(address, rpc_address):
+def is_quest(contract_address, address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.isQuest(address).call()
 
     return result
 
 
-def get_quest_data(quest_id, rpc_address):
+def get_quest_data(contract_address, quest_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.getQuestData(quest_id).call()
 
     return result
 
 
-def quest_address_to_type(quest_address, rpc_address):
+def quest_address_to_type(contract_address, quest_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.questAddressToType(quest_address).call()
 
     return result
 
 
-def get_current_stamina(hero_id, rpc_address):
+def get_current_stamina(contract_address, hero_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.getCurrentStamina(hero_id).call()
 
