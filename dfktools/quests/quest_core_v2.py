@@ -1,7 +1,7 @@
 from web3 import Web3
 
 SERENDALE_CONTRACT_ADDRESS = '0xAa9a289ce0565E4D6548e63a441e7C084E6B52F6'
-#CRYSTALVALE_CONTRACT_ADDRESS = '0xE9AbfBC143d7cef74b5b793ec5907fa62ca53154'
+CRYSTALVALE_CONTRACT_ADDRESS = '0xE9AbfBC143d7cef74b5b793ec5907fa62ca53154'
 
 ABI = """
         [
@@ -89,7 +89,7 @@ def start_quest(contract_address, quest_address, hero_ids, attempts, level, priv
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(contract_address ,signed_tx.hash.hex()) + " to be mined")
 
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
@@ -115,7 +115,7 @@ def start_quests(contract_address, quest_addresses, hero_idss, attempts, levels,
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(contract_address ,signed_tx.hash.hex()) + " to be mined")
 
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
@@ -141,7 +141,7 @@ def complete_quest(contract_address ,hero_id, private_key, nonce, gas_price_gwei
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(contract_address ,signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
     logger.info("Transaction mined !")
@@ -183,7 +183,7 @@ def cancel_quest(contract_address, hero_id, private_key, nonce, gas_price_gwei, 
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(contract_address ,signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
     logger.info("Transaction mined !")
@@ -208,7 +208,7 @@ def cancel_quests(contract_address, hero_ids, private_key, nonce, gas_price_gwei
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(contract_address ,signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
     logger.info("Transaction mined !")
