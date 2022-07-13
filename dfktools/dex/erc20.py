@@ -1,6 +1,6 @@
 from web3 import Web3
 
-ITEMS = [
+ITEMS_SERENDALE = [
 	("0x72Cb10C6bfA5624dD07Ef608027E366bd690048F", "JEWEL", "Jewel"),
 	("0xA9cE83507D872C5e1273E745aBcfDa849DAA654F", "XJEWEL", "xJewel"),
 	("0x3a4EDcf3312f44EF027acfd8c21382a5259936e7", "DFKGOLD", "Gold Pile"),
@@ -80,6 +80,47 @@ ITEMS = [
 	("0x4Ff7A020ec1100D36d5C81F3D4815F2e9C704b59", "DFKLWITST", "Lesser Wit Stone")
  ]
 
+ITEMS_CRYSTALVALE = [
+	("0x04b9dA42306B023f3572e106B11D82aAd9D32EBb", "CRYSTAL", "Crystal"),
+	("0x6e7185872bcdf3f7a6cbbe81356e50daffb002d2", "XCRYSTAL", "xCrystal"),
+	("0x4f60a160D8C2DDdaAfe16FCC57566dB84D674BD6", "JEWEL", "Jewel"),
+	("0x77f2656d04E158f915bC22f07B779D94c1DC47Ff", "XJEWEL", "xJEWEL"),
+	("0x576C260513204392F0eC0bc865450872025CB1cA", "DFKGOLD", "DFK Gold"),
+	("0x79fE1fCF16Cc0F7E28b4d7B97387452E3084b6dA", "DFKTEARS", "Gaia's Tears"),
+	("0xB78d5580d6D897DE60E1A942A5C1dc07Bc716943", "DFKAMBRTFY", "Ambertaffy"),
+	("0xA2cef1763e59198025259d76Ce8F9E60d27B17B5", "DFKMILKWEED", "Milkweed"),
+	("0x848Ac8ddC199221Be3dD4e4124c462B806B6C4Fd", "DFKDRKWD", "Darkweed"),
+	("0x0096ffda7A8f8E00e9F8Bbd1cF082c14FA9d642e", "DFKGLDVN", "Goldvein"),
+	("0x3E022D84D397F18743a90155934aBAC421D5FA4C", "DFKSPIDRFRT", "SpiderFruit"),
+	("0x137995beEEec688296B0118131C1052546475fF3", "DFKRGWD", "Ragweed"),
+	("0x473A41e71618dD0709Ba56518256793371427d79", "DFKRDLF", "Redleaf"),
+	("0x60170664b52c035Fcb32CF5c9694b22b47882e5F", "DFKRCKRT", "Rockroot"),
+	("0x0776b936344DE7bd58A4738306a6c76835ce5D3F", "DFKBLUESTEM", "Blue Stem"),
+	("0x97b25DE9F61BBBA2aD51F1b706D4D7C04257f33A", "DFKSWFTHSL", "Swift-Thistle"),
+	("0xe7a1B580942148451E47b92e95aEB8d31B0acA37", "DFKFROSTDRM", "Frost Drum"),
+	("0xBcdD90034eB73e7Aec2598ea9082d381a285f63b", "DFKKNAPROOT", "Knaproot"),
+	("0x80A42Dc2909C0873294c5E359e8DF49cf21c74E4", "DFKSHAGCAP", "Shaggy Caps"),
+	("0xc6030Afa09EDec1fd8e63a1dE10fC00E0146DaF3", "DFKSKNSHADE", "Skunk Shade"),
+	("0x268CC8248FFB72Cd5F3e73A9a20Fa2FF40EfbA61", "DFKBLOATER", "Bloater"),
+	("0x04B43D632F34ba4D4D72B0Dc2DC4B30402e5Cf88", "DFKIRONSCALE", "Ironscale"),
+	("0xc2Ff93228441Ff4DD904c60Ecbc1CfA2886C76eB", "DFKLANTERNEYE", "Lanterneye"),
+	("0x68eE50dD7F1573423EE0Ed9c66Fc1A696f937e81", "DFKREDGILL", "Redgill"),
+	("0x7f46E45f6e0361e7B9304f338404DA85CB94E33D", "DFKSAILFISH", "Sailfish"),
+	("0xd44ee492889C078934662cfeEc790883DCe245f3", "DFKSHIMMERSKIN", "Shimmerskin"),
+	("0xA7CFd21223151700FB82684Cd9c693596267375D", "DFKSILVERFIN", "Silverfin"),
+	("0x3bcb9A3DaB194C6D8D44B424AF383E7Db51C82BD", "DFKFBLOATER", "Frost Bloater"),
+	("0xE7CB27ad646C49dC1671Cb9207176D864922C431", "DFKSPCKLTL", "Speckle Tail"),
+	("0x60A3810a3963f23Fa70591435bbe93BF8786E202", "DFKKINGPNCR", "King Pincer"),
+	("0x6513757978E89e822772c16B60AE033781A29A4F", "DFKTHREEL", "Three Eyed Eel"),
+	("0x75E8D8676d774C9429FbB148b30E304b5542aC3d", "DFKSHVAS", "Shvas Rune"),
+	("0xCd2192521BD8e33559b0CA24f3260fE6A26C28e4", "DFKMOKSHA", "Moksha Rune"),
+	("0xa61Bac689AD6867a605633520D70C49e1dCce853", "DFKBLUEEGG", "Blue Pet Egg"),
+	("0x8D2bC53106063A37bb3DDFCa8CfC1D262a9BDCeB", "DFKGREENEGG", "Green Pet Egg"),
+	("0x7E121418cC5080C96d967cf6A033B0E541935097", "DFKGREGG", "Grey Pet Egg"),
+	("0x72F860bF73ffa3FC42B97BbcF43Ae80280CFcdc3", "DFKYELOWEGG", "Yellow Pet Egg"),
+	("0xf2D479DaEdE7F9e270a90615F8b1C52F3C487bC7", "DFKGOLDEGG", "Golden Egg")
+]
+
 ABI = """
         [
             {"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_symbol","type":"string"}],"stateMutability":"nonpayable","type":"constructor"},
@@ -130,40 +171,56 @@ def eth2wei(w3, eth):
     return w3.toWei(eth, 'ether')
 
 
-def symbol2item(symbol):
+def get_realm_item_list(realm):
+    if realm.lower().strip() == 'serendale':
+        return ITEMS_SERENDALE
+    else:
+        return ITEMS_CRYSTALVALE
+
+
+def symbol2item(symbol, realm='serendale'):
     symbol = symbol.upper().strip()
-    for item in ITEMS:
+    items = get_realm_item_list(realm)
+
+    for item in items:
         if item[1] == symbol:
             return item
     return None
 
 
-def symbol2address(symbol):
+def symbol2address(symbol, realm='serendale'):
     symbol = symbol.upper().strip()
-    for item in ITEMS:
+    items = get_realm_item_list(realm)
+
+    for item in items:
         if item[1] == symbol:
             return item[0]
     return None
 
 
-def address2item(address):
+def address2item(address, realm='serendale'):
     address = address.upper().strip()
-    for item in ITEMS:
+    items = get_realm_item_list(realm)
+
+    for item in items:
         if item[0].upper() == address:
             return item
     return None
 
 
-def address2symbol(address):
+def address2symbol(address, realm='serendale'):
     address = address.upper().strip()
-    for item in ITEMS:
+    items = get_realm_item_list(realm)
+
+    for item in items:
         if item[0].upper() == address:
             return item[1]
     return None
 
 
-def all_items():
-    return ITEMS.copy()
+def all_items(realm='serendale'):
+    items = get_realm_item_list(realm)
+    return items.copy()
 
 
 def symbol(token_address, rpc_address):
