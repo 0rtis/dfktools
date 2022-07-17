@@ -1,5 +1,4 @@
 import logging
-import json
 import sys
 import raffle.raffle_master as raffle_master
 import raffle.utils.utils as raffle_utils

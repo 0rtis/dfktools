@@ -29,7 +29,8 @@ if __name__ == "__main__":
 
     # exchange
     logger.info("Total pet exchange: {}".format(exchange.total_exchanges(rpc_server)))
-    logger.info("Player {} has {} pet exchange pending".format(user, len(exchange.get_user_pet_exchanges(user, rpc_server))))
+    logger.info("Player {} has {} pet exchange pending".format(user, len(
+        exchange.get_user_pet_exchanges(user, rpc_server))))
 
     # hatching
     incubating_eggs = hatcher.get_user_eggs(user, rpc_server)
@@ -48,4 +49,4 @@ if __name__ == "__main__":
 
     hatcher.incubate_egg(0, 2, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout, rpc_server, logger)
     hatcher.crack(404, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout,
-                         rpc_server, logger)
+                  rpc_server, logger)

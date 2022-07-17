@@ -22,7 +22,7 @@ The use of any trade name or trademark is for identification and reference purpo
 <br/>
 
 ### Hero contract
-The hero contract is accessible with [hero/hero.py](https://github.com/0rtis/dfk/blob/master/hero/hero.py)
+The hero contract is accessible with [hero/hero.py](https://github.com/0rtis/dfk/blob/master/src/dfktools/hero/hero.py)
 
 #### Quickstart
 [hero_example.py](https://github.com/0rtis/dfk/blob/master/hero_example.py)
@@ -153,17 +153,17 @@ Use `start_meditation` and `complete_meditation` to level up a hero. Make sure t
 
 
 ### Duel
-All duel contracts are located in module [duel](dfktools/duel)
+All duel contracts are located in module [duel](src/dfktools/duel)
 
 #### Quickstart
-[duel_example.py](dfktools/duel_example.py)
+[duel_example.py](src/dfktools/duel_example.py)
 
 
 ### Raffle master
-All raffle contracts are located in module [raffle](dfktools/raffle)
+All raffle contracts are located in module [raffle](src/dfktools/raffle)
 
 #### Quickstart
-[raffle_example.py](dfktools/raffle_example.py)
+[raffle_example.py](src/dfktools/raffle_example.py)
 
 
 
