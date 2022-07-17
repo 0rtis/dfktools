@@ -6,3 +6,8 @@ __pycache__/
 venv/
 /dist
 *.egg-info/
+
+# package
+/package.sh
+/pyproject.toml
+/setup.cfg

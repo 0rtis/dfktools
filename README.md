@@ -153,6 +153,13 @@ Meditation circle contract is accessible with [meditation/meditation.py](https:/
 Use `start_meditation` and `complete_meditation` to level up a hero. Make sure to have enough rune for the hero's level with `get_required_runes`
 
 
+### Duel
+All duel contracts are located in module [duel](dfktools/duel)
+
+#### Quickstart
+[duel_example.py](dfktools/duel_example.py)
+
+
 ### Raffle master
 All raffle contracts are located in module [raffle](dfktools/raffle)
 
