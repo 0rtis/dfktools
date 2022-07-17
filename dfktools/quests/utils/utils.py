@@ -20,25 +20,44 @@ def human_readable_quest(raw_quest):
 
     quest = {}
     i = 0
-    quest['id'] = raw_quest[i]
-    i = i + 1
-    quest['address'] = raw_quest[i]
-    i = i + 1
-    if isinstance(raw_quest[i], int):
-        quest['level'] = raw_quest[i]  # v2
+
+    if isinstance(raw_quest[i], int): # v2
+        quest['id'] = raw_quest[i]
         i = i + 1
-    quest['heroes'] = raw_quest[i]
-    i = i + 1
-    quest['player'] = raw_quest[i]
-    i = i + 1
-    quest['startTime'] = raw_quest[i]
-    i = i + 1
-    quest['startBlock'] = raw_quest[i]
-    i = i + 1
-    quest['completeAtTime'] = raw_quest[i]
-    i = i + 1
-    quest['attempts'] = raw_quest[i]
-    i = i + 1
-    quest['type'] = parse_type(raw_quest[i])
+        quest['address'] = raw_quest[i]
+        i = i + 1
+        quest['level'] = raw_quest[i]
+        i = i + 1
+        quest['heroes'] = raw_quest[i]
+        i = i + 1
+        quest['player'] = raw_quest[i]
+        i = i + 1
+        quest['startBlock'] = raw_quest[i]
+        i = i + 1
+        quest['startTime'] = raw_quest[i]
+        i = i + 1
+        quest['completeAtTime'] = raw_quest[i]
+        i = i + 1
+        quest['attempts'] = raw_quest[i]
+        i = i + 1
+        quest['type'] = parse_type(raw_quest[i])
+    else:  # TODO:// v1 - remove once old quests have been migrated
+        quest['id'] = raw_quest[i]
+        i = i + 1
+        quest['address'] = raw_quest[i]
+        i = i + 1
+        quest['heroes'] = raw_quest[i]
+        i = i + 1
+        quest['player'] = raw_quest[i]
+        i = i + 1
+        quest['startTime'] = raw_quest[i]
+        i = i + 1
+        quest['startBlock'] = raw_quest[i]
+        i = i + 1
+        quest['completeAtTime'] = raw_quest[i]
+        i = i + 1
+        quest['attempts'] = raw_quest[i]
+        i = i + 1
+        quest['type'] = parse_type(raw_quest[i])
 
     return quest
