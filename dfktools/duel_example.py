@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
     private_key = "" # set private key
     account_address = "0x" # set account address
-    gas_price_gwei = 35
+    gas_price_gwei = 120
     tx_timeout_seconds = 30
     w3 = Web3(Web3.HTTPProvider(rpc_server))
 
