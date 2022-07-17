@@ -12,11 +12,11 @@ def block_explorer_link(txid):
     return 'https://explorer.harmony.one/tx/' + str(txid)
 
 
-def get_duel(id,rpc_address):
+def get_duel(duel_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
-    contract_entry = contract.functions.getDuel(id).call()
+    contract_entry = contract.functions.getDuel(duel_id).call()
 
     duel = {}
     duel['id'] = contract_entry[0]
@@ -34,11 +34,11 @@ def get_duel(id,rpc_address):
     return duel
 
 
-def get_duel_entry(id,rpc_address):
+def get_duel_entry(duel_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
-    contract_entry = contract.functions.getDuelEntry(id).call()
+    contract_entry = contract.functions.getDuelEntry(duel_id).call()
 
     duel = {}
     duel['id'] = contract_entry[0]
@@ -57,7 +57,7 @@ def get_duel_entry(id,rpc_address):
     return duel
 
 
-def get_duel_history(address,rpc_address):
+def get_duel_history(address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
@@ -67,7 +67,8 @@ def get_duel_history(address,rpc_address):
 
     for item in contract_entry:
         duel = {}
-        if(item[0] == 0): break;
+        if item[0] == 0:
+            continue
         duel['id'] = item[0]
         duel['player1'] = str(item[1])
         duel['player2'] = str(item[2])
@@ -85,7 +86,7 @@ def get_duel_history(address,rpc_address):
     return duels
 
 
-def get_active_duels(address,rpc_address):
+def get_active_duels(address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
@@ -95,7 +96,8 @@ def get_active_duels(address,rpc_address):
 
     for item in contract_entry:
         duel = {}
-        if(item[0] == 0): break;
+        if item[0] == 0:
+            continue
         duel['id'] = item[0]
         duel['player1'] = str(item[1])
         duel['player2'] = str(item[2])
@@ -113,7 +115,7 @@ def get_active_duels(address,rpc_address):
     return duels
 
 
-def get_challenges(address,rpc_address):
+def get_challenges(address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
@@ -123,7 +125,8 @@ def get_challenges(address,rpc_address):
 
     for item in contract_entry:
         duel = {}
-        if(item[0] == 0): break;
+        if item[0] == 0:
+            continue
         duel['id'] = item[0]
         duel['player1'] = str(item[1])
         duel['player2'] = str(item[2])
@@ -141,18 +144,18 @@ def get_challenges(address,rpc_address):
     return duels
 
 
-def get_duel_index_p1(duel_id,rpc_address):
+def get_duel_index_p1(duel_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     return contract.functions.getDuelIndexP1(duel_id).call()
 
 
-def getDuelTurns(id,rpc_address):
+def get_duel_turns(duel_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
-    contract_entry = contract.functions.getDuelTurns(id).call()
+    contract_entry = contract.functions.getDuelTurns(duel_id).call()
 
     duels = []
 
@@ -188,7 +191,7 @@ def getDuelTurns(id,rpc_address):
     return duels
 
 
-def get_hero_duel(hero_id,rpc_address):
+def get_hero_duel(hero_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
@@ -217,7 +220,7 @@ def get_highest_score(rpc_address):
     return contract.functions.getHighestScore().call()
 
 
-def get_player_score(address,rpc_address):
+def get_player_score(address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
@@ -238,28 +241,29 @@ def get_total_duels(rpc_address):
     return contract.functions.getTotalDuels().call()
 
 
-def get_total_open_duel_entries(lobby_id,rpc_address):
+def get_total_open_duel_entries(lobby_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     return contract.functions.getTotalOpenDuelEntries(lobby_id).call()
 
 
-def get_total_player_duels(address,rpc_address):
+def get_total_player_duels(address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     return contract.functions.getTotalPlayerDuels(Web3.toChecksumAddress(address)).call()
 
 
-def get_total_player_wins(address,rpc_address):
+def get_total_player_wins(address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     return contract.functions.getTotalPlayerWins(Web3.toChecksumAddress(address)).call()
 
 
-def start_private_duel(type, hero_ids, opponent, background, stat, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def start_private_duel(duel_type, hero_ids, opponent, background, stat, private_key, nonce, gas_price_gwei,
+                       tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
@@ -267,10 +271,11 @@ def start_private_duel(type, hero_ids, opponent, background, stat, private_key, 
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    tx = contract.functions.startPrivateDuel(duel_utils.string2id('type',type), hero_ids, opponent,
-                                             duel_utils.string2id('background',background),
-                                             duel_utils.string2id('stat',stat)
-                                             ).buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    tx = contract.functions.startPrivateDuel(duel_utils.string2id('type', duel_type), hero_ids, opponent,
+                                             duel_utils.string2id('background', background),
+                                             duel_utils.string2id('stat', stat)
+                                             ).buildTransaction(
+        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -285,7 +290,8 @@ def start_private_duel(type, hero_ids, opponent, background, stat, private_key, 
     return tx_receipt
 
 
-def enter_duel_lobby(type, hero_ids, jewel_fee, background, stat, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def enter_duel_lobby(duel_type, hero_ids, jewel_fee, background, stat, private_key, nonce, gas_price_gwei,
+                     tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
@@ -293,10 +299,12 @@ def enter_duel_lobby(type, hero_ids, jewel_fee, background, stat, private_key, n
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    tx = contract.functions.enterDuelLobby(duel_utils.string2id('type',type), hero_ids, w3.toWei(jewel_fee, 'ether'),
-                                             duel_utils.string2id('background',background),
-                                             duel_utils.string2id('stat',stat)
-                                             ).buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    tx = contract.functions.enterDuelLobby(duel_utils.string2id('type', duel_type), hero_ids,
+                                           w3.toWei(jewel_fee, 'ether'),
+                                           duel_utils.string2id('background', background),
+                                           duel_utils.string2id('stat', stat)
+                                           ).buildTransaction(
+        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -319,7 +327,8 @@ def complete_duel(duel_id, private_key, nonce, gas_price_gwei, tx_timeout_second
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    tx = contract.functions.completeDuel(duel_id).buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    tx = contract.functions.completeDuel(duel_id).buildTransaction(
+        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -334,7 +343,8 @@ def complete_duel(duel_id, private_key, nonce, gas_price_gwei, tx_timeout_second
     return tx_receipt
 
 
-def accept_challenge(duel_id, hero_ids, background, stat, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def accept_challenge(duel_id, hero_ids, background, stat, private_key, nonce, gas_price_gwei, tx_timeout_seconds,
+                     rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
@@ -342,9 +352,10 @@ def accept_challenge(duel_id, hero_ids, background, stat, private_key, nonce, ga
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    tx = contract.functions.acceptChallenge(duel_id, hero_ids, duel_utils.string2id('background',background),
-                                             duel_utils.string2id('stat',stat)
-                                             ).buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    tx = contract.functions.acceptChallenge(duel_id, hero_ids, duel_utils.string2id('background', background),
+                                            duel_utils.string2id('stat', stat)
+                                            ).buildTransaction(
+        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)

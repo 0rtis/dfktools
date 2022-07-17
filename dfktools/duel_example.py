@@ -14,7 +14,7 @@ if __name__ == "__main__":
     rpc_server = 'https://api.harmony.one'
     logger.info("Using RPC server " + rpc_server)
 
-    result = duels.get_duel(1,rpc_server)
+    result = duels.get_duel(1, rpc_server)
     logger.info(json.dumps(result, indent=4, sort_keys=False))
 
 
