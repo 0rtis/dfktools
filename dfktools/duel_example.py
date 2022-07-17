@@ -17,12 +17,11 @@ if __name__ == "__main__":
     result = duels.get_duel(1, rpc_server)
     logger.info(json.dumps(result, indent=4, sort_keys=False))
 
-
-    private_key = "" # set private key
-    account_address = "0x" # set account address
+    w3 = Web3(Web3.HTTPProvider(rpc_server))
+    private_key = ""  # set private key
+    account_address = "0x"  # w3.eth.account.privateKeyToAccount(private_key).address
     gas_price_gwei = 120
     tx_timeout_seconds = 30
-    w3 = Web3(Web3.HTTPProvider(rpc_server))
 
 
     # start ranked duel

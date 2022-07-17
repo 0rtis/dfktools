@@ -151,7 +151,7 @@ def parse_complete_quest_receipt(tx_receipt, rpc_address):
 
     quest_result = {}
 
-    quest_reward = contract.events.QuestReward().processReceipt(tx_receipt)
+    quest_reward = contract.events.RewardMinted().processReceipt(tx_receipt)
     quest_result['reward'] = quest_reward
 
     quest_xp = contract.events.QuestXP().processReceipt(tx_receipt)

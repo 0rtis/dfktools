@@ -15,11 +15,11 @@ if __name__ == "__main__":
     rpc_server = 'https://api.harmony.one'
     logger.info("Using RPC server " + rpc_server)
 
+    w3 = Web3(Web3.HTTPProvider(rpc_server))
     private_key = ""  # set private key
-    account_address = "0x"  # set account address
+    account_address = "0x"  # w3.eth.account.privateKeyToAccount(private_key).address
     gas_price_gwei = 115
     tx_timeout_seconds = 30
-    w3 = Web3(Web3.HTTPProvider(rpc_server))
 
     # Get current raffles
     current_raffle = raffle_master.get_current_raffle_data(rpc_server)
