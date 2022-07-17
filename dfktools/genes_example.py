@@ -4,7 +4,6 @@ import sys
 import time
 import hero.utils.utils as hero_utils
 import genes.gene_science_v2 as genes_v2, hero.hero_core as heroes
-from defikingdoms import realm as realm
 
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'

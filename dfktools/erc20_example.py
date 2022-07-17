@@ -16,7 +16,10 @@ if __name__ == "__main__":
 
     w3 = Web3(Web3.HTTPProvider(rpc_server))
 
-    token_address = tokens.symbol2address('JEWEL')
+    realm = 'serendale'
+    serendale_items = tokens.get_realm_item_list(realm)
+    logger.info('{} items in {}'.format(len(serendale_items), realm))
+    token_address = tokens.symbol2address('JEWEL', realm)
     name = tokens.name(token_address, rpc_server)
     symbol = tokens.symbol(token_address, rpc_server)
     decimal = tokens.decimals(token_address, rpc_server)
