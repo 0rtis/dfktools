@@ -22,10 +22,10 @@ The use of any trade name or trademark is for identification and reference purpo
 <br/>
 
 ### Hero contract
-The hero contract is accessible with [hero/hero.py](https://github.com/0rtis/dfk/blob/master/src/dfktools/hero/hero.py)
+The hero contract is accessible with [hero/hero.py](src/dfktools/hero/hero.py)
 
 #### Quickstart
-[hero_example.py](https://github.com/0rtis/dfk/blob/master/hero_example.py)
+[hero_example.py](src/dfktools/hero_example.py)
 
 #### Transfer
 Transfer a hero from one address to another
@@ -39,20 +39,20 @@ The owner of a hero can be retrieved with the method `get_owner`
 
 
 ### Profile contract
-The profile contract is accessible with [profile/profile_v2.py](https://github.com/0rtis/dfk/blob/master/profile/profile_v2.py)
+The profile contract is accessible with [profile/profile_v2.py](src/dfktools/profile/profile_v2.py)
 
 #### Quickstart
-[profile_example.py](https://github.com/0rtis/dfk/blob/master/profile_example.py)
+[profile_example.py](src/dfktools/profile_example.py)
 
 #### In-game profile
 In-game profile can be retrieved with the `get_profile` method
 
 
 ### Summoning contract
-The summoning contract is accessible with [summoning/summoning.py](https://github.com/0rtis/dfk/blob/master/summoning/summoning.py)
+The summoning contract is accessible with [summoning/summoning.py](src/dfktools/summoning/summoning.py)
 
 #### Quickstart
-[summoning_example.py](https://github.com/0rtis/dfk/blob/master/summoning_example.py)
+[summoning_example.py](src/dfktools/summoning_example.py)
 
 #### Create crystal
 Summoning crystal are created with `summon_crystal` method
@@ -69,10 +69,10 @@ Use `is_on_rent` and `get_rent_auction` to monitor auction
 
 
 ### Gene science contract
-The gene science contract is accessible with [genes/gene_science_v2.py](https://github.com/0rtis/dfk/blob/master/genes/gene_science_v2.py)
+The gene science contract is accessible with [genes/gene_science_v2.py](src/dfktools/genes/gene_science_v2.py)
 
 #### Quickstart
-[genes_example.py](https://github.com/0rtis/dfk/blob/master/genes_example.py)
+[genes_example.py](src/dfktools/genes_example.py)
 
 #### Mix genes
 Statistics and visual of summoned hero can be forecasted with the `mix_genes` method.
@@ -80,13 +80,13 @@ Note that `mix_genes` is pseudo random and the resulting traits will be differen
 However, a statistical analysis can be used to optimize the summoning of desirable traits
 
 ### Auction contract
-The hero sale auction contract is accessible with [auctions/hero/sale_auctions.py](https://github.com/0rtis/dfk/blob/master/auctions/hero/sale_auctions.py)
-The hero rent auction contract is accessible with [auctions/hero/rent_auctions.py](https://github.com/0rtis/dfk/blob/master/auctions/hero/rent_auctions.py)
-Generic sale auction (ex: land) contract are accessible with [auctions/auction.py](https://github.com/0rtis/dfk/blob/master/auctions/auction.py)
+The hero sale auction contract is accessible with [auctions/hero/sale_auctions.py](src/dfktools/auctions/hero/sale_auctions.py)
+The hero rent auction contract is accessible with [auctions/hero/rent_auctions.py](src/dfktools/auctions/hero/rent_auctions.py)
+Generic sale auction (ex: land) contract are accessible with [auctions/auction.py](src/dfktools/auctions/auction.py)
 
 #### Quickstart
-[auction_example.py](https://github.com/0rtis/dfk/blob/master/auction_example.py)
-[land_example.py](https://github.com/0rtis/dfk/blob/master/land_example.py)
+[auction_example.py](src/dfktools/auction_example.py)
+[land_example.py](src/dfktools/land_example.py)
 #### Sale auction
 `bid_hero` and `get_auction` interact directly with the contract.
 
@@ -98,10 +98,10 @@ Generic sale auction (ex: land) contract are accessible with [auctions/auction.p
 
 
 ### Quest
-All quest contracts are located in module [quests](https://github.com/0rtis/dfk/blob/master/quests)
+All quest contracts are located in module [quests](src/dfktools/quests)
 
 #### Quickstart
-[quest_example.py](https://github.com/0rtis/dfk/blob/master/quest_example.py)
+[quest_example.py](src/dfktools/quest_example.py)
 
 #### Foraging & Fishing quest
 Each quest requires at least 7 stamina to complete. Check the current stamina of any given hero with `get_current_stamina`.
@@ -118,14 +118,14 @@ Mining quest can be done with up to 6 heroes while only 1 hero at a time can be 
 Uses V1 quest
 
 #### Legacy wishing well quest
-[wishing_well_quest_example.py](https://github.com/0rtis/dfk/blob/master/wishing_well_quest_example.py)
+[wishing_well_quest_example.py](src/dfktools/wishing_well_quest_example.py)
 
 
 ### DEX & tokens
-In game tokens and AMM exchange are available in module [dex](https://github.com/0rtis/dfk/blob/master/dex)
+In game tokens and AMM exchange are available in module [dex](src/dfktools/dex)
 
 #### Quickstart
-[dex_example.py](https://github.com/0rtis/dfk/blob/master/dex_example.py)
+[dex_example.py](src/dfktools/dex_example.py)
 
 #### Balance of token
 Use `dex.erc20.balance_of` to retrieve the balance of an item for the specified address
@@ -143,10 +143,10 @@ Use wrapper class `dex.master_gardener.Garden` to retrieve staking pool info
 
 
 ### Meditation circle
-Meditation circle contract is accessible with [meditation/meditation.py](https://github.com/0rtis/dfk/blob/master/meditation/meditation.py)
+Meditation circle contract is accessible with [meditation/meditation.py](src/dfktools/meditation/meditation.py)
 
 #### Quickstart
-[meditation_example.py](https://github.com/0rtis/dfk/blob/master/meditation_example.py)
+[meditation_example.py](src/dfktools/meditation_example.py)
 
 #### Hero level up
 Use `start_meditation` and `complete_meditation` to level up a hero. Make sure to have enough rune for the hero's level with `get_required_runes`
