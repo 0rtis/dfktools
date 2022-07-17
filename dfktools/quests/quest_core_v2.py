@@ -71,15 +71,14 @@ def block_explorer_link(contract_address, txid):
         return str(txid)
 
 
-def start_quest(contract_address, quest_address, hero_ids, attempts, level, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def start_quest(quest_core_contract_address, quest_address, hero_ids, attempts, level, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(contract_address)
-    contract = w3.eth.contract(contract_address, abi=ABI)
+    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
+    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
-    #logger.info("Starting quest with hero ids " + str(hero_ids))
     tx = contract.functions.startQuest(hero_ids, quest_address, attempts, level).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
@@ -89,7 +88,7 @@ def start_quest(contract_address, quest_address, hero_ids, attempts, level, priv
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction " + block_explorer_link(contract_address ,signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(quest_core_contract_address, signed_tx.hash.hex()) + " to be mined")
 
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
@@ -98,13 +97,13 @@ def start_quest(contract_address, quest_address, hero_ids, attempts, level, priv
     return tx_receipt
 
 
-def start_quests(contract_address, quest_addresses, hero_idss, attempts, levels, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def start_quests(quest_core_contract_address, quest_addresses, hero_idss, attempts, levels, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(contract_address)
-    contract = w3.eth.contract(contract_address, abi=ABI)
+    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
+    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
     tx = contract.functions.multiStartQuest(quest_addresses, hero_idss, attempts, levels).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
@@ -115,7 +114,7 @@ def start_quests(contract_address, quest_addresses, hero_idss, attempts, levels,
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction " + block_explorer_link(contract_address ,signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(quest_core_contract_address, signed_tx.hash.hex()) + " to be mined")
 
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
@@ -124,13 +123,13 @@ def start_quests(contract_address, quest_addresses, hero_idss, attempts, levels,
     return tx_receipt
 
 
-def complete_quest(contract_address ,hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def complete_quest(quest_core_contract_address, hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(contract_address)
-    contract = w3.eth.contract(contract_address, abi=ABI)
+    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
+    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
     tx = contract.functions.completeQuest(hero_id).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
@@ -141,7 +140,7 @@ def complete_quest(contract_address ,hero_id, private_key, nonce, gas_price_gwei
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction " + block_explorer_link(contract_address ,signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(quest_core_contract_address, signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
     logger.info("Transaction mined !")
@@ -149,11 +148,11 @@ def complete_quest(contract_address ,hero_id, private_key, nonce, gas_price_gwei
     return tx_receipt
 
 
-def parse_complete_quest_receipt(contract_address, tx_receipt, rpc_address):
+def parse_complete_quest_receipt(quest_core_contract_address, tx_receipt, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
-    contract = w3.eth.contract(contract_address, abi=ABI)
+    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
+    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
     quest_result = {}
 
@@ -166,13 +165,13 @@ def parse_complete_quest_receipt(contract_address, tx_receipt, rpc_address):
     return quest_result
 
 
-def cancel_quest(contract_address, hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def cancel_quest(quest_core_contract_address, hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(contract_address)
-    contract = w3.eth.contract(contract_address, abi=ABI)
+    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
+    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
     tx = contract.functions.cancelQuest(hero_id).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
@@ -183,7 +182,7 @@ def cancel_quest(contract_address, hero_id, private_key, nonce, gas_price_gwei, 
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction " + block_explorer_link(contract_address ,signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(quest_core_contract_address, signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
     logger.info("Transaction mined !")
@@ -191,13 +190,13 @@ def cancel_quest(contract_address, hero_id, private_key, nonce, gas_price_gwei, 
     return tx_receipt
 
 
-def cancel_quests(contract_address, hero_ids, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def cancel_quests(quest_core_contract_address, hero_ids, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(contract_address)
-    contract = w3.eth.contract(contract_address, abi=ABI)
+    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
+    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
     tx = contract.functions.multiCancelQuest(hero_ids).buildTransaction(
         {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
@@ -208,7 +207,7 @@ def cancel_quests(contract_address, hero_ids, private_key, nonce, gas_price_gwei
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     logger.info(
-        "Waiting for transaction " + block_explorer_link(contract_address ,signed_tx.hash.hex()) + " to be mined")
+        "Waiting for transaction " + block_explorer_link(quest_core_contract_address, signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
     logger.info("Transaction mined !")
@@ -216,20 +215,20 @@ def cancel_quests(contract_address, hero_ids, private_key, nonce, gas_price_gwei
     return tx_receipt
 
 
-def hero_to_quest_id(contract_address, hero_id, rpc_address):
+def hero_to_quest_id(quest_core_contract_address, hero_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(contract_address)
-    contract = w3.eth.contract(contract_address, abi=ABI)
+    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
+    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
     result = contract.functions.heroToQuest(hero_id).call()
 
     return result
 
 
-def get_active_quest(contract_address, address, rpc_address):
+def get_active_quest(quest_core_contract_address, address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
-    contract = w3.eth.contract(contract_address, abi=ABI)
+    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
+    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
     result = contract.functions.getAccountActiveQuests(address).call()
 
     return result
@@ -248,21 +247,21 @@ def get_hero_quest(contract_address, hero_id, rpc_address):
     return result
 
 
-def get_quests(contract_address, rpc_address):
+def get_quests(quest_core_contract_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
-    contract = w3.eth.contract(contract_address, abi=ABI)
+    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
+    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
     result = contract.functions.getQuestContracts().call()
 
     return result
 
 
-def get_quest(contract_address, quest_id, rpc_address):
+def get_quest(quest_core_contract_address, quest_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
-    contract = w3.eth.contract(contract_address, abi=ABI)
+    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
+    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
     result = contract.functions.getQuest(quest_id).call()
 
     if result[0] <= 0:
@@ -271,41 +270,41 @@ def get_quest(contract_address, quest_id, rpc_address):
     return result
 
 
-def is_quest(contract_address, address, rpc_address):
+def is_quest(quest_core_contract_address, address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
-    contract = w3.eth.contract(contract_address, abi=ABI)
+    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
+    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
     result = contract.functions.isQuest(address).call()
 
     return result
 
 
-def get_quest_data(contract_address, quest_id, rpc_address):
+def get_quest_data(quest_core_contract_address, quest_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
-    contract = w3.eth.contract(contract_address, abi=ABI)
+    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
+    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
     result = contract.functions.getQuestData(quest_id).call()
 
     return result
 
 
-def quest_address_to_type(contract_address, quest_address, rpc_address):
+def quest_address_to_type(quest_core_contract_address, quest_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
-    contract = w3.eth.contract(contract_address, abi=ABI)
+    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
+    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
     result = contract.functions.questAddressToType(quest_address).call()
 
     return result
 
 
-def get_current_stamina(contract_address, hero_id, rpc_address):
+def get_current_stamina(quest_core_contract_address, hero_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
-    contract = w3.eth.contract(contract_address, abi=ABI)
+    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
+    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
     result = contract.functions.getCurrentStamina(hero_id).call()
 
     return result
