@@ -1,5 +1,5 @@
 [![GitHub stars](https://img.shields.io/github/stars/0rtis?style=flat-square)](https://github.com/0rtis)
-[![GitHub license](https://img.shields.io/github/license/0rtis/dfk.svg?style=flat-square)](https://github.com/0rtis/dfk/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/0rtis/dfktools.svg?style=flat-square)](https://github.com/0rtis/dfktools/blob/master/LICENSE)
 [![Join Discord](https://img.shields.io/discord/932350221256638564?label=discord)](https://discord.gg/BMWKgZSXqJ)
 [![Follow @twitter handle](https://img.shields.io/twitter/follow/Knockturn_io.svg?style=flat-square)](https://twitter.com/intent/follow?screen_name=ortis95)
 

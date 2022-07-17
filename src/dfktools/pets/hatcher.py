@@ -100,7 +100,6 @@ def total_eggs(rpc_address):
 
 def incubate_egg(egg_type, tier, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     '''
-
     :param egg_type: color of the egg
     :param tier: 0, 1 or 2
     :param private_key:
