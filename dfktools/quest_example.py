@@ -4,7 +4,7 @@ import time
 from web3 import Web3
 import quests.professions.gardening as gardening
 import quests.training.dancing as dancing
-import quests.quest_v2 as quest_v2, quests.quest_v1 as quest_v1
+import quests.quest_v2 as quest_v2, quests.quest_core_v2 as quest_core_v2, quests.quest_v1 as quest_v1
 import quests.utils.utils as quest_utils
 
 ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
@@ -29,8 +29,8 @@ if __name__ == "__main__":
     All quest but gardening & mining should be started with V2
     '''
 
-    questV2 = quest_v2.Quest(rpc_server, logger)
-    quest_contract = dancing.QUEST_CONTRACT_ADDRESS
+    questV2 = quest_v2.Quest(quest_core_v2.SERENDALE_CONTRACT_ADDRESS, rpc_server, logger)
+    quest_contract = dancing.SERENDALE_QUEST_CONTRACT_ADDRESS
     my_heroes_id = [1, 2, 3, 4]
     attempts = 3
     level = 1
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     quest_data = (pool_id, 0, 0, 0, 0, 0, '', '', ZERO_ADDRESS, ZERO_ADDRESS, ZERO_ADDRESS, ZERO_ADDRESS)
     my_gardener_heroes_id = [5]
     attempts = 1
-    questV1.start_quest_with_data(gardening.QUEST_CONTRACT_ADDRESS, quest_data, my_gardener_heroes_id, attempts, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
+    questV1.start_quest_with_data(gardening.SERENDALE_QUEST_CONTRACT_ADDRESS, quest_data, my_gardener_heroes_id, attempts, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
     quest_info = quest_utils.human_readable_quest(questV1.get_hero_quest(my_heroes_id[0]))
 
     logger.info(

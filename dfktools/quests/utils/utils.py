@@ -21,7 +21,7 @@ def human_readable_quest(raw_quest):
     quest = {}
     i = 0
 
-    if isinstance(raw_quest[i], int): # v2
+    if len(raw_quest) == 10:  # v2
         quest['id'] = raw_quest[i]
         i = i + 1
         quest['address'] = raw_quest[i]

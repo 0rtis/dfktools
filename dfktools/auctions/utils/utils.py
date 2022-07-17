@@ -1,7 +1,7 @@
 def human_readable_auction(auction):
     human_readable = {}
     human_readable['seller'] = auction[0]
-    human_readable['id'] = auction[1]
+    human_readable['tokenId'] = auction[1]
     human_readable['startingPrice'] = auction[2]
     human_readable['endingPrice'] = auction[3]
     human_readable['duration'] = auction[4]
