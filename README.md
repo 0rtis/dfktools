@@ -159,3 +159,12 @@ All duel contracts are located in module [duel](dfktools/duel)
 #### Quickstart
 [duel_example.py](dfktools/duel_example.py)
 
+
+### Raffle master
+All raffle contracts are located in module [raffle](dfktools/raffle)
+
+#### Quickstart
+[raffle_example.py](dfktools/raffle_example.py)
+
+
+
