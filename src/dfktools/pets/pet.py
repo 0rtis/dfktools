@@ -112,7 +112,14 @@ def safe_transfer_from(_from, to, egg_id, private_key, nonce, gas_price_gwei, tx
     contract_address = Web3.toChecksumAddress(SERENDALE_CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    tx = contract.functions.safeTransferFrom(_from, to, egg_id).buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    tx = contract.functions.safeTransferFrom(_from, to, egg_id)
+
+    if isinstance(gas_price_gwei, dict):  # dynamic fee
+        tx = tx.buildTransaction(
+            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:  # legacy
+        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -136,7 +143,14 @@ def transfer_from(_from, to, egg_id, private_key, nonce, gas_price_gwei, tx_time
     contract_address = Web3.toChecksumAddress(SERENDALE_CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    tx = contract.functions.transferFrom(_from, to, egg_id).buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    tx = contract.functions.transferFrom(_from, to, egg_id)
+
+    if isinstance(gas_price_gwei, dict):  # dynamic fee
+        tx = tx.buildTransaction(
+            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:  # legacy
+        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)

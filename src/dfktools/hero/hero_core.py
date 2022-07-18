@@ -62,17 +62,20 @@ ABI = """
 
 
 def block_explorer_link(contract_address, txid):
-    if contract_address == SERENDALE_CONTRACT_ADDRESS:
+    if hasattr(contract_address, 'address'):
+        contract_address = str(contract_address.address)
+    contract_address = str(contract_address).upper()
+    if contract_address == SERENDALE_CONTRACT_ADDRESS.upper():
         return 'https://explorer.harmony.one/tx/' + str(txid)
-    elif contract_address == CRYSTALVALE_CONTRACT_ADDRESS:
+    elif contract_address == CRYSTALVALE_CONTRACT_ADDRESS.upper():
         return 'https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/tx/' + str(txid)
     else:
         return str(txid)
 
 
-def transfer(contract_address, hero_id, owner_private_key, owner_nonce, receiver_address, gas_price_gwei, tx_timeout_seconds, rpc_address, logger=None):
+def transfer(contract_address, hero_id, private_key, nonce, receiver_address, gas_price_gwei, tx_timeout_seconds, rpc_address, logger=None):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(owner_private_key)
+    account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
     contract_address = Web3.toChecksumAddress(contract_address)
@@ -85,11 +88,18 @@ def transfer(contract_address, hero_id, owner_private_key, owner_nonce, receiver
     if owner != account.address:
         raise Exception("Owner mismatch")
 
-    tx = contract.functions.transferFrom(owner, receiver_address, hero_id).buildTransaction(
-        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': owner_nonce})
+    tx = contract.functions.transferFrom(owner, receiver_address, hero_id)
+
+    if isinstance(gas_price_gwei, dict):  # dynamic fee
+        tx = tx.buildTransaction(
+            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:  # legacy
+        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+
     if logger is not None:
         logger.debug("Signing transaction")
-    signed_tx = w3.eth.account.sign_transaction(tx, private_key=owner_private_key)
+    signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
     if logger is not None:
         logger.debug("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)

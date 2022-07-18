@@ -57,8 +57,14 @@ def swap(pool_address, amount0_out, amount1_out, to, private_key, nonce, gas_pri
     contract_address = Web3.toChecksumAddress(pool_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    tx = contract.functions.startQuestWithData(amount0_out, amount1_out, to, None).buildTransaction(
-        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    tx = contract.functions.startQuestWithData(amount0_out, amount1_out, to, None)
+
+    if isinstance(gas_price_gwei, dict):  # dynamic fee
+        tx = tx.buildTransaction(
+            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:  # legacy
+        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)

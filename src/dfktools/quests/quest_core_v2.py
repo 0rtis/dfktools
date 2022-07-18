@@ -63,9 +63,12 @@ ABI = """
 
 
 def block_explorer_link(contract_address, txid):
-    if contract_address == SERENDALE_CONTRACT_ADDRESS:
+    if hasattr(contract_address, 'address'):
+        contract_address = str(contract_address.address)
+    contract_address = str(contract_address).upper()
+    if contract_address == SERENDALE_CONTRACT_ADDRESS.upper():
         return 'https://explorer.harmony.one/tx/' + str(txid)
-    elif contract_address == CRYSTALVALE_CONTRACT_ADDRESS:
+    elif contract_address == CRYSTALVALE_CONTRACT_ADDRESS.upper():
         return 'https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/tx/' + str(txid)
     else:
         return str(txid)
@@ -79,8 +82,13 @@ def start_quest(quest_core_contract_address, quest_address, hero_ids, attempts, 
     quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
     contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
-    tx = contract.functions.startQuest(hero_ids, quest_address, attempts, level).buildTransaction(
-        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    if isinstance(gas_price_gwei, dict):   # dynamic fee
+        tx = contract.functions.startQuest(hero_ids, quest_address, attempts, level).buildTransaction(
+            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:   # legacy
+        tx = contract.functions.startQuest(hero_ids, quest_address, attempts, level).buildTransaction(
+            {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)

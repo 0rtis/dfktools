@@ -53,12 +53,17 @@ def open_crystal(crystal_id, owner_private_key, owner_nonce, gas_price_gwei, rpc
     fast_open_crystal(crystal_id, account.address, owner_private_key, owner_nonce, gas_price_gwei, contract, w3, logger)
 
 
-def fast_open_crystal(crystal_id, owner_address, owner_private_key, owner_nonce, gas_price_gwei, contract, w3, logger):
+def fast_open_crystal(crystal_id, owner_address, private_key, nonce, gas_price_gwei, contract, w3, logger):
     w3.eth.default_account = owner_address
-    tx = contract.functions.open(crystal_id).buildTransaction(
-        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': owner_nonce})
+    tx = contract.functions.open(crystal_id)
+    if isinstance(gas_price_gwei, dict):  # dynamic fee
+        tx = tx.buildTransaction(
+            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:  # legacy
+        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
     logger.debug("Signing transaction")
-    signed_tx = w3.eth.account.sign_transaction(tx, private_key=owner_private_key)
+    signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
     logger.debug("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")

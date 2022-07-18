@@ -54,16 +54,22 @@ def block_explorer_link(txid):
     return 'https://explorer.harmony.one/tx/' + str(txid) + ' or https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/tx/' + str(txid)
 
 
-def bid(auction_address, token_id, bid_amount_wei, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def bid(auction_contract_address, token_id, bid_amount_wei, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    auction_contract_address = Web3.toChecksumAddress(auction_address)
-    auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
+    auction_contract_address = Web3.toChecksumAddress(auction_contract_address)
+    contract = w3.eth.contract(auction_contract_address, abi=ABI)
 
-    tx = auction_contract.functions.bid(token_id, bid_amount_wei).buildTransaction(
-        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    tx = contract.functions.bid(token_id, bid_amount_wei)
+
+    if isinstance(gas_price_gwei, dict):   # dynamic fee
+        tx = tx.buildTransaction(
+            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:   # legacy
+        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.info("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)

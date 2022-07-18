@@ -116,7 +116,14 @@ def incubate_egg(egg_type, tier, private_key, nonce, gas_price_gwei, tx_timeout_
     contract_address = Web3.toChecksumAddress(SERENDALE_CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    tx = contract.functions.incubateEgg(egg_type, tier).buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    tx = contract.functions.incubateEgg(egg_type, tier)
+
+    if isinstance(gas_price_gwei, dict):  # dynamic fee
+        tx = tx.buildTransaction(
+            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:  # legacy
+        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -139,7 +146,14 @@ def crack(egg_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_ad
     contract_address = Web3.toChecksumAddress(SERENDALE_CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    tx = contract.functions.crack(egg_id).buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    tx = contract.functions.crack(egg_id)
+
+    if isinstance(gas_price_gwei, dict):  # dynamic fee
+        tx = tx.buildTransaction(
+            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:  # legacy
+        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
