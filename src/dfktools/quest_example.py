@@ -60,5 +60,7 @@ if __name__ == "__main__":
     while time.time() < quest_info['completeAtTime']:
         time.sleep(2)
 
-    questV1.complete_quest(my_gardener_heroes_id[0], private_key, w3.eth.getTransactionCount(account_address),
+    tx_receipt = questV1.complete_quest(my_gardener_heroes_id[0], private_key, w3.eth.getTransactionCount(account_address),
                                       gas_price_gwei, tx_timeout)
+    quest_result = questV1.parse_complete_quest_receipt(tx_receipt)
+    quest_rewards = questV1.parse_quest_rewards(quest_result)

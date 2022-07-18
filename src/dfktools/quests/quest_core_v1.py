@@ -1,4 +1,5 @@
 from web3 import Web3
+from dex import erc20
 
 CONTRACT_ADDRESS = '0x5100bd31b822371108a0f63dcfb6594b9919eaf4'
 
@@ -160,6 +161,9 @@ def parse_complete_quest_receipt(tx_receipt, rpc_address):
     quest_xp = contract.events.QuestXP().processReceipt(tx_receipt)
     quest_result['xp'] = quest_xp
 
+    quest_skill_up = contract.events.QuestSkillUp().processReceipt(tx_receipt)
+    quest_result['skillUp'] = quest_skill_up
+
     return quest_result
 
 
@@ -262,3 +266,60 @@ def get_current_stamina(hero_id, rpc_address):
 
     return result
 
+
+def parse_quest_rewards(realm, quest_results):
+    quest_rewards = {}
+    rewards = quest_results['reward']
+    xps = quest_results['xp']
+    skill_ups = quest_results['skillUp']
+
+    for rew in rewards:
+        hero_id = rew['args']['heroId']
+        item = erc20.address2item(rew['args']['rewardItem'], realm)
+        
+        if item[1] == "JEWEL":
+            qty = rew['args']['itemQuantity'] / 1e18
+        elif item[1] == "DFKGOLD":
+            qty = rew['args']['itemQuantity'] / 1e3
+        else:
+            qty = rew['args']['itemQuantity']
+
+        if not hero_id in quest_rewards:
+            quest_rewards[hero_id] = {
+                "rewards": {},
+                "xpEarned": 0.0,
+                "skillUp": 0.0
+            }
+
+        if not item[1] in quest_rewards[hero_id]["rewards"]:
+            quest_rewards[hero_id]["rewards"][item[1]] = 0
+
+        quest_rewards[hero_id]["rewards"][item[1]] += qty
+
+    for xp in xps:
+        hero_id = xp['args']['heroId']
+        xp_earned = xp['args']['xpEarned']
+
+        if not hero_id in quest_rewards:
+            quest_rewards[hero_id] = {
+                "rewards": {},
+                "xpEarned": 0.0,
+                "skillUp": 0.0
+            }
+
+        quest_rewards[hero_id]["xpEarned"] += xp_earned
+        
+    for su in skill_ups:
+        hero_id = su['args']['heroId']
+        su_earned = su['args']['skillUp']
+
+        if not hero_id in quest_rewards:
+            quest_rewards[hero_id] = {
+                "rewards": {},
+                "xpEarned": 0.0,
+                "skillUp": 0.0
+            }
+
+        quest_rewards[hero_id]["skillUp"] += su_earned
+
+    return quest_rewards

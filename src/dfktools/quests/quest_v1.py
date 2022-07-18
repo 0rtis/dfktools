@@ -5,6 +5,7 @@ class Quest:
     def __init__(self, rpc_address, logger):
         self.rpc_address = rpc_address
         self.logger = logger
+        self.realm = "serendale"
 
     def start_quest(self, quest_address, hero_ids, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds):
         return quest_core_v1.start_quest(quest_address, hero_ids, attempts, private_key, nonce, gas_price_gwei,
@@ -21,6 +22,9 @@ class Quest:
 
     def parse_complete_quest_receipt(self, tx_receipt):
         return quest_core_v1.parse_complete_quest_receipt(tx_receipt, self.rpc_address)
+
+    def parse_quest_rewards(self, quest_results):
+        return quest_core_v1.parse_quest_rewards(self.realm, quest_results)
 
     def cancel_quest(self, hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds):
         return quest_core_v1.cancel_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds,
