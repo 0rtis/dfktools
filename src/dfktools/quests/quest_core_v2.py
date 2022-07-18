@@ -162,6 +162,9 @@ def parse_complete_quest_receipt(quest_core_contract_address, tx_receipt, rpc_ad
     quest_xp = contract.events.QuestXP().processReceipt(tx_receipt)
     quest_result['xp'] = quest_xp
 
+    quest_skill_up = contract.events.QuestSkillUp().processReceipt(tx_receipt)
+    quest_result['skillUp'] = quest_skill_up
+
     return quest_result
 
 
