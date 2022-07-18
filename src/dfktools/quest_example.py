@@ -44,7 +44,8 @@ if __name__ == "__main__":
 
     tx_receipt = questV2.complete_quest(my_heroes_id[0], private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout)
     quest_result = questV2.parse_complete_quest_receipt(tx_receipt)
-    logger.info("Rewards: " + str(quest_result))
+    quest_rewards = quest_utils.human_readable_quest_results(quest_result, very_human=True)
+    logger.info("Rewards: {}".format(str(quest_rewards)))
 
     # gardening quest
     pool_id = 0  # See gardens.master_gardener
@@ -63,4 +64,5 @@ if __name__ == "__main__":
     tx_receipt = questV1.complete_quest(my_gardener_heroes_id[0], private_key, w3.eth.getTransactionCount(account_address),
                                       gas_price_gwei, tx_timeout)
     quest_result = questV1.parse_complete_quest_receipt(tx_receipt)
-    quest_rewards = questV1.parse_quest_rewards(quest_result)
+    quest_rewards = quest_utils.human_readable_quest_results(quest_result, very_human=True)
+    logger.info("Rewards: {}".format(str(quest_rewards)))
