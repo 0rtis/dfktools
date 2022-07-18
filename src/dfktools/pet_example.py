@@ -2,7 +2,7 @@ import logging
 import sys
 from web3 import Web3
 import pets.pet as pet_item
-import pets.hatcher as hatcher
+import pets.hatchery as hatchery
 import pets.exchange as exchange
 import pets.utils.utils as pet_utils
 
@@ -33,11 +33,11 @@ if __name__ == "__main__":
         exchange.get_user_pet_exchanges(user, rpc_server))))
 
     # hatching
-    incubating_eggs = hatcher.get_user_eggs(user, rpc_server)
+    incubating_eggs = hatchery.get_user_eggs(user, rpc_server)
     logger.info("Player {} is incubating {} eggs".format(user, len(incubating_eggs)))
 
-    blue_egg_cost = hatcher.egg_type_costs(0, rpc_server)
-    grey_egg_cost = hatcher.egg_type_costs(1, rpc_server)
+    blue_egg_cost = hatchery.egg_type_costs(0, rpc_server)
+    grey_egg_cost = hatchery.egg_type_costs(1, rpc_server)
     logger.info("Incubating cost of blue egg: {}".format(str(blue_egg_cost)))
     logger.info("Incubating cost of grey egg: {}".format(str(grey_egg_cost)))
 
@@ -47,6 +47,6 @@ if __name__ == "__main__":
     w3 = Web3(Web3.HTTPProvider(rpc_server))
     account_address = w3.eth.account.privateKeyToAccount(private_key).address
 
-    hatcher.incubate_egg(0, 2, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout, rpc_server, logger)
-    hatcher.crack(404, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout,
+    hatchery.incubate_egg(0, 2, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout, rpc_server, logger)
+    hatchery.crack(404, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout,
                   rpc_server, logger)

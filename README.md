@@ -166,13 +166,25 @@ All raffle contracts are located in module [raffle](src/dfktools/raffle)
 [raffle_example.py](src/dfktools/raffle_example.py)
 
 
+### Pets
+All pet related contracts are located in module [pets](src/dfktools/pets)
+
+Use [pet.py](src/dfktools/pets/pet.py) to manage pet NFT
+
+Use [hatchery.py](src/dfktools/pets/hatchery.py) to hatch pet egg
+
+Use [exchange.py](src/dfktools/pets/exchange.py) to exchange 2 pets for an egg
+
+#### Quickstart
+[pet_example.py](src/dfktools/pet_example.py)
+
 ### Bridge
 All bridge contracts are located in module [bridge](src/dfktools/bridge)
 
 **Be careful to not mix up RPCs when dealing with multichain transaction**
 
 #### Quickstart
-[bridge_example.py](src/dfktools/bridge_example.py)
+[bridge_example.py](src/dfktools/bridge_example.py)~~
 
 
 
