@@ -166,4 +166,13 @@ All raffle contracts are located in module [raffle](src/dfktools/raffle)
 [raffle_example.py](src/dfktools/raffle_example.py)
 
 
+### Bridge
+All bridge contracts are located in module [bridge](src/dfktools/bridge)
+
+**Be careful to not mix up RPCs when dealing with multichain transaction**
+
+#### Quickstart
+[bridge_example.py](src/dfktools/bridge_example.py)
+
+
 
