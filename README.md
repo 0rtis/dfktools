@@ -184,7 +184,7 @@ All bridge contracts are located in module [bridge](src/dfktools/bridge)
 **Be careful to not mix up RPCs when dealing with multichain transaction**
 
 #### Quickstart
-[bridge_example.py](src/dfktools/bridge_example.py)~~
+[bridge_example.py](src/dfktools/bridge_example.py)
 
 
 

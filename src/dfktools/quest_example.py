@@ -20,17 +20,32 @@ if __name__ == "__main__":
     crystalvale_rpc_server = 'https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc'
     logger.info("Using RPC servers " + serendale_rpc_server + ", " + crystalvale_rpc_server)
 
-    private_key = None  # set private key
-    gas_price_gwei_serendale = 115
-    gas_price_gwei_crystalvale = {'maxFeePerGas': 2, 'maxPriorityFeePerGas': 2}  # EIP-1559
-    tx_timeout = 30
     w3_serendale = Web3(Web3.HTTPProvider(serendale_rpc_server))
     w3_crystalvale = Web3(Web3.HTTPProvider(crystalvale_rpc_server))
-    account_address = w3_serendale.eth.account.privateKeyToAccount(private_key).address
 
     '''
     All quest but gardening & mining should be started with V2
     '''
+
+    # Parse completeQuest transaction receipt V1
+    tx_receipt = w3_serendale.eth.getTransactionReceipt("0xc1baeecfec4441afba4cfca64f0d80b72be8bf7963faf9a58f92c8f62c1dfba2")
+    quest_result = quest_v1.Quest(serendale_rpc_server, logger).parse_complete_quest_receipt(tx_receipt)
+    quest_rewards = quest_utils.human_readable_quest_results(quest_result, very_human=True)
+    logger.info("Rewards V1: {}".format(str(quest_rewards)))
+
+    # Parse completeQuest transaction receipt V2
+    tx_receipt = w3_serendale.eth.getTransactionReceipt("0x4179a02d5c496248fdabfca945f3c65c9a355e05c7891eccae7aa94bc9ad203c")
+    quest_result = quest_v2.Quest(quest_core_v2.SERENDALE_CONTRACT_ADDRESS, serendale_rpc_server, logger).parse_complete_quest_receipt(tx_receipt)
+    quest_rewards = quest_utils.human_readable_quest_results(quest_result, very_human=True)
+    logger.info("Rewards V2: {}".format(str(quest_rewards)))
+
+    # Full quest flow
+    private_key = None  # set private key
+    gas_price_gwei_serendale = 115
+    gas_price_gwei_crystalvale = {'maxFeePerGas': 2, 'maxPriorityFeePerGas': 2}  # EIP-1559
+    tx_timeout = 30
+
+    account_address = w3_serendale.eth.account.privateKeyToAccount(private_key).address
 
     # Fishing in Crystalvale
     questV2 = quest_v2.Quest(quest_core_v2.CRYSTALVALE_CONTRACT_ADDRESS, crystalvale_rpc_server, logger)

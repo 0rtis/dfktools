@@ -71,8 +71,8 @@ def human_readable_quest_results(quest_results, very_human=False):
 
     for rew in rewards:
         hero_id = rew['args']['heroId']
-        item = rew['args']['rewardItem']
-        qty = rew['args']['itemQuantity']
+        item = rew['args']['rewardItem'] if 'rewardItem' in rew['args'] else rew['args']['reward']
+        qty = rew['args']['itemQuantity'] if 'itemQuantity' in rew['args'] else rew['args']['amount']
 
         if very_human:
             if item.upper() == '0x72Cb10C6bfA5624dD07Ef608027E366bd690048F'.upper()\
