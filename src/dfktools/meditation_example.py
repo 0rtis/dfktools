@@ -2,6 +2,7 @@ import logging
 from web3 import Web3
 import sys
 import time
+import textwrap
 import meditation.meditation as meditation
 
 if __name__ == "__main__":
@@ -32,6 +33,24 @@ if __name__ == "__main__":
     hero_meditation = meditation.get_hero_meditation(hero_id, rpc_server)
     logger.info("Pending meditation "+str(hero_meditation))
     time.sleep(5)
-    meditation.complete_meditation(hero_id, private_key, w3.eth.getTransactionCount(account_address),
+    tx_receipt = meditation.complete_meditation(hero_id, private_key, w3.eth.getTransactionCount(account_address),
                                    gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
+
+    level_up = meditation.parse_meditation_results(tx_receipt, rpc_server)
+                
+    meditation_results_msg = ""
+    for hero_id in level_up:
+        meditation_results_msg += textwrap.dedent(
+    f"""
+    ```
+    Hero: {hero_id}
+        Level: {level_up[hero_id]['new level']}  STAM: +{level_up[hero_id].get("STAM", {}).get("increase", 0)}
+        STR: +{level_up[hero_id].get("STR", {}).get("increase", 0)}  DEX: +{level_up[hero_id].get("DEX", {}).get("increase", 0)}
+        AGI: +{level_up[hero_id].get("AGI", {}).get("increase", 0)}  VIT: +{level_up[hero_id].get("VIT", {}).get("increase", 0)}
+        END: +{level_up[hero_id].get("END", {}).get("increase", 0)}  INT: +{level_up[hero_id].get("INT", {}).get("increase", 0)}
+        WIS: +{level_up[hero_id].get("WIS", {}).get("increase", 0)}  LCK: +{level_up[hero_id].get("LCK", {}).get("increase", 0)}
+    ```""")
+
+    msg = f"Completed level up: {meditation_results_msg}"
+    logger.info(msg)
 
