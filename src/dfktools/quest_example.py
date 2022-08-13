@@ -24,7 +24,7 @@ if __name__ == "__main__":
     w3_crystalvale = Web3(Web3.HTTPProvider(crystalvale_rpc_server))
 
     '''
-    All quest but gardening & mining should be started with V2
+    All quest but Serendale's gardening & mining should be started with V2
     '''
 
     # Parse completeQuest transaction receipt V1
