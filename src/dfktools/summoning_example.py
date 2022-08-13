@@ -1,7 +1,7 @@
 import logging
 import sys
 import time
-from dfktools.summoning import summoning
+import summoning.summoning as summoning
 from web3 import Web3
 
 SD = 'serendale'
@@ -27,7 +27,6 @@ if __name__ == "__main__":
         tx_timeout = 30
         contract_address = summoning.CRYSTALVALE_CONTRACT_ADDRESS
 
-
     logger.info("Using RPC server " + rpc_server)
 
     # All these will need to be customized for your address
@@ -37,9 +36,9 @@ if __name__ == "__main__":
     hero_id_2 = 67890
 
     w3 = Web3(Web3.HTTPProvider(rpc_server))
-    nonce = w3.eth.getTransactionCount( address)
+    nonce = w3.eth.getTransactionCount(address)
 
-    hero_1_tears = 10 # Should be 10 more for every 5 levels attained
+    hero_1_tears = 10  # Should be 10 more for every 5 levels attained
     hero_2_tears = 10 
 
     summoning.summon_crystal(contract_address, hero_id_1, hero_id_2, hero_1_tears, hero_2_tears, private_key, nonce, gas_price_gwei, tx_timeout, rpc_server, logger)
@@ -50,7 +49,4 @@ if __name__ == "__main__":
         time.sleep(20)
         tx_receipt = summoning.open_crystal(contract_address, crystals[0], private_key, nonce, gas_price_gwei, tx_timeout, rpc_server, logger)
         hero_id = summoning.parse_opened_crystal(contract_address, tx_receipt, rpc_server)
-        logger.info("Summoned hero: "+ str(hero_id))
-    
-
-
+        logger.info("Summoned hero: " + str(hero_id))
