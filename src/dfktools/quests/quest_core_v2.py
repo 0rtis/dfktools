@@ -113,8 +113,13 @@ def start_quests(quest_core_contract_address, quest_addresses, hero_idss, attemp
     quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
     contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
-    tx = contract.functions.multiStartQuest(quest_addresses, hero_idss, attempts, levels).buildTransaction(
-        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    if isinstance(gas_price_gwei, dict):  # dynamic fee
+        tx = contract.functions.multiStartQuest(quest_addresses, hero_idss, attempts, levels).buildTransaction(
+            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:  # legacy
+        tx = contract.functions.multiStartQuest(quest_addresses, hero_idss, attempts, levels).buildTransaction(
+            {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -139,8 +144,13 @@ def complete_quest(quest_core_contract_address, hero_id, private_key, nonce, gas
     quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
     contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
-    tx = contract.functions.completeQuest(hero_id).buildTransaction(
-        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    if isinstance(gas_price_gwei, dict):  # dynamic fee
+        tx = contract.functions.completeQuest(hero_id).buildTransaction(
+            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:  # legacy
+        tx = contract.functions.completeQuest(hero_id).buildTransaction(
+            {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -184,8 +194,13 @@ def cancel_quest(quest_core_contract_address, hero_id, private_key, nonce, gas_p
     quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
     contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
-    tx = contract.functions.cancelQuest(hero_id).buildTransaction(
-        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    if isinstance(gas_price_gwei, dict):  # dynamic fee
+        tx = contract.functions.cancelQuest(hero_id).buildTransaction(
+            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:  # legacy
+        tx = contract.functions.cancelQuest(hero_id).buildTransaction(
+            {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -209,8 +224,13 @@ def cancel_quests(quest_core_contract_address, hero_ids, private_key, nonce, gas
     quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
     contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
-    tx = contract.functions.multiCancelQuest(hero_ids).buildTransaction(
-        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+    if isinstance(gas_price_gwei, dict):  # dynamic fee
+        tx = contract.functions.multiCancelQuest(hero_ids).buildTransaction(
+            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:  # legacy
+        tx = contract.functions.multiCancelQuest(hero_ids).buildTransaction(
+            {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
