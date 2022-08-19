@@ -1,6 +1,8 @@
-[![GitHub stars](https://img.shields.io/github/stars/0rtis?style=flat-square)](https://github.com/0rtis)
+
+[![Pypi_repo](https://img.shields.io/pypi/v/dfktools?style=flat-square)](https://pypi.org/project/dfktools/)
 [![GitHub license](https://img.shields.io/github/license/0rtis/dfktools.svg?style=flat-square)](https://github.com/0rtis/dfktools/blob/master/LICENSE)
-[![Join Discord](https://img.shields.io/discord/932350221256638564?label=discord)](https://discord.gg/BMWKgZSXqJ)
+[![GitHub stars](https://img.shields.io/github/stars/0rtis?style=flat-square)](https://github.com/0rtis)
+[![Join Discord](https://img.shields.io/discord/932350221256638564?label=discord&style=flat-square)](https://discord.gg/BMWKgZSXqJ)
 [![Follow @twitter handle](https://img.shields.io/twitter/follow/Knockturn_io.svg?style=flat-square)](https://twitter.com/intent/follow?screen_name=ortis95)
 
 

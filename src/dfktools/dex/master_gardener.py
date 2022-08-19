@@ -2,7 +2,9 @@ from web3 import Web3
 from .uniswap_v2_pair import UniswapV2Pair
 from .utils.utils import human_readable_user_info
 
-CONTRACT_ADDRESS = '0xDB30643c71aC9e2122cA0341ED77d09D5f99F924'
+SERENDALE_CONTRACT_ADDRESS = '0xDB30643c71aC9e2122cA0341ED77d09D5f99F924'
+CRYSTALVALE_CONTRACT_ADDRESS = '0x57Dec9cC7f492d6583c773e2E7ad66dcDc6940Fb'
+
 
 ABI = '''
     [
@@ -88,55 +90,57 @@ ABI = '''
     '''
 
 
-def pool_length(rpc_address):
+def pool_length(contract_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.poolLength().call()
 
 
-def pool_info(pool_id, rpc_address):
+def pool_info(contract_address, pool_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.poolInfo(pool_id).call()
 
 
-def pool_id1(pool_address, rpc_address):
-    '''
+def pool_id1(contract_address, pool_address, rpc_address):
+    """
     Pool id indexed at 1
+    :param contract_address:
     :param pool_address:
     :param rpc_address:
     :return:
-    '''
+    """
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.poolId1(pool_address).call()
 
 
-def user_info(pool_id, user_address, rpc_address):
+def user_info(contract_address, pool_id, user_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.userInfo(pool_id, user_address).call()
 
 
 class Garden:
-    def __init__(self, uniswap_v2_pair, rpc_address, logger):
+    def __init__(self, garden_contract_address, uniswap_v2_pair, rpc_address, logger):
+        self.garden_contract_address = garden_contract_address
         self.uniswap_v2_pair = uniswap_v2_pair
         if type(self.uniswap_v2_pair) != UniswapV2Pair:
             raise Exception("Invalid type for uniswap_v2_pair")
 
-        if not Garden.is_garden(uniswap_v2_pair.address, rpc_address):
+        if not Garden.is_garden(garden_contract_address, uniswap_v2_pair.address, rpc_address):
             raise Exception("Pair " + uniswap_v2_pair.address + " is not a garden")
 
         self.rpc_address = rpc_address
@@ -146,7 +150,7 @@ class Garden:
 
     def id(self):
         if self.id_value is None:
-            self.id_value = pool_id1(self.uniswap_v2_pair.address, self.rpc_address) - 1
+            self.id_value = pool_id1(self.garden_contract_address, self.uniswap_v2_pair.address, self.rpc_address) - 1
         return self.id_value
 
     def symbol(self):
@@ -165,14 +169,14 @@ class Garden:
         return self.uniswap_v2_pair.total_supply()
 
     def user_info(self, address):
-        return user_info(self.id(), address, self.rpc_address)
+        return user_info(self.garden_contract_address, self.id(), address, self.rpc_address)
 
     def balance(self, address):
         return Garden.user_info_lp_balance(self.user_info(address))
 
     @staticmethod
-    def is_garden(pair_address, rpc_address):
-        return pool_id1(pair_address, rpc_address) > 0
+    def is_garden(garden_contract_address, pair_address, rpc_address):
+        return pool_id1(garden_contract_address, pair_address, rpc_address) > 0
 
     @staticmethod
     def user_info_lp_balance(user_info):

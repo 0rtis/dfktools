@@ -142,6 +142,34 @@ def complete_meditation(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_
     return tx_receipt
 
 
+def parse_meditation_results(tx_receipt, rpc_address):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+
+    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    meditation_result = {}
+    level_up = contract.events.LevelUp().processReceipt(tx_receipt)
+    new_level = level_up[0]['args']["hero"][3][3]
+    
+    stat_up = contract.events.StatUp().processReceipt(tx_receipt)
+    
+    for stat in stat_up:
+        hero_id = stat['args']['heroId']
+
+        if hero_id not in meditation_result:
+            meditation_result[hero_id] = {}
+        
+        if not id2stat(stat['args']['stat']) in meditation_result[hero_id]:
+            meditation_result[hero_id][id2stat(stat['args']['stat'])] = {"increase": 0}
+
+        meditation_result[hero_id][id2stat(stat['args']['stat'])]["increase"] += stat['args']['increase']
+
+    meditation_result[hero_id]["new level"] = new_level
+    
+    return meditation_result
+
+
 def get_active_meditations(address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
@@ -203,6 +231,23 @@ def stat2id(label):
         'vitality': 5,
         'endurance': 6,
         'dexterity': 7
+    }
+    return stats.get(label, None)
+
+
+def id2stat(label):
+    stats = {
+        0: 'STR',
+        1: 'AGI',
+        2: 'INT',
+        3: 'WIS',
+        4: 'LCK',
+        5: 'VIT',
+        6: 'END',
+        7: 'DEX',
+        8: 'HP',
+        9: 'MP',
+        10: 'STAMINA'
     }
     return stats.get(label, None)
 
