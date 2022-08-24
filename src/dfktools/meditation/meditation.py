@@ -1,4 +1,5 @@
 from web3 import Web3
+from web3.logs import DISCARD
 
 SERENDALE_CONTRACT_ADDRESS   = '0x0594D86b2923076a2316EaEA4E1Ca286dAA142C1'
 CRYSTALVALE_CONTRACT_ADDRESS = '0xD507b6b299d9FC835a0Df92f718920D13fA49B47'
@@ -166,10 +167,10 @@ def parse_meditation_results(contract_address, tx_receipt, rpc_address):
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     meditation_result = {}
-    level_up = contract.events.LevelUp().processReceipt(tx_receipt)
+    level_up = contract.events.LevelUp().processReceipt(tx_receipt, errors=DISCARD)
     new_level = level_up[0]['args']["hero"][3][3]
     
-    stat_up = contract.events.StatUp().processReceipt(tx_receipt)
+    stat_up = contract.events.StatUp().processReceipt(tx_receipt, errors=DISCARD)
     
     for stat in stat_up:
         hero_id = stat['args']['heroId']
