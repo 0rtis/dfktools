@@ -43,7 +43,7 @@ if __name__ == "__main__":
     # hero_sales.bid_hero(hero_sales.SERENDALE_CONTRACT_ADDRESS, 181373, hero_sales.ether2wei(100), private_key, 'w3.eth.getTransactionCount(account_address), 50, 30)
 
     # crystalvale hero auction
-    #cv_hero_auctions = Auction(hero_sales.CRYSTLAVALE_CONTRACT_ADDRESS, 'https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc', logger)
+    #cv_hero_auctions = Auction(hero_sales.CRYSTALVALE_CONTRACT_ADDRESS, 'https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc', logger)
     #logger.info(auction_utils.human_readable_auction(cv_hero_auctions.get_auction(hero_utils.sd2cv_cv_hero_id(250))))
     # cv_hero_auctions.bid_hero(hero_utils.sd2cv_cv_hero_id(250), hero_sales.ether2wei(100), private_key, w3.eth.getTransactionCount(account_address), 50, 30)
 
