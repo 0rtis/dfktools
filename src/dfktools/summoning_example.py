@@ -67,14 +67,13 @@ if __name__ == "__main__":
     hero_2_tears = tears_for_hero(hero_level_2, hero_rank_2, add_extra_tears=True)
 
     w3 = Web3(Web3.HTTPProvider(rpc_server))
-    nonce = w3.eth.getTransactionCount(address)
 
-    summoning.summon_crystal(contract_address, hero_id_1, hero_id_2, hero_1_tears, hero_2_tears, private_key, nonce, gas_price_gwei, tx_timeout, rpc_server, logger)
+    summoning.summon_crystal(contract_address, hero_id_1, hero_id_2, hero_1_tears, hero_2_tears, private_key, w3.eth.getTransactionCount(address), gas_price_gwei, tx_timeout, rpc_server, logger)
 
     crystals = summoning.get_user_crystal_ids(contract_address, address, rpc_server)
     if crystals:
         logger.info(f"Waiting 20 seconds before opening crystal {crystals[0]}")
         time.sleep(20)
-        tx_receipt = summoning.open_crystal(contract_address, crystals[0], private_key, nonce + 1, gas_price_gwei, tx_timeout, rpc_server, logger)
+        tx_receipt = summoning.open_crystal(contract_address, crystals[0], private_key, w3.eth.getTransactionCount(address), gas_price_gwei, tx_timeout, rpc_server, logger)
         hero_id = summoning.parse_opened_crystal(contract_address, tx_receipt, rpc_server)
         logger.info("Summoned hero: " + str(hero_id))
