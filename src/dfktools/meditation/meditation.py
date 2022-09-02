@@ -1,7 +1,7 @@
 from web3 import Web3
 from web3.logs import DISCARD
 
-SERENDALE_CONTRACT_ADDRESS   = '0x0594D86b2923076a2316EaEA4E1Ca286dAA142C1'
+SERENDALE_CONTRACT_ADDRESS = '0x0594D86b2923076a2316EaEA4E1Ca286dAA142C1'
 CRYSTALVALE_CONTRACT_ADDRESS = '0xD507b6b299d9FC835a0Df92f718920D13fA49B47'
 
 ABI = """[
@@ -90,16 +90,16 @@ def add_attunement_crystal(contract_address, address, rpc_address):
     return contract.functions.addAttunementCrystal(address).call()
 
 
-def start_meditation(contract_address, hero_id, stat1, stat2, stat3, attunement_crystal_address, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def start_meditation(contract_address, hero_id, trait1, trait2, trait3, attunement_crystal_address, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
 
-    if type(stat1) == str:
-        stat1 = stat2id(stat1)
+    if type(trait1) == str:
+        trait1 = trait2id(trait1)
 
-    if type(stat2) == str:
-        stat2 = stat2id(stat2)
+    if type(trait2) == str:
+        trait2 = trait2id(trait2)
 
-    if type(stat3) == str:
-        stat3 = stat2id(stat3)
+    if type(trait3) == str:
+        trait3 = trait2id(trait3)
 
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
@@ -108,7 +108,7 @@ def start_meditation(contract_address, hero_id, stat1, stat2, stat3, attunement_
     contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    tx = contract.functions.startMeditation(hero_id, stat1, stat2, stat3, attunement_crystal_address)
+    tx = contract.functions.startMeditation(hero_id, trait1, trait2, trait3, attunement_crystal_address)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
         tx = tx.buildTransaction(
@@ -171,7 +171,8 @@ def parse_meditation_results(contract_address, tx_receipt, rpc_address):
     new_level = level_up[0]['args']["hero"][3][3]
     
     stat_up = contract.events.StatUp().processReceipt(tx_receipt, errors=DISCARD)
-    
+
+    hero_id = None
     for stat in stat_up:
         hero_id = stat['args']['heroId']
 
@@ -183,7 +184,8 @@ def parse_meditation_results(contract_address, tx_receipt, rpc_address):
 
         meditation_result[hero_id][id2stat(stat['args']['stat'])]["increase"] += stat['args']['increase']
 
-    meditation_result[hero_id]["new level"] = new_level
+    if hero_id:
+        meditation_result[hero_id]["new level"] = new_level
     
     return meditation_result
 
@@ -239,7 +241,7 @@ def profile_active_meditations(contract_address, address, id, rpc_address):
     return contract.functions.profileActiveMeditations(address, id).call()
 
 
-def stat2id(label):
+def trait2id(label):
     stats = {
         'strength': 0,
         'agility': 1,
@@ -270,7 +272,7 @@ def id2stat(label):
     return stats.get(label, None)
 
 
-def xp_per_Level(level):
+def xp_per_level(level):
     next_level = level + 1
     if level < 6:
         return next_level * 1000

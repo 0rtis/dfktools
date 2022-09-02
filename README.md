@@ -23,6 +23,17 @@ The use of any trade name or trademark is for identification and reference purpo
 
 <br/>
 
+### Code guidelines
+1. Indent with Tab
+2. 1 empty line within a function, 2 empty lines between function
+3. Use *trait(s)* to name any or all of the 8 value `strength, agility, intelligence, wisdom, luck, vitality, endurance, dexterity`
+4. Use *stat(s)* as a generic term for all the characteristics of a hero (traits + HP, MP, stamina, etc)
+5. A function should support all the realms
+6. All hardcoded addresses should be [CheckSummed](https://ethsum.netlify.app/)
+7. Use `logging`, not `print`
+8. No other third-party libraries (if really needed, please explain why in the PR)
+9. A short & meaningful comment is superior to a long & unfathomable documentation
+
 ### Hero contract
 The hero contract is accessible with [hero/hero.py](src/dfktools/hero/hero.py)
 
