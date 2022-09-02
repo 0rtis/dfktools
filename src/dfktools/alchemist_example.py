@@ -14,11 +14,11 @@ if __name__ == "__main__":
     rpc_server = 'https://api.harmony.one'
     logger.info("Using RPC server " + rpc_server)
 
-    stamina_vial_address = Web3.toChecksumAddress(erc20.symbol2address('DFKSTMNPTN', 'serendale'))
+    stamina_vial_address = erc20.symbol2address('DFKSTMNPTN', 'serendale')
 
     # request recipe for one potion
     potion = alchemist.get_potion(alchemist.SERENDALE_CONTRACT_ADDRESS, stamina_vial_address, rpc_server)
-    potion_id = alchemist.address_to_potion_id(alchemist.SERENDALE_CONTRACT_ADDRESS, '0x24Bb3844552AcdeE1f11f2E267CBd43929D6a17D', rpc_server)
+    potion_id = alchemist.address_to_potion_id(alchemist.SERENDALE_CONTRACT_ADDRESS, potion['address'], rpc_server)
     logger.info("Potion id " + str(potion_id) + ": " +str(potion))
 
     # request recipe for all potions

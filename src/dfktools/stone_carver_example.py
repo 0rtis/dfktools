@@ -8,7 +8,7 @@ import stone_carver.stone_carver as stone_carver
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
 
-    logger = logging.getLogger("DFK-alchemist")
+    logger = logging.getLogger("DFK-stone-carver")
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
@@ -16,8 +16,7 @@ if __name__ == "__main__":
     logger.info("Using RPC server " + rpc_server)
 
     lesser_chaos_stone = erc20.symbol2item('DFKLCHSST', 'serendale')
-    lesser_chaos_stone_address = Web3.toChecksumAddress(erc20.symbol2address('DFKLCHSST', 'serendale'))
-
+    lesser_chaos_stone_address = erc20.symbol2address('DFKLCHSST', 'serendale')
 
     # Request recipe for one Stone
     stone = stone_carver.get_recipe(lesser_chaos_stone_address, stone_carver.SERENDALE_CONTRACT_ADDRESS, rpc_server)
@@ -30,7 +29,6 @@ if __name__ == "__main__":
     # Displays Working until Timestamp / whether SC is currently working
     working = stone_carver.working_until(stone_carver.SERENDALE_CONTRACT_ADDRESS, rpc_server)
     logger.info(f"Working until: {working} / Currently Working: {True if time.time() < working else False}")
-
 
     # Crafting Lesser Chaos Stone
     w3 = Web3(Web3.HTTPProvider(rpc_server))

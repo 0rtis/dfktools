@@ -1,8 +1,8 @@
 import sys
 from web3 import Web3
 
-SERENDALE_IDS = ['serendale']
-CRYSTALVALE_IDS = ['crystalvale']
+SERENDALE_IDS = ['serendale', 'sd']
+CRYSTALVALE_IDS = ['crystalvale', 'cv']
 
 ITEMS_SERENDALE = [
     ("0x72Cb10C6bfA5624dD07Ef608027E366bd690048F", "JEWEL", "Jewel"),
