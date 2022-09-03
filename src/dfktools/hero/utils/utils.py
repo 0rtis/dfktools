@@ -52,18 +52,36 @@ visual_traits = {
 }
 
 stat_traits = {
-    0: 'class',
-    1: 'subClass',
-    2: 'profession',
-    3: 'passive1',
-    4: 'passive2',
-    5: 'active1',
-    6: 'active2',
-    7: 'statBoost1',
-    8: 'statBoost2',
-    9: 'statsUnknown1',
-    10: 'element',
-    11: 'statsUnknown2'
+    0: "class",
+    1: "subClass",
+    2: "profession",
+    3: "passive1",
+    4: "passive2",
+    5: "active1",
+    6: "active2",
+    7: "statBoost1",
+    8: "statBoost2",
+    9: "statsUnknown1",
+    10: "element",
+    11: "statsUnknown2"
+}
+
+ability_traits = {
+    0: "basic1",
+    1: "basic2",
+    2: "basic3",
+    3: "basic4",
+    4: "basic5",
+    5: "basic6",
+    6: "basic7",
+    7: "basic8",
+    16: "advanced1",
+    17: "advanced2",
+    18: "advanced3",
+    19: "advanced4",
+    24: "elite1",
+    25: "elite2",
+    28: "transcendant1"
 }
 
 professions = {
@@ -132,6 +150,13 @@ def parse_stat(id):
     return value
 
 
+def parse_ability(id):
+    value = ability_traits.get(id, None)
+    if FAIL_ON_NOT_FOUND and value is None:
+        raise Exception("Ability not found")
+    return value
+
+
 def parse_element(id):
     value = elements.get(id, None)
     if FAIL_ON_NOT_FOUND and value is None:
@@ -189,10 +214,10 @@ def parse_stat_trait(trait):
 
     stats['profession'] = parse_profession(stats['profession'])
 
-    stats['passive1'] = parse_class(stats['passive1'])
-    stats['passive2'] = parse_class(stats['passive2'])
-    stats['active1'] = parse_class(stats['active1'])
-    stats['active2'] = parse_class(stats['active2'])
+    stats['passive1'] = parse_ability(stats['passive1'])
+    stats['passive2'] = parse_ability(stats['passive2'])
+    stats['active1'] = parse_ability(stats['active1'])
+    stats['active2'] = parse_ability(stats['active2'])
 
     stats['statBoost1'] = parse_stat(stats['statBoost1'])
     stats['statBoost2'] = parse_stat(stats['statBoost2'])
