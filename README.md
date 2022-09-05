@@ -21,18 +21,20 @@ The use of any trade name or trademark is for identification and reference purpo
 - Delegating ADA to our [Cardano node [KTA]](https://pooltool.io/pool/991a64a6e3d866f4af4e0a2bfd61c15486a47ccc352e61e8a6b4fef8) **991a64a6e3d866f4af4e0a2bfd61c15486a47ccc352e61e8a6b4fef8**
 - Making a donation to **0xA68fBfa3E0c86D1f3fF071853df6DAe8753095E2**
 
-<br/>
 
 ### Code guidelines
 1. Indent with Tab
 2. 1 empty line within a function, 2 empty lines between function
 3. Use *trait(s)* to name any or all of the 8 value `strength, agility, intelligence, wisdom, luck, vitality, endurance, dexterity`
-4. Use *stat(s)* as a generic term for all the characteristics of a hero (traits + HP, MP, stamina, etc)
-5. A function should support all the realms
-6. All hardcoded addresses should be [CheckSummed](https://ethsum.netlify.app/)
-7. Use `logging`, not `print`
-8. No other third-party libraries (if really needed, please explain why in the PR)
-9. A short & meaningful comment is superior to a long & unfathomable documentation
+4. Use *ability(ies)* to name any or all of the 4 value `passive1, passive2, active1, active2`
+5. Use *stat(s)* as a generic term for any or all the characteristics of a hero (traits, abilities, HP, MP, stamina, etc)
+6. A function should support all realms, except if contracts differs across realms
+7. All hardcoded addresses should be [CheckSummed](https://ethsum.netlify.app/)
+8. Use `logging`, not `print`
+9. No other third-party libraries (if really needed, please explain why in the PR)
+10. A short & meaningful comment is superior to a long & unfathomable documentation
+
+<br/>
 
 ### Hero contract
 The hero contract is accessible with [hero/hero.py](src/dfktools/hero/hero.py)
