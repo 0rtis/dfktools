@@ -34,11 +34,11 @@ def get_duel(duel_id, rpc_address):
     return duel
 
 
-def get_duel_entry(duel_id, rpc_address):
+def get_duel_entry(duel_entry_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
-    contract_entry = contract.functions.getDuelEntry(duel_id).call()
+    contract_entry = contract.functions.getDuelEntry(duel_entry_id).call()
 
     duel = {}
     duel['id'] = contract_entry[0]
