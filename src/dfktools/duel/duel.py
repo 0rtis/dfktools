@@ -34,11 +34,11 @@ def get_duel(duel_id, rpc_address):
     return duel
 
 
-def get_duel_entry(duel_id, rpc_address):
+def get_duel_entry(duel_entry_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
-    contract_entry = contract.functions.getDuelEntry(duel_id).call()
+    contract_entry = contract.functions.getDuelEntry(duel_entry_id).call()
 
     duel = {}
     duel['id'] = contract_entry[0]
@@ -49,8 +49,8 @@ def get_duel_entry(duel_id, rpc_address):
     duel['scoreAfter'] = contract_entry[5]
     duel['jewelFee'] = contract_entry[6]
     duel['duelId'] = contract_entry[7]
-    duel['custom1'] = contract_entry[8]
-    duel['custom2'] = contract_entry[9]
+    duel['background'] = duel_utils.id2string('background', contract_entry[8])
+    duel['stat'] = duel_utils.id2string('stat', contract_entry[9])
     duel['duelType'] = contract_entry[10]
     duel['status'] = contract_entry[11]
 
@@ -164,8 +164,8 @@ def get_duel_turns(duel_id, rpc_address):
         duel['turn'] = item[0]
         duel['player1HeroId'] = item[1]
         duel['player2HeroId'] = item[2]
-        duel['stat'] = item[3]
-        duel['background'] = item[4]
+        duel['stat'] = duel_utils.id2string('stat', item[3])
+        duel['background'] = duel_utils.id2string('background', item[4])
 
         hero1Score = {}
         hero1Score['roll'] = item[5][0]

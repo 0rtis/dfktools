@@ -36,3 +36,14 @@ def string2id(attr, label):
         return stat.get(label, None)
 
     return None
+
+
+def id2string(attr, label):
+    if attr == "type":
+        return [k for k, v in type.items() if v == label][0]
+    elif attr == 'background':
+        return [k for k, v in background.items() if v == label][0]
+    elif attr == 'stat':
+        return [k for k, v in stat.items() if v == label][0]
+
+    return None
