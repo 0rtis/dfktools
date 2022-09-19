@@ -72,7 +72,7 @@ if __name__ == "__main__":
     quest_data = (pool_id, 0, 0, 0, 0, 0, '', '', ZERO_ADDRESS, ZERO_ADDRESS, ZERO_ADDRESS, ZERO_ADDRESS)
     my_gardener_heroes_id = [5]
     attempts = 1
-    questV1.start_quest_with_data(gardening.SERENDALE_QUEST_CONTRACT_ADDRESS, quest_data, my_gardener_heroes_id, attempts, private_key, w3_serendale.eth.getTransactionCount(account_address), gas_price_gwei_serendale, tx_timeout)
+    questV1.start_quest_with_data(gardening.SERENDALE_QUEST_CONTRACT_ADDRESS_V1, quest_data, my_gardener_heroes_id, attempts, private_key, w3_serendale.eth.getTransactionCount(account_address), gas_price_gwei_serendale, tx_timeout)
     quest_info = quest_utils.human_readable_quest(questV1.get_hero_quest(my_heroes_id[0]))
 
     logger.info(

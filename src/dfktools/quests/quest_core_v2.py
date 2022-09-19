@@ -288,35 +288,12 @@ def get_quests(quest_core_contract_address, rpc_address):
     return result
 
 
-def get_quest(quest_core_contract_address, quest_id, rpc_address):
-    w3 = Web3(Web3.HTTPProvider(rpc_address))
-
-    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
-    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
-    result = contract.functions.getQuest(quest_id).call()
-
-    if result[0] <= 0:
-        return None
-
-    return result
-
-
 def is_quest(quest_core_contract_address, address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
     quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
     contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
     result = contract.functions.isQuest(address).call()
-
-    return result
-
-
-def get_quest_data(quest_core_contract_address, quest_id, rpc_address):
-    w3 = Web3(Web3.HTTPProvider(rpc_address))
-
-    quest_core_contract_address = Web3.toChecksumAddress(quest_core_contract_address)
-    contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
-    result = contract.functions.getQuestData(quest_id).call()
 
     return result
 

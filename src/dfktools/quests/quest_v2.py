@@ -35,12 +35,6 @@ class Quest:
     def get_hero_quest(self, hero_id):
         return quest_core_v2.get_hero_quest(self.quest_core_contract_address, hero_id, self.rpc_address)
 
-    def get_quest(self, quest_id):
-        return quest_core_v2.get_quest(self.quest_core_contract_address, quest_id, self.rpc_address)
-
-    def get_quest_data(self, quest_id):
-        return quest_core_v2.get_quest_data(self.quest_core_contract_address, quest_id, self.rpc_address)
-
     def quest_address_to_type(self, quest_address):
         return quest_core_v2.quest_address_to_type(self.quest_core_contract_address, quest_address, self.rpc_address)
 
