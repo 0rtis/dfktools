@@ -40,62 +40,64 @@ def block_explorer_link(txid):
     return 'https://explorer.harmony.one/tx/' + str(txid)
 
 
-def weth(router_contract, rpc_address):
-    '''
+def weth(router_contract_address, rpc_address):
+    """
     Return the wrapped address of the native token of the blockchain
+    :param router_contract_address:
     :param rpc_address:
     :return:
-    '''
+    """
 
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(router_contract)
+    contract_address = Web3.toChecksumAddress(router_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.WETH().call()
 
 
-def factory(router_contract, rpc_address):
+def factory(router_contract_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(router_contract)
+    contract_address = Web3.toChecksumAddress(router_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.factory().call()
 
 
-def quote(router_contract, amount_a, reserve_a, reserve_b, rpc_address):
+def quote(router_contract_address, amount_a, reserve_a, reserve_b, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(router_contract)
+    contract_address = Web3.toChecksumAddress(router_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.quote(amount_a, reserve_a, reserve_b).call()
 
 
-def get_amount_in(router_contract, amount_out, reserve_in, reserve_out, rpc_address):
+def get_amount_in(router_contract_address, amount_out, reserve_in, reserve_out, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(router_contract)
+    contract_address = Web3.toChecksumAddress(router_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.getAmountIn(amount_out, reserve_in, reserve_out).call()
 
 
-def get_amount_out(router_contract, amount_in, reserve_in, reserve_out, rpc_address):
+def get_amount_out(router_contract_address, amount_in, reserve_in, reserve_out, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(router_contract)
+    contract_address = Web3.toChecksumAddress(router_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.getAmountOut(amount_in, reserve_in, reserve_out).call()
 
 
-def swap_exact_tokens_for_tokens(router_contract, amount_in, amount_out_min, path, to, deadline, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
-    '''
+def swap_exact_tokens_for_tokens(router_contract_address, amount_in, amount_out_min, path, to, deadline, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+    """
     Swaps an exact amount of input tokens for as many output tokens as possible, along the route determined by the
     path. The first element of path is the input token, the last is the output token, and any intermediate elements
-    represent intermediate pairs to trade through (if, for example, a direct pair does not exist).
+    represent intermediate pairs to trade through (if, for example, a direct pair does not exist)
+    :param router_contract_address:
     :param amount_in:
     :param amount_out_min:
     :param path:
@@ -108,12 +110,12 @@ def swap_exact_tokens_for_tokens(router_contract, amount_in, amount_out_min, pat
     :param rpc_address:
     :param logger:
     :return:
-    '''
+    """
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(router_contract)
+    contract_address = Web3.toChecksumAddress(router_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     if isinstance(gas_price_gwei, dict):
         tx = contract.functions.swapExactTokensForTokens(amount_in, amount_out_min, path, to, deadline).buildTransaction(
@@ -138,11 +140,12 @@ def swap_exact_tokens_for_tokens(router_contract, amount_in, amount_out_min, pat
     return tx_receipt
 
 
-def swap_exact_tokens_for_eth(router_contract, amount_in, amount_out_min, path, to, deadline, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
-    '''
+def swap_exact_tokens_for_eth(router_contract_address, amount_in, amount_out_min, path, to, deadline, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+    """
     Swaps an exact amount of tokens for as much ETH as possible, along the route determined by the path.
     The first element of path is the input token, the last must be WETH, and any intermediate elements represent
-     intermediate pairs to trade through (if, for example, a direct pair does not exist).
+     intermediate pairs to trade through (if, for example, a direct pair does not exist)
+    :param router_contract_address:
     :param amount_in:
     :param amount_out_min:
     :param path:
@@ -155,12 +158,12 @@ def swap_exact_tokens_for_eth(router_contract, amount_in, amount_out_min, path, 
     :param rpc_address:
     :param logger:
     :return:
-    '''
+    """
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(router_contract)
+    contract_address = Web3.toChecksumAddress(router_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     if isinstance(gas_price_gwei, dict):
