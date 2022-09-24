@@ -1,6 +1,7 @@
 from web3 import Web3
 
-CONTRACT_ADDRESS = "0x38e76972bd173901b5e5e43ba5cb464293b80c31"
+SERENDALE_CONTRACT_ADDRESS = "0x38e76972bd173901b5e5e43ba5cb464293b80c31"
+CRYSTALVALE_CONTRACT_ADDRESS = "0xc9A9F352Aa188f422A8f8902B547FB3E59D37210"
 
 ABI = '''
 	[
@@ -11,17 +12,25 @@ ABI = '''
 '''
 
 
-def block_explorer_link(txid):
-    return 'https://explorer.harmony.one/tx/' + str(txid)
+def block_explorer_link(contract_address, txid):
+    if hasattr(contract_address, 'address'):
+        contract_address = str(contract_address.address)
+    contract_address = str(contract_address).upper()
+    if contract_address == SERENDALE_CONTRACT_ADDRESS.upper():
+        return 'https://explorer.harmony.one/tx/' + str(txid)
+    elif contract_address == CRYSTALVALE_CONTRACT_ADDRESS.upper():
+        return 'https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/tx/' + str(txid)
+    else:
+        return str(txid)
 
 
-def consume_item(consumable_address, hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address,
+def consume_item(consumable_contract_address, consumable_address, hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address,
                  logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(consumable_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     tx = contract.functions.consumeItem(consumable_address, hero_id)
@@ -38,7 +47,7 @@ def consume_item(consumable_address, hero_id, private_key, nonce, gas_price_gwei
     logger.debug("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
-    logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+    logger.info("Waiting for transaction " + block_explorer_link(consumable_contract_address, signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
     logger.info("Transaction mined !")

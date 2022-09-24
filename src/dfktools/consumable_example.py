@@ -22,4 +22,4 @@ if __name__ == "__main__":
     tx_timeout_seconds = 30
 
     hero_id = 1
-    consumable.consume_item(stamina_vial_address, hero_id, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
+    consumable.consume_item(consumable.SERENDALE_CONTRACT_ADDRESS, stamina_vial_address, hero_id, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
