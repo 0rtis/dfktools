@@ -3,6 +3,7 @@
 [![GitHub license](https://img.shields.io/github/license/0rtis/dfktools.svg?style=flat-square)](https://github.com/0rtis/dfktools/blob/master/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/0rtis?style=flat-square)](https://github.com/0rtis)
 [![Join Discord](https://img.shields.io/discord/932350221256638564?label=discord&style=flat-square)](https://discord.gg/BMWKgZSXqJ)
+[![Join Discord](https://img.shields.io/discord/889216073906405507?label=discord&style=flat-square)](https://discord.gg/JvfPpV7but)
 [![Follow @twitter handle](https://img.shields.io/twitter/follow/Knockturn_io.svg?style=flat-square)](https://twitter.com/intent/follow?screen_name=ortis95)
 
 
@@ -21,6 +22,7 @@ The use of any trade name or trademark is for identification and reference purpo
 - Delegating ADA to our [Cardano node [KTA]](https://pooltool.io/pool/991a64a6e3d866f4af4e0a2bfd61c15486a47ccc352e61e8a6b4fef8) **991a64a6e3d866f4af4e0a2bfd61c15486a47ccc352e61e8a6b4fef8**
 - Making a donation to **0xA68fBfa3E0c86D1f3fF071853df6DAe8753095E2**
 
+*Need help ? Join the [GameFi Developers Discord](https://discord.gg/JvfPpV7but)*
 
 ### Code guidelines
 1. Indent with Tab
