@@ -16,6 +16,7 @@ CRYSTALVALE_QUEST_CONTRACT_ADDRESSES_V2 = [
     (13, 'BTC.b-USDC', '0x045838dBfb8026520E872c8298F4Ed542B81Eaca')
 ]
 
+
 def get_crystalvale_contract_info(address):
     address = str(address).upper()
     for addr in CRYSTALVALE_QUEST_CONTRACT_ADDRESSES_V2:
@@ -23,11 +24,13 @@ def get_crystalvale_contract_info(address):
             return addr
     return None
 
+
 def get_cv_pool_id_contract_address(pool_id):
     for addr in CRYSTALVALE_QUEST_CONTRACT_ADDRESSES_V2:
         if addr[0] == pool_id:
             return addr[2]
     return None
+
 
 def get_cv_liquidity_pair_contract_address(liquidity_pair):
     for addr in CRYSTALVALE_QUEST_CONTRACT_ADDRESSES_V2:
