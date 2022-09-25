@@ -85,3 +85,22 @@ if __name__ == "__main__":
     quest_result = questV1.parse_complete_quest_receipt(tx_receipt)
     quest_rewards = quest_utils.human_readable_quest_results(quest_result, very_human=True)
     logger.info("Rewards: {}".format(str(quest_rewards)))
+
+    # Gardening in Crystalvale
+    questV2 = quest_v2.Quest(quest_core_v2.CRYSTALVALE_CONTRACT_ADDRESS, crystalvale_rpc_server, logger)
+    quest_contract = gardening.get_cv_pool_id_contract_address(0) # pool_id or use get_cv_liquidity_pair_contract_address('wJEWEL-xJEWEL')
+    my_heroes_id = [1, 2]
+    attempts = 1
+    level = 0
+    questV2.start_quest(quest_contract, my_heroes_id, attempts, level, private_key, w3_crystalvale.eth.getTransactionCount(account_address), gas_price_gwei_crystalvale, tx_timeout)
+    quest_info = quest_utils.human_readable_quest(questV2.get_hero_quest(my_heroes_id[0]))
+
+    logger.info(
+        "Waiting " + str(quest_info['completeAtTime'] - time.time()) + " secs to complete quest " + str(quest_info))
+    while time.time() < quest_info['completeAtTime']:
+        time.sleep(2)
+
+    tx_receipt = questV2.complete_quest(my_heroes_id[0], private_key, w3_crystalvale.eth.getTransactionCount(account_address), gas_price_gwei_crystalvale, tx_timeout)
+    quest_result = questV2.parse_complete_quest_receipt(tx_receipt)
+    quest_rewards = quest_utils.human_readable_quest_results(quest_result, very_human=True)
+    logger.info("Rewards: {}".format(str(quest_rewards)))
