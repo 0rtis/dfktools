@@ -1,6 +1,7 @@
 from web3 import Web3
 
 SERENDALE_CONTRACT_ADDRESS = '0xeaF833A0Ae97897f6F69a728C9c17916296cecCA'
+CRYSTALVALE_CONTRACT_ADDRESS = '0x50142D9e3FA508C424B3ef37BD195b4086CC3DCA'
 
 ABI = '''
     [
@@ -39,43 +40,51 @@ ABI = '''
     '''
 
 
-def block_explorer_link(txid):
-    return 'https://explorer.harmony.one/tx/' + str(txid)
+def block_explorer_link(contract_address, txid):
+    if hasattr(contract_address, 'address'):
+        contract_address = str(contract_address.address)
+    contract_address = str(contract_address).upper()
+    if contract_address == SERENDALE_CONTRACT_ADDRESS.upper():
+        return 'https://explorer.harmony.one/tx/' + str(txid)
+    elif contract_address == CRYSTALVALE_CONTRACT_ADDRESS.upper():
+        return 'https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/tx/' + str(txid)
+    else:
+        return str(txid)
 
 
-def get_pet_exchange(exchange_id, rpc_address):
+def get_pet_exchange(contract_address, exchange_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(SERENDALE_CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.getPetExchange(exchange_id).call()
 
 
-def get_user_pet_exchanges(account, rpc_address):
+def get_user_pet_exchanges(contract_address, account, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(SERENDALE_CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.getUserPetExchanges(account).call()
 
 
-def total_exchanges(rpc_address):
+def total_exchanges(contract_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(SERENDALE_CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.totalExchanges().call()
 
 
-def start_exchange(pet_id_1, pet_id_2, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def start_exchange(contract_address, pet_id_1, pet_id_2, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
 
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
-    contract_address = Web3.toChecksumAddress(SERENDALE_CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     tx = contract.functions.startExchange(pet_id_1, pet_id_2)
@@ -92,7 +101,7 @@ def start_exchange(pet_id_1, pet_id_2, private_key, nonce, gas_price_gwei, tx_ti
     logger.debug("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
-    logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+    logger.info("Waiting for transaction " + block_explorer_link(contract_address, signed_tx.hash.hex()) + " to be mined")
 
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
@@ -101,12 +110,12 @@ def start_exchange(pet_id_1, pet_id_2, private_key, nonce, gas_price_gwei, tx_ti
     return tx_receipt
 
 
-def complete_exchange(exchange_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def complete_exchange(contract_address, exchange_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
 
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(private_key)
     w3.eth.default_account = account.address
-    contract_address = Web3.toChecksumAddress(SERENDALE_CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     tx = contract.functions.completeExchange(exchange_id)
@@ -123,7 +132,7 @@ def complete_exchange(exchange_id, private_key, nonce, gas_price_gwei, tx_timeou
     logger.debug("Sending transaction " + str(tx))
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
-    logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+    logger.info("Waiting for transaction " + block_explorer_link(contract_address, signed_tx.hash.hex()) + " to be mined")
 
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
