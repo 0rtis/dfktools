@@ -28,9 +28,8 @@ if __name__ == "__main__":
         last_names = hero_utils.parse_names(f.read())
     logger.info("Hero last name loaded")
 
+    '''
     serendale_heroes = Hero(hero_core.SERENDALE_CONTRACT_ADDRESS, 'https://api.harmony.one', logger)
-
-
     #serendale_heroes.transfer(1, 'private key of the owner', 'next nonce of owner account', 'receiver address', 45, 30)
 
     for i in range(1, 10):
@@ -39,9 +38,10 @@ if __name__ == "__main__":
         hero = serendale_heroes.get_hero(i)
         readable_hero = serendale_heroes.human_readable_hero(hero, male_first_names, female_first_names, last_names)
         logger.info(json.dumps(readable_hero, indent=4, sort_keys=False) + "\n Owned by " + owner)
-
+    '''
     crystalvale_heroes = Hero(hero_core.CRYSTALVALE_CONTRACT_ADDRESS,
                               'https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc', logger)
+
 
     for i in range(1, 10):
         logger.info("Processing crystalvale hero #" + str(i))
