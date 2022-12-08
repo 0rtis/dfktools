@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "dfktools"
 description = "A toolbox for DefiKingdoms"
 authors = [{name = "Ortis", email = "ortis@ortis.io"}]
-version = "0.1.6"
+version = "0.2.0"
 readme = "README.md"
 keywords = ["blockchain", "web3", "NFT", "etherum", "game"]
 license = {file = "LICENSE"}
