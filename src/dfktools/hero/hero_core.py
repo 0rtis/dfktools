@@ -4,6 +4,7 @@ from .utils import utils as hero_utils
 
 SERENDALE_CONTRACT_ADDRESS = '0x5F753dcDf9b1AD9AabC1346614D1f4746fd6Ce5C'
 CRYSTALVALE_CONTRACT_ADDRESS = '0xEb9B61B145D6489Be575D3603F4a704810e143dF'
+SERENDALE2_CONTRACT_ADDRESS = '0x268CC8248FFB72Cd5F3e73A9a20Fa2FF40EfbA61'
 
 
 ABI = """
@@ -69,6 +70,8 @@ def block_explorer_link(contract_address, txid):
         return 'https://explorer.harmony.one/tx/' + str(txid)
     elif contract_address == CRYSTALVALE_CONTRACT_ADDRESS.upper():
         return 'https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/tx/' + str(txid)
+    elif contract_address == SERENDALE2_CONTRACT_ADDRESS.upper():
+        return 'https://scope.klaytn.com/tx/' + str(txid)
     else:
         return str(txid)
 

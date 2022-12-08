@@ -6,6 +6,7 @@ FAIL_ON_NOT_FOUND = False
 ALPHABET = '123456789abcdefghijkmnopqrstuvwx'
 
 CRYSTALEVALE_HERO_OFFSET = 1_000_000_000_000
+SERENDALE2_HERO_OFFSET = 2_000_000_000_000
 
 rarity = {
     0: "common",
@@ -26,13 +27,17 @@ _class = {
     7: "pirate",
     8: "berserker",
     9: "seer",
+    10: "legionnaire",
+    11: "scholar",
     16: "paladin",
     17: "darkknight",
     18: "summoner",
     19: "ninja",
     20: "shapeshifter",
+    21: "bard",
     24: "dragoon",
     25: "sage",
+    26: "spellbow",
     28: "dreadknight"
 }
 
@@ -120,6 +125,13 @@ def cv2sd_cv_hero_id(cv_hero_id):
 
 def sd2cv_cv_hero_id(cv_hero_id):
     return cv_hero_id + CRYSTALEVALE_HERO_OFFSET
+
+def sd22sd_sd2_hero_id(sd2_hero_id):
+    return sd2_hero_id - SERENDALE2_HERO_OFFSET
+
+
+def sd2sd2_sd2_hero_id(sd2_hero_id):
+    return sd2_hero_id + SERENDALE2_HERO_OFFSET
 
 
 def parse_rarity(id):

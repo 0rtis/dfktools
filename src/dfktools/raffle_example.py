@@ -11,8 +11,9 @@ if __name__ == "__main__":
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
-    rpc_server = 'https://api.harmony.one'
+    rpc_server = 'https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc'
     logger.info("Using RPC server " + rpc_server)
+    realm_contract_address = raffle_master.CRYSTALVALE_CONTRACT_ADDRESS
 
     w3 = Web3(Web3.HTTPProvider(rpc_server))
     private_key = ""  # set private key
@@ -21,7 +22,7 @@ if __name__ == "__main__":
     tx_timeout_seconds = 30
 
     # Get current raffles
-    current_raffle = raffle_master.get_current_raffle_data(rpc_server)
+    current_raffle = raffle_master.get_current_raffle_data(realm_contract_address, rpc_server)
 
     raffle_log = "Current raffle:"
     for r in current_raffle[0]:
@@ -34,7 +35,7 @@ if __name__ == "__main__":
     logger.info(raffle_type_log)
 
     # Get raffle by id
-    raffle_by_id = raffle_master.get_raffle_list([1, 2], rpc_server)
+    raffle_by_id = raffle_master.get_raffle_list(realm_contract_address, [1, 2], rpc_server)
     raffle_by_id_log = "Getting raffle by ids:"
     for r in raffle_by_id:
         raffle_by_id_log = raffle_by_id_log + "\n\t" + str(raffle_utils.human_readable_raffle(r))
@@ -42,10 +43,10 @@ if __name__ == "__main__":
 
     # Get raffle allowed maximum entries
     raffle_id = [current_raffle[0][0][0]]
-    raffle_max_entries = raffle_master.get_raffle_tickets_allowance_list(raffle_id, rpc_server)
+    raffle_max_entries = raffle_master.get_raffle_tickets_allowance_list(realm_contract_address, raffle_id, rpc_server)
     logger.info("Maximum allowed entries for raffle {} : {}".format(raffle_id[0],  raffle_max_entries[0]))
 
     # Enter raffle
-    raffle_master.enter_raffle(3555, 1,
+    raffle_master.enter_raffle(realm_contract_address, 3555, 1,
                                private_key, w3.eth.getTransactionCount(account_address),
                                gas_price_gwei, tx_timeout_seconds, rpc_server, logger)

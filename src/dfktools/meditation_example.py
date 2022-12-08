@@ -13,10 +13,10 @@ if __name__ == "__main__":
 
     # NOTE: make sure you use the realm where your hero currently is
     realm = 'crystalvale'
-    if realm == 'serendale':
-        rpc_server = 'https://api.harmony.one'
-        contract_address = meditation.SERENDALE_CONTRACT_ADDRESS
-        gas_price_gwei = 115
+    if realm == 'serendale2':
+        rpc_server = 'https://klaytn.rpc.defikingdoms.com/'
+        contract_address = meditation.SERENDALE2_CONTRACT_ADDRESS
+        gas_price_gwei = {'maxFeePerGas': 55, 'maxPriorityFeePerGas': 25}
         tx_timeout_seconds = 30        
     elif realm == 'crystalvale':
         rpc_server = 'https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc'

@@ -3,6 +3,7 @@ from web3 import Web3
 
 SERENDALE_IDS = ['serendale', 'sd']
 CRYSTALVALE_IDS = ['crystalvale', 'cv']
+SERENDALE2_IDS = ['serendale2', 'sd2']
 
 ITEMS_SERENDALE = [
     ("0x72Cb10C6bfA5624dD07Ef608027E366bd690048F", "JEWEL", "Jewel"),
@@ -90,6 +91,7 @@ ITEMS_CRYSTALVALE = [
     ("0x6e7185872bcdf3f7a6cbbe81356e50daffb002d2", "XCRYSTAL", "xCrystal"),
     ("0x4f60a160D8C2DDdaAfe16FCC57566dB84D674BD6", "JEWEL", "Jewel"),
     ("0x77f2656d04E158f915bC22f07B779D94c1DC47Ff", "XJEWEL", "xJEWEL"),
+    ("0x9ed2c155632C042CB8bC20634571fF1CA26f5742", "CJEWEL", "cJEWEL"),
     ("0x576C260513204392F0eC0bc865450872025CB1cA", "DFKGOLD", "DFK Gold"),
     ("0x79fE1fCF16Cc0F7E28b4d7B97387452E3084b6dA", "DFKTEARS", "Gaia's Tears"),
     ("0xB78d5580d6D897DE60E1A942A5C1dc07Bc716943", "DFKAMBRTFY", "Ambertaffy"),
@@ -117,8 +119,6 @@ ITEMS_CRYSTALVALE = [
     ("0xE7CB27ad646C49dC1671Cb9207176D864922C431", "DFKSPCKLTL", "Speckle Tail"),
     ("0x60A3810a3963f23Fa70591435bbe93BF8786E202", "DFKKINGPNCR", "King Pincer"),
     ("0x6513757978E89e822772c16B60AE033781A29A4F", "DFKTHREEL", "Three Eyed Eel"),
-    ("0x75E8D8676d774C9429FbB148b30E304b5542aC3d", "DFKSHVAS", "Shvas Rune"),
-    ("0xCd2192521BD8e33559b0CA24f3260fE6A26C28e4", "DFKMOKSHA", "Moksha Rune"),
     ("0xa61Bac689AD6867a605633520D70C49e1dCce853", "DFKBLUEEGG", "Blue Pet Egg"),
     ("0x8D2bC53106063A37bb3DDFCa8CfC1D262a9BDCeB", "DFKGREENEGG", "Green Pet Egg"),
     ("0x7E121418cC5080C96d967cf6A033B0E541935097", "DFKGREGG", "Grey Pet Egg"),
@@ -133,7 +133,135 @@ ITEMS_CRYSTALVALE = [
     ("0x240da5314B05E84392e868aC8f2b80ad6becadd4", "DFKMNPTN", "Mana Vial"),
     ("0xf17FD21bDF6713a1Dfed668b97835b21e32651e8", "DFKFMNPTN", "Full Mana Potion"),
     ("0xFADCb72aAE2713975a890b59FF47231D1A552De3", "DFKMGCRSPTN", "Magic Resistance Potion"),
-    ("0x5986045e7c221c8AD40A736B6434D82E29687aeB", "DFKANTBLND", "Anti-blinding Potion")
+    ("0x5986045e7c221c8AD40A736B6434D82E29687aeB", "DFKANTBLND", "Anti-blinding Potion"),
+    ("0x75E8D8676d774C9429FbB148b30E304b5542aC3d", "DFKSHVAS", "Shvas Rune"),
+    ("0xCd2192521BD8e33559b0CA24f3260fE6A26C28e4", "DFKMOKSHA", "Moksha Rune"),
+    ("0x3A28E0D4eCF7558e1ba7357070032C5A6105B0C2", "DFKGATONECR", "Greater Atonement Crystal"),
+    ("0x1f3F655079b70190cb79cE5bc5AE5F19dAf2A6Cf", "DFKLATONECR", "Lesser Atonement Crystal"),
+    ("0xbFa812214a16EcA7814e5F5c270d7f8F37A110B5", "DFKATONECR", "Atonement Crystal"),
+    ("0xC6b00B4005883C1Ff09fa1351B0f49027bCAB71a", "DFKCHSCR", "Chaos Crystal"),
+    ("0xb0155Fdb7B6972717C4774Fa2AEAEe9D6c0040b9", "DFKGCHSCR", "Greater Chaos Crystal"),
+    ("0xeEe5b16Cc49e7cef65391Fe7325cea17f787e245", "DFKLCHSCR", "Lesser Chaos Crystal"),
+    ("0x7643ADB5AaF129A424390CB055d6e23231fFd690", "DFKCHSST", "Chaos Stone"),
+    ("0x7643ADB5AaF129A424390CB055d6e23231fFd690", "DFKLCHSST", "Lesser Chaos Stone"),
+    ("0xA9A8cc1AC7e7505a69cAca2E068716395CebE562", "DFKFINCR", "Finesse Crystal"),
+    ("0x9d9ef1Bf6A46b8413bf6b1b54F6A7aAb53c6b1b6", "DFKLFINCR", "Lesser Finesse Crystal"),
+    ("0xe2C357ECB698C5ee97c49CCCfA8117c4b943C7B9", "DFKFINST", "Finesse Stone"),
+    ("0xF1D53fa23C562246B9d8EC591eEa12Ec0288a888", "DFKLFINST", "Lesser Finesse Stone"),
+    ("0xdbEE8C336B06f2d30a6d2bB3817a3Ae0E34f4900", "DFKFRTICR", "Fortitude Crystal"),
+    ("0xbd2677c06C9448534A851bdD25dF045872b87cb1", "DFKLFRTICR", "Lesser Fortitude Crystal"),
+    ("0x05305c97e9A2FDC0F5Ea23824c1348DEeD9Aff04", "DFKFRTIST", "Fortitude Stone"),
+    ("0xf599Ae2c925D3287a7fF64DC1b55C7Ea6EE3AA8f", "DFKLFRTIST", "Lesser Fortitude Stone"),
+    ("0xe9BfCc80800EB77a1eAF6881825936770aF83Eb6", "DFKFRTUCR", "Fortune Crystal"),
+    ("0xE410b2BE2Ce1508E15009118567d02C6d7A7038e", "DFKLFRTUCR", "Lesser Fortune Crystal"),
+    ("0xd647D8b52981eDE13ac6a5B7Ad04e212Ac38fdFb", "DFKFRTUST", "Fortune Stone"),
+    ("0x934e3e2a433F37cC2D02855A43fD7Ed475EA7451", "DFKLFRTUST", "Lesser Fortune Stone"),
+    ("0x03e56Ded72C3a974295773355EadB38c0A85cF9D", "DFKINSCR", "Insight Crystal"),
+    ("0xbb5F97358F60cCBa262883A3Ff0C637393FE3aB8", "DFKLINSCR", "Lesser Insight Crystal"),
+    ("0x74CFf096C9B027104fb1a0C2E0e265D123eA47De", "DFKINSST", "Insight Stone"),
+    ("0x3D112747ff2463802Afa240B62ade8F1cc4a5c7d", "DFKLINSST", "Lesser Insight Stone"),
+    ("0x234dCf10Db6817185F5A3b430a8CAF2B4a35e9E9", "DFKMGHTCR", "Might Crystal"),
+    ("0x5bAC3cAd961B01Ef9510C8e6c5402A2bB1542831", "DFKLMGHTCR", "Lesser Might Crystal"),
+    ("0x37bAa710391c1D6e22396E4B7F78477F0fF2fFA7", "DFKMGHTST", "Might Stone"),
+    ("0xf345b884eA45aEcb3E46CeEaEDB9CE993Ba3615a", "DFKLMGHTST", "Lesser Might Stone"),
+    ("0x3e664eB15b35783B9D3EF06702044820F08bB45B", "DFKSWFTCR", "Swiftness Crystal"),
+    ("0x6BCA53314dADdA7f4De30A95413f75a93bfAfecF", "DFKLSWFTCR", "Lesser Swiftness Crystal"),
+    ("0x4F95D51fB8eF93704aF8C39A080c794cdA08f853", "DFKSWFTST", "Swiftness Stone"),
+    ("0xd37aCbAC3C25a543B30aa16208637cfa6EB97eDd", "DFKLSWFTST", "Lesser Swiftness Stone"),
+    ("0xcD9201F50e5Be84ECE3D8F603dcd3e9DD5e88ea2", "DFKVGRCR", "Vigor Crystal"),
+    ("0x5e4Cf6907CB5fBe2F642E399F6d07E567155d1F8", "DFKLVGRCR", "Lesser Vigor Crystal"),
+    ("0xA71a120931526fC98f1AcC9f769b6b0d690fB8f0", "DFKVGRST", "Vigor Stone"),
+    ("0x63891e0fcfEe0cEB12dE5fb96F43ADf9DbEC20a3", "DFKLVGRST", "Lesser Vigor Stone"),
+    ("0xAeb5b59c8B90D4F078046550Cc8F9f08dC127253", "DFKWITCR", "Wit Crystal"),
+    ("0xC989c916F189D2A2BE0322c020942d7c43aEa830", "DFKLWITCR", "Lesser Wit Crystal"),
+    ("0x3971212Ec22147EE8808cB84F743DD852Be92f9C", "DFKWITST", "Wit Stone"),
+    ("0xFC943eBd19112D6c6098412238E4E8319641B3d8", "DFKLWITST", "Lesser Wit Stone"),
+]
+
+
+ITEMS_SERENDALE2 = [
+    ("0xB3F5867E277798b50ba7A71C0b24FDcA03045eDF", "JADE", "Jade"),
+    ("0x30c103f8f5a3a732dfe2dce1cc9446f545527b43", "JEWEL", "Jewel"),
+    ("0xaA8548665bCC12C202d5d0C700093123F2463EA6", "SJEWEL", "sJEWEL"),
+    ("0xe7a1B580942148451E47b92e95aEB8d31B0acA37", "DFKGOLD", "DFK Gold"),
+    ("0x8Be0cbA3c8c8F392408364ef21dfCF714A918234", "DFKTEARS", "Gaia's Tears"),
+    ("0x75E8D8676d774C9429FbB148b30E304b5542aC3d", "DFKAMBRTFY", "Ambertaffy"),
+    ("0xDbd4fA2D2C62C6c60957a126970e412Ed6AC1bD6", "DFKBLUESTEM", "Bluestem"),
+    ("0xEDFBe9EEf42FfAf8909EC9Ce0d79850BA0C232FE", "DFKDRKWD", "Darkweed"),
+    ("0xBcdD90034eB73e7Aec2598ea9082d381a285f63b", "DFKIRONSCALE", "Ironscale"),
+    ("0x80A42Dc2909C0873294c5E359e8DF49cf21c74E4", "DFKLANTERNEYE", "Lanterneye"),
+    ("0xE408814828f2b51649473c1a05B861495516B920", "DFKMILKWEED", "Milkweed"),
+    ("0xf2D479DaEdE7F9e270a90615F8b1C52F3C487bC7", "DFKRCKRT", "Rockroot"),
+    ("0xc6030Afa09EDec1fd8e63a1dE10fC00E0146DaF3", "DFKSAILFISH", "Sailfish"),
+    ("0xa61Bac689AD6867a605633520D70C49e1dCce853", "DFKSHIMMERSKIN", "Shimmerskin"),
+    ("0x874FC0015ece1d77ba3D5668F16c46ba72913239", "DFKSKNSHADE", "Skunk Shade"),
+    ("0x08D93Db24B783F8eBb68D7604bF358F5027330A6", "DFKSPIDRFRT", "Spiderfruit"),
+    ("0xCd2192521BD8e33559b0CA24f3260fE6A26C28e4", "DFKSWFTHSL", "Swift-Thistle"),
+    ("0x7E1298EBF3a8B259561df6E797Ff8561756E50EA", "DFKTHREEL", "Three-Eyed Eel"),
+    ("0x72F860bF73ffa3FC42B97BbcF43Ae80280CFcdc3", "DFKBLOATER", "Bloater"),
+    ("0x18cB286EeCE992f79f601E49acde1D1F5dE32a30", "DFKFBLOATER", "Frost Bloater"),
+    ("0xD69542aBE74413242e387Efb9e55BE6A4863ca10", "DFKFROSTDRM", "Frost Drum"),
+    ("0xB4A516bf36e44c0CE9E3E6769D3BA87341Cd9959", "DFKKINGPNCR", "King Pincer"),
+    ("0xFceFA4Abcb18a7053393526f75Ad33fac5F25dc9", "DFKKNAPROOT", "Knaproot"),
+    ("0x4cD7025BD6e1b77105b90928362e6715101d0b5a", "DFKRGWD", "Ragweed"),
+    ("0x8D2bC53106063A37bb3DDFCa8CfC1D262a9BDCeB", "DFDFDFDF", "Redgill"),
+    ("0xadbF23Fe3B47857614940dF31B28179685aE9B0c", "DFKRDLF", "Redleaf"),
+    ("0xCe370D379f0CCf746B3426E3BD3923f3aDF0DC1a", "DFKSHAGCAP", "Shaggy Caps"),
+    ("0x7E121418cC5080C96d967cf6A033B0E541935097", "DFKSILVERFIN", "Silverfin"),
+    ("0x48d9fC80A47cee2d52DE950898Bc6aBF54223F81", "DFKSPCKLTL", "Speckle Tail"),
+    ("0x29ADd7D022c591D56eb4aFd262075dA900C67ab1", "DFKBLUEEGG", "Blue Pet Egg"),
+    ("0xb1Ec534fBBfEBd4563A4B0055E744286CE490f26", "DFKGREENEGG", "Green Pet Egg"),
+    ("0xfd29ebdE0dd1331C19BBF54518df94b442ACb38C", "DFKGREGG", "Grey Pet Egg"),
+    ("0x0A73aF98781bad9BCb80A71241F129EA877eF1b7", "DFKYELOWEGG", "Yellow Pet Egg"),
+    ("0xc9731BE04F217543E3010cCbf903E858EFde840f", "DFKGOLDEGG", "Golden Egg"),
+    ("0x5FB537aF1d929af7BDD7935C289158c940782ed6", "DFKANTBLND", "Anti-blinding Potion"),
+    ("0xE34a733fA92B41A1CA4241da9D2d5834Cc8D1011", "DFKANTPSN", "Anti-poison Potion"),
+    ("0xf710244462431b9962706B46826AFB3B38376c7b", "DFKFHLTHPTN", "Full Health Potion"),
+    ("0x108D31E23bC6540878E6532F3376b3EC982e1C58", "DFKFMNPTN", "Full Mana Potion"),
+    ("0xa27C1429a676db902B9f0360686eDbB57d0A7B01", "DFKHLTHPTN", "Health Vial"),
+    ("0x9c8A0C6a7ad8Be153773070D434CDbeA5176D2ff", "DFKMGCRSPTN", "Magic Resistance Potion"),
+    ("0x8639d64A2088500EC4f20fB5C41A995fE4f1d85a", "DFKMNPTN", "Mana Vial"),
+    ("0x4546DBaAb48Bf1BF2ad7B56d04952d946Ab6e2a7", "DFKSTMNPTN", "Stamina Vial"),
+    ("0xcb7aA7cA9357DAF9F2b78D262A4f89cDfE5abC70", "DFKSWFTPTN", "Swiftness Potion"),
+    ("0xf757a7F4ffF29e7F7b4aCCe6Ffb04E59e91EFDA8", "DFKTFNSPTN", "Toughness Potion"),
+    ("0x907a98319AEB249e387246637149f4B2e7D21dB7", "DFKSHVAS", "Shvas Rune"),
+    ("0xd0223143057Eb44065e789b202E03A5869a6006C", "DFKMOKSHA", "Moksha Rune"),
+    ("0xE078C782fF0cC1789D0608834A3cD5076896e4FC", "DFKCHSCR", "Chaos Crystal"),
+    ("0x537E800b8fD22Dc76A438Af8b9923986A5487853", "DFKLCHSCR", "Lesser Chaos Crystal"),
+    ("0x880cb941AAb394775f54F2b6468035bbdD0B81dF", "DFKCHSST", "Chaos Stone"),
+    ("0x38bDed7C399bbD214a19De35260766b130cAFd2F", "DFKLCHSST", "Lesser Chaos Stone"),
+    ("0x15E77beB33D3B09aB7da529daB1E556b955fECf6", "DFKFINCR", "Finesse Crystal"),
+    ("0xC3B36a02f360c3d18042bF3533be602cb775007A", "DFKLFINCR", "Lesser Finesse Crystal"),
+    ("0x31eb3b534E29D10Db08109A1fa50ccB081d10816", "DFKFINST", "Finesse Stone"),
+    ("0x784bd01e3882b80aa837f6A3041Cd386eC54a501", "DFKLFINST", "Lesser Finesse Stone"),
+    ("0xA844059503289B781854aEdcA04E5bB13290bd86", "DFKFRTICR", "Fortitude Crystal"),
+    ("0x1E672a8385b39E13267efA2Fb39f574a2a23AE9F", "DFKLFRTICR", "Lesser Fortitude Crystal"),
+    ("0x254787d3b87d8c21A300Ab8D5A06C01426CE40c0", "DFKFRTIST", "Fortitude Stone"),
+    ("0xBC5248B4f50f4c7D2F9A67Be1f1d4b8be44ffc75", "DFKLFRTIST", "Lesser Fortitude Stone"),
+    ("0x02d27BC195E58498C687A82d96188A8EF282a1e1", "DFKFRTUCR", "Fortune Crystal"),
+    ("0x8baD15B5C531d119b328d0F716a6B9D90CeDa88A", "DFKLFRTUCR", "Lesser Fortune Crystal"),
+    ("0xf0cBbd41652d9A93A899f070669186F0c8475F7D", "DFKFRTUST", "Fortune Stone"),
+    ("0x816E22125021530535364390a3E2fA305a436247", "DFKLFRTUST", "Lesser Fortune Stone"),
+    ("0xAd7fBD9EDDE05227964104Bb23Ff8d171D4c90C8", "DFKINSCR", "Insight Crystal"),
+    ("0x5f967E325E91977B42D2591Fc2f57da75Ee4490B", "DFKLINSCR", "Lesser Insight Crystal"),
+    ("0x22A92428605a3B5b66695A60e96b683E98a9a035", "DFKINSST", "Insight Stone"),
+    ("0xfC66cF68505F8E95C52C4F7f84936436DBd52e9B", "DFKLINSST", "Lesser Insight Stone"),
+    ("0xa3907dEA6f16f1918B4BcDd178c2928c7e6A571D", "DFKMGHTCR", "Might Crystal"),
+    ("0x80Ab38fc9fA0a484b98d5600147e7C695627747D", "DFKLMGHTCR", "Lesser Might Crystal"),
+    ("0x532bce28c28616552a4BcDdb5D4B4126Dea35f66", "DFKMGHTST", "Might Stone"),
+    ("0xbb8ac0BB95E433204217b0478B3f6d815EcB2d8C", "DFKLMGHTST", "Lesser Might Stone"),
+    ("0xc2Ff16F357b51E070c977501563A01a70F3B7BF5", "DFKSWFTCR", "Swiftness Crystal"),
+    ("0x32Cbbfd741EB7634818aa2e3E8502367cB6602BE", "DFKLSWFTCR", "Lesser Swiftness Crystal"),
+    ("0xf200597430eAc3e22B4566D1BCd70A3b63804B24", "DFKSWFTST", "Swiftness Stone"),
+    ("0xAd51199B453075C73FA106aFcAAD59f705EF7872", "DFKLSWFTST", "Lesser Swiftness Stone"),
+    ("0x14a9D5a75799E4C6B4BfA65C8293a75e02DD5339", "DFKVGRCR", "Vigor Crystal"),
+    ("0x6C7AF7483b050a00b5fbC4241eD06944c5f0bD77", "DFKLVGRCR", "Lesser Vigor Crystal"),
+    ("0xA0c89fB3cbb115cf86EdcB4319578312D026A07a", "DFKVGRST", "Vigor Stone"),
+    ("0x50F683acefA41b226CEfAdc0dd2ea6fFBfED56A0", "DFKLVGRST", "Lesser Vigor Stone"),
+    ("0xf30214D43E55BE1cbaC712b49A75d4D3220302a7", "DFKWITCR", "Wit Crystal"),
+    ("0xf15035b5eD13Feb18f63D829ABc1c3139041e7C2", "DFKLWITCR", "Lesser Wit Crystal"),
+    ("0x3BaEFAfF21Fa2F06Ad3899903B7A899a91B5915A", "DFKWITST", "Wit Stone"),
+    ("0x5903F478e456DD4Ce5387caBE3984DfEf93D0A46", "DFKLWITST", "Lesser Wit Stone")
 ]
 
 ABI = """
@@ -186,8 +314,8 @@ def eth2wei(w3, eth):
     return w3.toWei(eth, 'ether')
 
 
-def block_explorer_link(txid):
-    return 'https://explorer.harmony.one/tx/' + str(txid)
+def block_explorer_link(token_address, txid):
+        return str(txid)
 
 
 def get_realm_item_list(realm):
@@ -196,6 +324,8 @@ def get_realm_item_list(realm):
         return ITEMS_SERENDALE
     elif realm in CRYSTALVALE_IDS:
         return ITEMS_CRYSTALVALE
+    elif realm in SERENDALE2_IDS:
+        return ITEMS_SERENDALE2
     else:
         return None
 
@@ -306,7 +436,7 @@ def approve(token_address, private_key, nonce, gas_price_gwei, tx_timeout_second
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     
-    logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+    logger.info("Waiting for transaction " + block_explorer_link(token_address, signed_tx.hash.hex()) + " to be mined")
     
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)
@@ -340,7 +470,7 @@ def transfer(token_address, private_key, nonce, dest_address, amount, gas_price_
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     logger.debug("Transaction successfully sent !")
     
-    logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+    logger.info("Waiting for transaction " + block_explorer_link(token_address, signed_tx.hash.hex()) + " to be mined")
     
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
                                                      poll_latency=2)

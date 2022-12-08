@@ -1,6 +1,8 @@
 from web3 import Web3
 
-CONTRACT_ADDRESS = '0x6391F796D56201D279a42fD3141aDa7e26A3B4A5'
+SERENDALE_CONTRACT_ADDRESS = '0x6391F796D56201D279a42fD3141aDa7e26A3B4A5'
+CRYSTALVALE_CONTRACT_ADDRESS = '0xC4cD8C09D1A90b21Be417be91A81603B03993E81'
+SERENDALE2_CONTRACT_ADDRESS = '0xe1b8C354BE50357c2ab90A962254526d08aF0D2D'
 
 ABI = """
         [
@@ -48,9 +50,9 @@ ABI = """
         """
 
 
-def get_profile(address, rpc_address):
+def get_profile(contract_address, address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     contract_entry = contract.functions.getProfileByAddress(Web3.toChecksumAddress(address)).call()
 

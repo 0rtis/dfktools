@@ -1,9 +1,15 @@
 from web3 import Web3
 
-ITEMS = [
-
+SERENDALE_ITEMS = [
 	("0x909EF175d58d0e17d3Ceb005EeCF24C1E5C6F390", "DFKETRNLSTY", "Pages of the Eternal Story")
+ ]
 
+CRYSTALVALE_ITEMS = [
+	("0xA37851cCE4B2b65c0b290AA4cC2DFF00314ec85a", "DFKETRNLSTY", "Pages of the Eternal Story")
+ ]
+
+SERENDALE2_ITEMS = [
+	("0x26bdcB310313eFf8D580e43762e2020B23f3e728", "DFKETRNLSTY", "Pages of the Eternal Story")
  ]
 
 ABI = """
@@ -41,24 +47,24 @@ def symbol2address(symbol):
 '''
 
 
-def address2item(address):
+def address2item(items, address):
     address = address.upper().strip()
-    for item in ITEMS:
+    for item in items:
         if item[0].upper() == address:
             return item
     return None
 
 
-def address2symbol(address):
+def address2symbol(items, address):
     address = address.upper().strip()
-    for item in ITEMS:
+    for item in items:
         if item[0].upper() == address:
             return item[1]
     return None
 
 
-def all_items():
-    return ITEMS.copy()
+def copy_items(items):
+    return items.copy()
 
 
 def balance_of(token_address, account_address, id, rpc_address):

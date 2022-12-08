@@ -2,6 +2,7 @@ from web3 import Web3
 
 SERENDALE_CONTRACT_ADDRESS = '0xAC9AFb5900C8A27B766bCad3A37423DC0F4C22d3'
 CRYSTALVALE_CONTRACT_ADDRESS = '0x1990F87d6BC9D9385917E3EDa0A7674411C3Cd7F'
+SERENDALE2_CONTRACT_ADDRESS = '0x6362b205b539afb5FC369277365441c1dC6fAa28'
 
 ABI = '''
     [
@@ -64,6 +65,8 @@ def block_explorer_link(contract_address, txid):
         return 'https://explorer.harmony.one/tx/' + str(txid)
     elif contract_address == CRYSTALVALE_CONTRACT_ADDRESS.upper():
         return 'https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/tx/' + str(txid)
+    elif contract_address == SERENDALE2_CONTRACT_ADDRESS.upper():
+        return 'https://scope.klaytn.com/tx/' + str(txid)
     else:
         return str(txid)
 

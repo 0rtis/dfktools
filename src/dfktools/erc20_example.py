@@ -11,12 +11,12 @@ if __name__ == "__main__":
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
-    rpc_server = 'https://api.harmony.one'
+    rpc_server = 'https://klaytn.rpc.defikingdoms.com/'
     logger.info("Using RPC server " + rpc_server)
 
     w3 = Web3(Web3.HTTPProvider(rpc_server))
 
-    realm = 'serendale'
+    realm = 'serendale2'
     serendale_items = tokens.get_realm_item_list(realm)
     logger.info('{} items in {}'.format(len(serendale_items), realm))
     token_address = tokens.symbol2address('JEWEL', realm)

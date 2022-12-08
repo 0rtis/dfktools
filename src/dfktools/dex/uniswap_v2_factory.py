@@ -25,17 +25,17 @@ ABI = """
     """
 
 
-def all_pairs_length(rpc_address):
+def all_pairs_length(contract_address, rpc_address):
 
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(SERENDALE_CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.allPairsLength().call()
 
 
-def all_pairs(index, rpc_address):
+def all_pairs(contract_address, index, rpc_address):
     '''
     Return the address of the liquidity pair at index
     :param index:
@@ -44,16 +44,16 @@ def all_pairs(index, rpc_address):
     '''
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(SERENDALE_CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.allPairs(index).call()
 
 
-def get_pair(token_address_1, token_address_2, rpc_address):
+def get_pair(contract_address, token_address_1, token_address_2, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(SERENDALE_CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.getPair(token_address_1, token_address_2).call()

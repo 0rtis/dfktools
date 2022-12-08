@@ -4,7 +4,7 @@ import time
 import summoning.summoning as summoning
 from web3 import Web3
 
-SD = 'serendale'
+SD2 = 'serendale2'
 CV = 'crystalvale'
 
 def tears_for_hero(hero_level:int, hero_rank:str='basic', add_extra_tears=True) -> int:
@@ -35,13 +35,13 @@ if __name__ == "__main__":
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
-    realm = 'serendale'
+    realm = 'serendale2'
 
-    if realm == SD:
-        rpc_server = 'https://api.harmony.one'
+    if realm == SD2:
+        rpc_server = 'https://klaytn.rpc.defikingdoms.com/'
         gas_price_gwei = 115 
         tx_timeout = 30
-        contract_address = summoning.SERENDALE_CONTRACT_ADDRESS
+        contract_address = summoning.SERENDALE2_CONTRACT_ADDRESS
     else:
         rpc_server = 'https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc'
         gas_price_gwei = {'maxFeePerGas': 2, 'maxPriorityFeePerGas': 2} 

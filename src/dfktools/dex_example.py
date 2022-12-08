@@ -14,17 +14,18 @@ if __name__ == "__main__":
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
-    rpc_server = 'https://api.harmony.one'
+    rpc_server = 'https://klaytn.rpc.defikingdoms.com/'
     logger.info("Using RPC server " + rpc_server)
 
     w3 = Web3(Web3.HTTPProvider(rpc_server))
-
+    realm_lp_contract_address = market_place_factory.SERENDALE2_CONTRACT_ADDRESS
+    realm_master_gardener_contract_address = gardens.SERENDALE2_CONTRACT_ADDRESS
     user_address = '0x2E7669F61eA77F02445A015FBdcFe2DE47083E02'
 
     # Automated Market Making pool
-    logger.info("Liquidity pool count:\t" + str(market_place_factory.all_pairs_length(rpc_server)))
+    logger.info("Liquidity pool count:\t" + str(market_place_factory.all_pairs_length(realm_lp_contract_address, rpc_server)))
     liquidity_pool_id = 0
-    liquidity_pool_address = market_place_factory.all_pairs(liquidity_pool_id, rpc_server)
+    liquidity_pool_address = market_place_factory.all_pairs(realm_lp_contract_address, liquidity_pool_id, rpc_server)
     liquidity_pool = pool.UniswapV2Pair(liquidity_pool_address, rpc_server, logger)
     liquidity_pool_symbol = liquidity_pool.symbol()
     liquidity_pool_token0_address = liquidity_pool.token_0()
@@ -47,8 +48,8 @@ if __name__ == "__main__":
     logger.info("LP user balance:\t" + str(erc20.wei2eth(w3, liquidity_pool_balance)))
 
     # Garden staking
-    logger.info("Staking pool count:\t" + str(gardens.pool_length(rpc_server)))
-    staking_pool = gardens.Garden(liquidity_pool, rpc_server, logger)
+    logger.info("Staking pool count:\t" + str(gardens.pool_length(realm_master_gardener_contract_address, rpc_server)))
+    staking_pool = gardens.Garden(gardens.SERENDALE2_CONTRACT_ADDRESS, liquidity_pool, rpc_server, logger)
     staking_pool_symbol = staking_pool.symbol()
     staking_pool_token0 = erc20.symbol(staking_pool.token_0(), rpc_server)
     staking_pool_token1 = erc20.symbol(staking_pool.token_1(), rpc_server)

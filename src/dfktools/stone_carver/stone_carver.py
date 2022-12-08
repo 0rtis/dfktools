@@ -2,8 +2,8 @@
 
 from web3 import Web3
 
-SERENDALE_CONTRACT_ADDRESS = "0xfFB8a55676edA75954AB45a6Ce16F88b119dC511"
-CRYSTALVALE_CONTRACT_ADDRESS = None
+SERENDALE_CONTRACT_ADDRESS = '0xfFB8a55676edA75954AB45a6Ce16F88b119dC511'
+CRYSTALVALE_CONTRACT_ADDRESS = '0xc32A0e963e50AAAED273A75425fC39902b0d0b3b'
 
 ABI = '''
 	[
@@ -100,7 +100,7 @@ def get_availability(contract_address, rpc_address):
 	return contract.functions.getAvailability().call()
 
 
-def get_recipe(item_address, contract_address, rpc_address):
+def get_recipe(contract_address, item_address, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 	contract = w3.eth.contract(Web3.toChecksumAddress(contract_address), abi=ABI)
 	return contract.functions.getRecipe(item_address).call()

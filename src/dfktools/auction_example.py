@@ -17,10 +17,14 @@ if __name__ == "__main__":
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
-    rpc_server = 'https://api.harmony.one'
+    rpc_server = 'https://klaytn.rpc.defikingdoms.com/'
     logger.info("Using RPC server " + rpc_server)
 
     graphql = 'https://defi-kingdoms-community-api-gateway-co06z8vi.uc.gateway.dev/graphql'
+
+    realm_land_auction_contract = land_auctions.SERENDALE2_AUCTION_CONTRACT_ADDRESS
+    realm_pet_auction_contract = pet_auctions.SERENDALE2_AUCTION_CONTRACT_ADDRESS
+
 
     auctions = hero_sales.get_open_auctions(graphql, 0, 10)
     logger.info("Hero sale auctions:")
@@ -52,7 +56,7 @@ if __name__ == "__main__":
     # lands
     user = '0x2E7669F61eA77F02445A015FBdcFe2DE47083E02'
 
-    land_auction = Auction(land_auctions.AUCTION_CONTRACT_ADDRESS, rpc_server, logger)
+    land_auction = Auction(realm_land_auction_contract, rpc_server, logger)
     logger.info("Total land auctions: " + str(land_auction.total_auctions()))
     logger.info("Auctions of " + user + ": " + str(land_auction.get_user_auctions(user)))
 
@@ -68,7 +72,7 @@ if __name__ == "__main__":
     logger.info("\n")
 
     # pets
-    pet_auction = Auction(pet_auctions.AUCTION_CONTRACT_ADDRESS, rpc_server, logger)
+    pet_auction = Auction(realm_pet_auction_contract, rpc_server, logger)
     logger.info("Total pet auctions: " + str(pet_auction.total_auctions()))
     logger.info("Auctions of " + user + ": " + str(pet_auction.get_user_auctions(user)))
 

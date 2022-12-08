@@ -3,6 +3,7 @@ from web3 import Web3
 SERENDALE_CONTRACT_ADDRESS = "0x8AbEbcDBF5AF9FC602814Eabf6Fbf952acF682A2"
 CRYSTALVALE_CONTRACT_ADDRESS = "0x947873092dc57C1A70704033c41cB110f4462a8B"
 
+
 ABI = '''
     [
        {"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"recipient","type":"address"},{"indexed":false,"internalType":"address","name":"token","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Claimed","type":"event"},

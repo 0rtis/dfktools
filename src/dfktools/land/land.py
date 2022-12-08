@@ -1,6 +1,7 @@
 from web3 import Web3
 
-CONTRACT_ADDRESS = "0xD5f5bE1037e457727e011ADE9Ca54d21c21a3F8A"
+SERENDALE_CONTRACT_ADDRESS = "0xD5f5bE1037e457727e011ADE9Ca54d21c21a3F8A"
+SERENDALE2_CONTRACT_ADDRESS = "0x07520d5b2a7bf2DD0d48Bf08311Ac598F9ab4D4A"
 
 ABI = '''
 	[
@@ -57,71 +58,77 @@ ABI = '''
 	]
 '''
 
+def block_explorer_link(contract_address, txid):
+    if hasattr(contract_address, 'address'):
+        contract_address = str(contract_address.address)
+    contract_address = str(contract_address).upper()
+    if contract_address == SERENDALE_CONTRACT_ADDRESS.upper():
+        return 'https://explorer.harmony.one/tx/' + str(txid)
+    elif contract_address == SERENDALE2_CONTRACT_ADDRESS.upper():
+        return 'https://scope.klaytn.com/tx/' + str(txid)
+    else:
+        return str(txid)
 
-def block_explorer_link(txid):
-	return 'https://explorer.harmony.one/tx/' + str(txid)
-
-
-def get_account_lands(account, rpc_address):
+def get_account_lands(real_contract, account, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+	contract_address = Web3.toChecksumAddress(real_contract)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	return contract.functions.getAccountLands(Web3.toChecksumAddress(account)).call()
 
 
-def get_land(land_id, rpc_address):
+def get_land(real_contract, land_id, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+	contract_address = Web3.toChecksumAddress(real_contract)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	return contract.functions.getLand(land_id).call()
 
 
-def get_lands_by_region(region_id, rpc_address):
+def get_lands_by_region(real_contract, region_id, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+	contract_address = Web3.toChecksumAddress(real_contract)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	return contract.functions.getLandsByRegion(region_id).call()
 
 
-def get_all_lands(rpc_address):
+def get_all_lands(real_contract, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+	contract_address = Web3.toChecksumAddress(real_contract)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	return contract.functions.getAllLands().call()
 
 
-def owner_of(land_id, rpc_address):
+def owner_of(real_contract, land_id, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+	contract_address = Web3.toChecksumAddress(real_contract)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	return contract.functions.ownerOf(land_id).call()
 
 
-def total_supply(rpc_address):
+def total_supply(real_contract, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+	contract_address = Web3.toChecksumAddress(real_contract)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	return contract.functions.totalSupply().call()
 
 
-def claim(landId, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+def claim(real_contract, landId, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 	account = w3.eth.account.privateKeyToAccount(private_key)
 	w3.eth.default_account = account.address
 
-	contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+	contract_address = Web3.toChecksumAddress(real_contract)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	tx = contract.functions.claimLand(account.address, landId)

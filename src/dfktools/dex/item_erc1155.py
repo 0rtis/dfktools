@@ -1,5 +1,5 @@
 from web3 import Web3
-from .erc1155 import ITEMS as ERC1155_ITEMS
+from .erc1155 import SERENDALE_ITEMS as ERC1155_ITEMS
 
 ITEMS = ERC1155_ITEMS
 

@@ -3,6 +3,7 @@ from web3 import Web3
 
 SERENDALE_CONTRACT_ADDRESS = '0x13a65B9F8039E2c032Bc022171Dc05B30c3f2892'
 CRYSTALVALE_CONTRACT_ADDRESS = '0xc390fAA4C7f66E4D62E59C231D5beD32Ff77BEf0'
+SERENDALE2_CONTRACT_ADDRESS = '0x7F2B66DB2D02f642a9eb8d13Bc998d441DDe17A8'
 
 
 ABI = """
@@ -164,8 +165,16 @@ AUCTIONS_TOKEN_IDS_GRAPHQL_QUERY = """
                         """
 
 
-def block_explorer_link(txid):
-    return 'https://explorer.harmony.one/tx/' + str(txid)
+def block_explorer_link(contract_address, txid):
+	if hasattr(contract_address, 'address'):
+		contract_address = str(contract_address.address)
+	contract_address = str(contract_address).upper()
+	if contract_address == SERENDALE_CONTRACT_ADDRESS.upper():
+		return 'https://explorer.harmony.one/tx/' + str(txid)
+	elif contract_address == CRYSTALVALE_CONTRACT_ADDRESS.upper():
+		return 'https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/tx/' + str(txid)
+	else:
+		return str(txid)
 
 
 def bid_hero(contract_address, token_id, bid_amount_wei, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger=None):
@@ -189,7 +198,7 @@ def bid_hero(contract_address, token_id, bid_amount_wei, private_key, nonce, gas
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     if logger is not None:
         logger.info("Transaction successfully sent !")
-        logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+        logger.info("Waiting for transaction " + block_explorer_link(contract_address, signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds, poll_latency=2)
 
     if logger is not None:
@@ -219,7 +228,7 @@ def create_auction(contract_address, token_id, starting_price_wei, ending_price_
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     if logger is not None:
         logger.info("Transaction successfully sent !")
-        logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+        logger.info("Waiting for transaction " + block_explorer_link(contract_address, signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds, poll_latency=2)
     if logger is not None:
         logger.info("Transaction mined !")
@@ -245,7 +254,7 @@ def cancel_auction(contract_address, token_id, private_key, nonce, gas_price_gwe
     ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
     if logger is not None:
         logger.info("Transaction successfully sent !")
-        logger.info("Waiting for transaction " + block_explorer_link(signed_tx.hash.hex()) + " to be mined")
+        logger.info("Waiting for transaction " + block_explorer_link(contract_address, signed_tx.hash.hex()) + " to be mined")
     tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds, poll_latency=2)
     if logger is not None:
         logger.info("Transaction mined !")

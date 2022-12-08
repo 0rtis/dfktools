@@ -13,9 +13,6 @@ if __name__ == "__main__":
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
-    rpc_server = 'https://api.harmony.one'
-    logger.info("Using RPC server " + rpc_server)
-
     with open('hero/femaleFirstName.json', 'r') as f:
         female_first_names = hero_utils.parse_names(f.read())
     logger.info("Female hero first name loaded")
@@ -28,17 +25,18 @@ if __name__ == "__main__":
         last_names = hero_utils.parse_names(f.read())
     logger.info("Hero last name loaded")
 
-    '''
-    serendale_heroes = Hero(hero_core.SERENDALE_CONTRACT_ADDRESS, 'https://api.harmony.one', logger)
-    #serendale_heroes.transfer(1, 'private key of the owner', 'next nonce of owner account', 'receiver address', 45, 30)
+
+    serendale2_heroes = Hero(hero_core.SERENDALE2_CONTRACT_ADDRESS, 'https://klaytn.rpc.defikingdoms.com/', logger)
+    #serendale2_heroes.transfer(1, 'private key of the owner', 'next nonce of owner account', 'receiver address', 45, 30)
 
     for i in range(1, 10):
-        logger.info("Processing serendale hero #"+str(i))
-        owner = serendale_heroes.get_owner(i)
-        hero = serendale_heroes.get_hero(i)
-        readable_hero = serendale_heroes.human_readable_hero(hero, male_first_names, female_first_names, last_names)
+        logger.info("Processing serendale 2 hero #"+str(i))
+        sd2_hero_id = hero_utils.sd2sd2_sd2_hero_id(i)
+        owner = serendale2_heroes.get_owner(sd2_hero_id)
+        hero = serendale2_heroes.get_hero(sd2_hero_id)
+        readable_hero = serendale2_heroes.human_readable_hero(hero, male_first_names, female_first_names, last_names)
         logger.info(json.dumps(readable_hero, indent=4, sort_keys=False) + "\n Owned by " + owner)
-    '''
+
     crystalvale_heroes = Hero(hero_core.CRYSTALVALE_CONTRACT_ADDRESS,
                               'https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc', logger)
 

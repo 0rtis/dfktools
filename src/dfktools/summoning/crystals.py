@@ -1,6 +1,6 @@
 from web3 import Web3
 
-CONTRACT_ADDRESS = '0xa2D001C829328aa06a2DB2740c05ceE1bFA3c6bb'
+SERENDALE_CONTRACT_ADDRESS = '0xa2D001C829328aa06a2DB2740c05ceE1bFA3c6bb'
 
 ABI = """
         [
@@ -37,7 +37,7 @@ ABI = """
 def get_user_crystal_ids(user_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(SERENDALE_CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.getUserCrystals(Web3.toChecksumAddress(user_address)).call()
@@ -47,7 +47,7 @@ def open_crystal(crystal_id, owner_private_key, owner_nonce, gas_price_gwei, rpc
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.privateKeyToAccount(owner_private_key)
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.toChecksumAddress(SERENDALE_CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     fast_open_crystal(crystal_id, account.address, owner_private_key, owner_nonce, gas_price_gwei, contract, w3, logger)

@@ -3,6 +3,7 @@ from web3.logs import DISCARD
 
 SERENDALE_CONTRACT_ADDRESS = '0x0594D86b2923076a2316EaEA4E1Ca286dAA142C1'
 CRYSTALVALE_CONTRACT_ADDRESS = '0xD507b6b299d9FC835a0Df92f718920D13fA49B47'
+SERENDALE2_CONTRACT_ADDRESS = '0xdbEE8C336B06f2d30a6d2bB3817a3Ae0E34f4900'
 
 ABI = """[
     {"name": "AttunementCrystalAdded", "type": "event", "inputs": [{"name": "atunementItemAddress", "type": "address", "internalType": "address", "indexed": false}], "anonymous": false},
@@ -59,6 +60,8 @@ def block_explorer_link(contract_address, txid):
         return 'https://explorer.harmony.one/tx/' + str(txid)
     elif contract_address == CRYSTALVALE_CONTRACT_ADDRESS.upper():
         return 'https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/tx/' + str(txid)
+    elif contract_address == SERENDALE2_CONTRACT_ADDRESS.upper():
+        return 'https://scope.klaytn.com/tx/' + str(txid)
     else:
         return str(txid)
 
