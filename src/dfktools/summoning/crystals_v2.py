@@ -107,11 +107,11 @@ def summon_crystal(contract_address, summoner_id, assistant_id, summoner_tears, 
         logger.info("Summoning with " + str(summoner_id) + " & "+str(assistant_id))
     tx = contract.functions.summonCrystal(summoner_id, assistant_id, summoner_tears, assistant_tears, '0x0000000000000000000000000000000000000000')
     if isinstance(gas_price_gwei, dict):  # dynamic fee
-        tx = tx.buildTransaction(
+        tx = tx.build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
              'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.build_transaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
     if logger is not None:
         logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -141,11 +141,11 @@ def open_crystal(contract_address, crystal_id, private_key, nonce, gas_price_gwe
         logger.info("Opening crystal "+str(crystal_id))
     tx = contract.functions.open(crystal_id)
     if isinstance(gas_price_gwei, dict):  # dynamic fee
-        tx = tx.buildTransaction(
+        tx = tx.build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
              'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.build_transaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
     if logger is not None:
         logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)

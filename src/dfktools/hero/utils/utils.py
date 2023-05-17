@@ -107,6 +107,18 @@ professions = {
     6: 'foraging',
 }
 
+
+crafts = {
+    0: 'blacksmithing',
+    2: 'goldsmithing',
+    4: 'armorsmithing',
+    6: 'woodworking',
+    8: 'leatherworking',
+    10: 'tailoring',
+    12: 'enchanting',
+    14: 'alchemy'
+}
+
 stats = {
     0: 'strength',
     2: 'agility',
@@ -164,6 +176,14 @@ def parse_profession(id):
     if FAIL_ON_NOT_FOUND and value is None:
         raise Exception("Profession not found")
     return value
+
+
+def parse_craft(id):
+    value = crafts.get(id, None)
+    if FAIL_ON_NOT_FOUND and value is None:
+        raise Exception("Craft not found")
+    return value
+
 
 
 def parse_stat(id):

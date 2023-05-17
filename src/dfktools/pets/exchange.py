@@ -93,11 +93,11 @@ def start_exchange(contract_address, pet_id_1, pet_id_2, private_key, nonce, gas
     tx = contract.functions.startExchange(pet_id_1, pet_id_2)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
-        tx = tx.buildTransaction(
+        tx = tx.build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
              'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.build_transaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -124,11 +124,11 @@ def complete_exchange(contract_address, exchange_id, private_key, nonce, gas_pri
     tx = contract.functions.completeExchange(exchange_id)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
-        tx = tx.buildTransaction(
+        tx = tx.build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
              'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.build_transaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)

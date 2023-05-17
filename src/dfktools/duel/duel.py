@@ -285,7 +285,7 @@ def start_private_duel(duel_type, hero_ids, opponent, background, stat, private_
     tx = contract.functions.startPrivateDuel(duel_utils.string2id('type', duel_type), hero_ids, opponent,
                                              duel_utils.string2id('background', background),
                                              duel_utils.string2id('stat', stat)
-                                             ).buildTransaction(
+                                             ).build_transaction(
         {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
@@ -314,7 +314,7 @@ def enter_duel_lobby(duel_type, hero_ids, jewel_fee, background, stat, private_k
                                            w3.to_wei(jewel_fee, 'ether'),
                                            duel_utils.string2id('background', background),
                                            duel_utils.string2id('stat', stat)
-                                           ).buildTransaction(
+                                           ).build_transaction(
         {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
@@ -338,7 +338,7 @@ def complete_duel(duel_id, private_key, nonce, gas_price_gwei, tx_timeout_second
     contract_address = Web3.to_checksum_address(SERENDALE_CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    tx = contract.functions.completeDuel(duel_id).buildTransaction(
+    tx = contract.functions.completeDuel(duel_id).build_transaction(
         {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
@@ -365,7 +365,7 @@ def accept_challenge(duel_id, hero_ids, background, stat, private_key, nonce, ga
 
     tx = contract.functions.acceptChallenge(duel_id, hero_ids, duel_utils.string2id('background', background),
                                             duel_utils.string2id('stat', stat)
-                                            ).buildTransaction(
+                                            ).build_transaction(
         {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")

@@ -57,11 +57,11 @@ def create_potion(contract_address, potion_address, quantity, private_key, nonce
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	if isinstance(gas_price_gwei, dict):  # dynamic fee
-		tx = contract.functions.createPotion(potion_address, quantity).buildTransaction(
+		tx = contract.functions.createPotion(potion_address, quantity).build_transaction(
 			{'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
 			 'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
 	else:  # legacy
-		tx = contract.functions.createPotion(potion_address, quantity).buildTransaction(
+		tx = contract.functions.createPotion(potion_address, quantity).build_transaction(
 			{'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
 	logger.debug("Signing transaction")

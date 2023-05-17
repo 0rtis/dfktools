@@ -205,7 +205,7 @@ def bid_hero(contract_address, token_id, bid_amount_wei, private_key, nonce, gas
 
 	if logger is not None:
 		logger.info("Biding " + str(wei2ether(bid_amount_wei)) + " on hero id " + str(token_id))
-	tx = sales_auction_contract.functions.bid(token_id, bid_amount_wei).buildTransaction(
+	tx = sales_auction_contract.functions.bid(token_id, bid_amount_wei).build_transaction(
 		{'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
 	if logger is not None:
@@ -236,7 +236,7 @@ def create_auction(contract_address, token_id, starting_price_wei, ending_price_
 
 	if logger is not None:
 		logger.info("Auctioning " + str(token_id) + " (starting price=" + str(wei2ether(starting_price_wei)) + ", ending price=" + str(wei2ether(ending_price_wei)) + ", duration=" + str(duration) + ", private sale buyer=" + str(winner) + ")")
-	tx = sales_auction_contract.functions.createAuction(token_id, starting_price_wei, ending_price_wei, duration, winner).buildTransaction(
+	tx = sales_auction_contract.functions.createAuction(token_id, starting_price_wei, ending_price_wei, duration, winner).build_transaction(
 		{'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 	if logger is not None:
 		logger.info("Signing transaction")
@@ -262,7 +262,7 @@ def cancel_auction(contract_address, token_id, private_key, nonce, gas_price_gwe
 	sales_auction_contract_address = Web3.to_checksum_address(contract_address)
 	sales_auction_contract = w3.eth.contract(sales_auction_contract_address, abi=ABI)
 
-	tx = sales_auction_contract.functions.cancelAuction(token_id).buildTransaction(
+	tx = sales_auction_contract.functions.cancelAuction(token_id).build_transaction(
 		{'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 	if logger is not None:
 		logger.info("Signing transaction")

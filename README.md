@@ -38,7 +38,7 @@ The use of any trade name or trademark is for identification and reference purpo
 7. All hardcoded addresses should be [CheckSummed](https://ethsum.netlify.app/)
 8. Use `logging`, not `print`
 9. No other third-party libraries (if really needed, please explain why in the PR)
-10. A short & meaningful comment is superior to a long & unfathomable documentation
+10. A short & meaningful comment is better than a long & unfathomable documentation
 
 <br/>
 

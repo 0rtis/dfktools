@@ -115,7 +115,7 @@ def mint(token_address, receiver_address, token_id, amount, data, private_key, n
 
     contract_address = Web3.to_checksum_address(token_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
-    tx = contract.functions.mint(receiver_address, token_id, amount, data).buildTransaction(
+    tx = contract.functions.mint(receiver_address, token_id, amount, data).build_transaction(
         {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)

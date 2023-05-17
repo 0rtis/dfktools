@@ -87,11 +87,11 @@ def start_quest(quest_core_contract_address, quest_address, hero_ids, attempts, 
     contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
     if isinstance(gas_price_gwei, dict):   # dynamic fee
-        tx = contract.functions.startQuest(hero_ids, quest_address, attempts, level).buildTransaction(
+        tx = contract.functions.startQuest(hero_ids, quest_address, attempts, level).build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
              'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:   # legacy
-        tx = contract.functions.startQuest(hero_ids, quest_address, attempts, level).buildTransaction(
+        tx = contract.functions.startQuest(hero_ids, quest_address, attempts, level).build_transaction(
             {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
@@ -118,11 +118,11 @@ def start_quests(quest_core_contract_address, quest_addresses, hero_idss, attemp
     contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
-        tx = contract.functions.multiStartQuest(quest_addresses, hero_idss, attempts, levels).buildTransaction(
+        tx = contract.functions.multiStartQuest(quest_addresses, hero_idss, attempts, levels).build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
              'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = contract.functions.multiStartQuest(quest_addresses, hero_idss, attempts, levels).buildTransaction(
+        tx = contract.functions.multiStartQuest(quest_addresses, hero_idss, attempts, levels).build_transaction(
             {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
@@ -149,11 +149,11 @@ def complete_quest(quest_core_contract_address, hero_id, private_key, nonce, gas
     contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
-        tx = contract.functions.completeQuest(hero_id).buildTransaction(
+        tx = contract.functions.completeQuest(hero_id).build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
              'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = contract.functions.completeQuest(hero_id).buildTransaction(
+        tx = contract.functions.completeQuest(hero_id).build_transaction(
             {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
@@ -199,11 +199,11 @@ def cancel_quest(quest_core_contract_address, hero_id, private_key, nonce, gas_p
     contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
-        tx = contract.functions.cancelQuest(hero_id).buildTransaction(
+        tx = contract.functions.cancelQuest(hero_id).build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
              'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = contract.functions.cancelQuest(hero_id).buildTransaction(
+        tx = contract.functions.cancelQuest(hero_id).build_transaction(
             {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
@@ -229,11 +229,11 @@ def cancel_quests(quest_core_contract_address, hero_ids, private_key, nonce, gas
     contract = w3.eth.contract(quest_core_contract_address, abi=ABI)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
-        tx = contract.functions.multiCancelQuest(hero_ids).buildTransaction(
+        tx = contract.functions.multiCancelQuest(hero_ids).build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
              'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = contract.functions.multiCancelQuest(hero_ids).buildTransaction(
+        tx = contract.functions.multiCancelQuest(hero_ids).build_transaction(
             {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")

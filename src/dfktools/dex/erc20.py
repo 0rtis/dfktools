@@ -423,11 +423,11 @@ def approve(token_address, private_key, nonce, gas_price_gwei, tx_timeout_second
     tx = contract.functions.approve(account.address, sys.maxsize)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
-        tx = tx.buildTransaction(
+        tx = tx.build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
              'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.build_transaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     
@@ -457,11 +457,11 @@ def transfer(token_address, private_key, nonce, dest_address, amount, gas_price_
     tx = contract.functions.transferFrom(account.address, dest_address, amount)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
-        tx = tx.buildTransaction(
+        tx = tx.build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
              'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.build_transaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     

@@ -119,12 +119,12 @@ def swap_exact_tokens_for_tokens(router_contract_address, amount_in, amount_out_
     contract_address = Web3.to_checksum_address(router_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     if isinstance(gas_price_gwei, dict):
-        tx = contract.functions.swapExactTokensForTokens(amount_in, amount_out_min, path, to, deadline).buildTransaction(
+        tx = contract.functions.swapExactTokensForTokens(amount_in, amount_out_min, path, to, deadline).build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'),
             'nonce': nonce})
     else: # legacy 
-        tx = contract.functions.swapExactTokensForTokens(amount_in, amount_out_min, path, to, deadline).buildTransaction(
+        tx = contract.functions.swapExactTokensForTokens(amount_in, amount_out_min, path, to, deadline).build_transaction(
             {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -168,12 +168,12 @@ def swap_exact_tokens_for_eth(router_contract_address, amount_in, amount_out_min
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     if isinstance(gas_price_gwei, dict):
-        tx = contract.functions.swapExactTokensForETH(amount_in, amount_out_min, path, to, deadline).buildTransaction(
+        tx = contract.functions.swapExactTokensForETH(amount_in, amount_out_min, path, to, deadline).build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'),
             'nonce': nonce})
     else: # legacy 
-        tx = contract.functions.swapExactTokensForETH(amount_in, amount_out_min, path, to, deadline).buildTransaction(
+        tx = contract.functions.swapExactTokensForETH(amount_in, amount_out_min, path, to, deadline).build_transaction(
             {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)

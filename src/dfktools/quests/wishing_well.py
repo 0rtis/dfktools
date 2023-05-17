@@ -62,7 +62,7 @@ def start_quest(hero_id, attempts, private_key, nonce, gas_price_gwei, tx_timeou
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     logger.info("Starting quest with hero id " + str(hero_id))
-    tx = contract.functions.startQuest(hero_id, attempts).buildTransaction(
+    tx = contract.functions.startQuest(hero_id, attempts).build_transaction(
         {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
@@ -88,7 +88,7 @@ def complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_secon
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     logger.debug("Completing quest with hero id " + str(hero_id))
-    tx = contract.functions.completeQuest(hero_id).buildTransaction(
+    tx = contract.functions.completeQuest(hero_id).build_transaction(
         {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")

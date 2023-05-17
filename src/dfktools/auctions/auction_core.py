@@ -64,11 +64,11 @@ def bid(auction_contract_address, token_id, bid_amount_wei, private_key, nonce, 
     tx = contract.functions.bid(token_id, bid_amount_wei)
 
     if isinstance(gas_price_gwei, dict):   # dynamic fee
-        tx = tx.buildTransaction(
+        tx = tx.build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
              'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:   # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.build_transaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.info("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -90,7 +90,7 @@ def create_auction(auction_address, token_id, starting_price_wei, ending_price_w
     auction_contract_address = Web3.to_checksum_address(auction_address)
     auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
 
-    tx = auction_contract.functions.createAuction(token_id, starting_price_wei, ending_price_wei, duration, winner).buildTransaction(
+    tx = auction_contract.functions.createAuction(token_id, starting_price_wei, ending_price_wei, duration, winner).build_transaction(
         {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.info("Signing transaction")
@@ -113,7 +113,7 @@ def cancel_auction(auction_address, token_id, private_key, nonce, gas_price_gwei
     auction_contract_address = Web3.to_checksum_address(auction_address)
     auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
 
-    tx = auction_contract.functions.cancelAuction(token_id).buildTransaction(
+    tx = auction_contract.functions.cancelAuction(token_id).build_transaction(
         {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.info("Signing transaction")

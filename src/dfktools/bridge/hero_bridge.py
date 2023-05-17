@@ -85,12 +85,12 @@ def send_hero(origin_realm_contract_address, hero_id, destination_chain_id, brid
     tx = contract.functions.sendHero(hero_id, destination_chain_id)
 
     if isinstance(gas_price_gwei, dict):   # dynamic fee
-        tx = tx.buildTransaction(
+        tx = tx.build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
              'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'),
              'value': bridge_fee_in_wei, 'nonce': nonce})
     else:   # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'value': bridge_fee_in_wei, 'nonce': nonce})
+        tx = tx.build_transaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'value': bridge_fee_in_wei, 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
