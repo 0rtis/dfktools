@@ -113,7 +113,7 @@ def block_explorer_link(contract_address, txid):
         return str(txid)
 
 
-def transfer(contract_address, hero_id, private_key, nonce, receiver_address, gas_price_gwei, tx_timeout_seconds, rpc_address, logger=None):
+def transfer_from(contract_address, hero_id, receiver_address, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger=None):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
