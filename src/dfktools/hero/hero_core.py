@@ -456,8 +456,9 @@ def human_readable_hero(raw_hero, hero_male_first_names=None, hero_female_first_
     # statsGenes
     readable_hero['info']['statGenes'] = hero_utils.parse_stat_genes(readable_hero['info']['statGenes'])
 
-    readable_hero['professions']['craft1'] = hero_utils.parse_craft(readable_hero['professions']['craft1'])
-    readable_hero['professions']['craft2'] = hero_utils.parse_craft(readable_hero['professions']['craft2'])
+    if 'craft1' in readable_hero['professions']:
+        readable_hero['professions']['craft1'] = hero_utils.parse_craft(readable_hero['professions']['craft1'])
+        readable_hero['professions']['craft2'] = hero_utils.parse_craft(readable_hero['professions']['craft2'])
 
 
     # names
