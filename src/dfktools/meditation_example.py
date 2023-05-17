@@ -48,13 +48,13 @@ if __name__ == "__main__":
     
     required_runes = meditation.get_required_runes(contract_address, level, rpc_server)
     meditation.start_meditation(contract_address, hero_id, stat1, stat2, stat3,
-                                attunement_crystal_address, private_key, w3.eth.getTransactionCount(account_address),
+                                attunement_crystal_address, private_key, w3.eth.get_transaction_count(account_address),
                                 gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
     hero_meditation = meditation.get_hero_meditation(contract_address, hero_id, rpc_server)
     logger.info("Pending meditation "+str(hero_meditation))
     logger.info("Waiting 20 seconds to complete meditation")
     time.sleep(20)
-    tx_receipt = meditation.complete_meditation(contract_address, hero_id, private_key, w3.eth.getTransactionCount(account_address),
+    tx_receipt = meditation.complete_meditation(contract_address, hero_id, private_key, w3.eth.get_transaction_count(account_address),
                                    gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
 
     level_up = meditation.parse_meditation_results(contract_address, tx_receipt, rpc_server)

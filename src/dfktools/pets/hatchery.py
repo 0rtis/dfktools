@@ -63,10 +63,10 @@ def block_explorer_link(contract_address, txid):
 def get_user_eggs(contract_address, account, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    return contract.functions.getUserEggs(Web3.toChecksumAddress(account)).call()
+    return contract.functions.getUserEggs(Web3.to_checksum_address(account)).call()
 
 
 def egg_type_costs(contract_address, egg_type, rpc_address):
@@ -79,7 +79,7 @@ def egg_type_costs(contract_address, egg_type, rpc_address):
 
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.eggTypeCosts(egg_type).call()
@@ -88,7 +88,7 @@ def egg_type_costs(contract_address, egg_type, rpc_address):
 def get_egg(contract_address, egg_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.getEgg(egg_id).call()
@@ -97,7 +97,7 @@ def get_egg(contract_address, egg_id, rpc_address):
 def season(contract_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.season().call()
@@ -106,7 +106,7 @@ def season(contract_address, rpc_address):
 def total_eggs(contract_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.totalEggs().call()
@@ -127,19 +127,19 @@ def incubate_egg(contract_address, egg_type, tier, private_key, nonce, gas_price
     """
 
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     tx = contract.functions.incubateEgg(egg_type, tier)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
         tx = tx.buildTransaction(
-            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -157,19 +157,19 @@ def incubate_egg(contract_address, egg_type, tier, private_key, nonce, gas_price
 
 def crack(contract_address, egg_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     tx = contract.functions.crack(egg_id)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
         tx = tx.buildTransaction(
-            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)

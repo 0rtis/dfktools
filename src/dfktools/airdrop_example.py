@@ -24,8 +24,8 @@ if __name__ == "__main__":
     # Claim Airdrop
     w3 = Web3(Web3.HTTPProvider(rpc_server))
     private_key = None  # set private key
-    account_address = w3.eth.account.privateKeyToAccount(private_key).address
+    account_address = w3.eth.account.from_key(private_key).address
     gas_price_gwei = 100
     tx_timeout_seconds = 30
     airdrop_id = 0  # Use index from view_airdrops list
-    airdrop.claim_airdrop(airdrop.SERENDALE_CONTRACT_ADDRESS, airdrop_id, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
+    airdrop.claim_airdrop(airdrop.SERENDALE_CONTRACT_ADDRESS, airdrop_id, private_key, w3.eth.get_transaction_count(account_address), gas_price_gwei, tx_timeout_seconds, rpc_server, logger)

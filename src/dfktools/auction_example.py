@@ -40,16 +40,16 @@ if __name__ == "__main__":
 
     #w3 = Web3(Web3.HTTPProvider(rpc_server))
     #private_key = ""  # set private key
-    #account_address = w3.eth.account.privateKeyToAccount(private_key).address
+    #account_address = w3.eth.account.from_key(private_key).address
 
     # serendale hero auction
     #logger.info(hero_sales.get_auction(hero_sales.SERENDALE_CONTRACT_ADDRESS, 181373, 'https://api.harmony.one'))
-    # hero_sales.bid_hero(hero_sales.SERENDALE_CONTRACT_ADDRESS, 181373, hero_sales.ether2wei(100), private_key, 'w3.eth.getTransactionCount(account_address), 50, 30)
+    # hero_sales.bid_hero(hero_sales.SERENDALE_CONTRACT_ADDRESS, 181373, hero_sales.ether2wei(100), private_key, 'w3.eth.get_transaction_count(account_address), 50, 30)
 
     # crystalvale hero auction
     #cv_hero_auctions = Auction(hero_sales.CRYSTALVALE_CONTRACT_ADDRESS, 'https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc', logger)
     #logger.info(auction_utils.human_readable_auction(cv_hero_auctions.get_auction(hero_utils.sd2cv_cv_hero_id(250))))
-    # cv_hero_auctions.bid_hero(hero_utils.sd2cv_cv_hero_id(250), hero_sales.ether2wei(100), private_key, w3.eth.getTransactionCount(account_address), 50, 30)
+    # cv_hero_auctions.bid_hero(hero_utils.sd2cv_cv_hero_id(250), hero_sales.ether2wei(100), private_key, w3.eth.get_transaction_count(account_address), 50, 30)
 
     logger.info("\n")
 

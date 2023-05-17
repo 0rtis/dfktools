@@ -55,15 +55,15 @@ def block_explorer_link(txid):
 
 def start_quest(hero_id, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     logger.info("Starting quest with hero id " + str(hero_id))
     tx = contract.functions.startQuest(hero_id, attempts).buildTransaction(
-        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -81,15 +81,15 @@ def start_quest(hero_id, attempts, private_key, nonce, gas_price_gwei, tx_timeou
 
 def complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     logger.debug("Completing quest with hero id " + str(hero_id))
     tx = contract.functions.completeQuest(hero_id).buildTransaction(
-        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -109,15 +109,15 @@ def complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_secon
 def parse_complete_quest_receipt(tx_receipt, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     quest_result = {}
 
-    quest_reward = contract.events.QuestReward().processReceipt(tx_receipt)
+    quest_reward = contract.events.QuestReward().process_receipt(tx_receipt)
     quest_result['tear'] = sum([result.args.itemQuantity for result in quest_reward])
 
-    quest_xp = contract.events.QuestXP().processReceipt(tx_receipt)
+    quest_xp = contract.events.QuestXP().process_receipt(tx_receipt)
     quest_result['xp'] = sum([result.args.xpEarned for result in quest_xp])
 
     return quest_result
@@ -125,7 +125,7 @@ def parse_complete_quest_receipt(tx_receipt, rpc_address):
 
 def quest_level(rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.questLevel().call()
 
@@ -134,7 +134,7 @@ def quest_level(rpc_address):
 
 def rewards(quest_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.rewardItems(quest_id).call()
 
@@ -144,7 +144,7 @@ def rewards(quest_id, rpc_address):
 def last_reward_index(rpc_address):
 
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.lastRewardIndex().call()
 
@@ -153,7 +153,7 @@ def last_reward_index(rpc_address):
 
 def hero_to_quest(hero_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.heroToQuest(hero_id).call()
 
@@ -163,7 +163,7 @@ def hero_to_quest(hero_id, rpc_address):
 def get_current_stamina(hero_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.getCurrentStamina(hero_id).call()
 

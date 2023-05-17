@@ -35,9 +35,9 @@ ABI = """
 
 def get_profile(address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
-    contract_entry = contract.functions.getProfileByAddress(Web3.toChecksumAddress(address)).call()
+    contract_entry = contract.functions.getProfileByAddress(Web3.to_checksum_address(address)).call()
 
     profile = {}
     profile['id'] = contract_entry[0]

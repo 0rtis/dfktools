@@ -69,7 +69,7 @@ def block_explorer_link(contract_address, txid):
 def get_required_runes(contract_address, level, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions._getRequiredRunes(level).call()
@@ -78,7 +78,7 @@ def get_required_runes(contract_address, level, rpc_address):
 def active_attunement_crystals(contract_address, address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.activeAttunementCrystals(address).call()
@@ -87,7 +87,7 @@ def active_attunement_crystals(contract_address, address, rpc_address):
 def add_attunement_crystal(contract_address, address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.addAttunementCrystal(address).call()
@@ -105,20 +105,20 @@ def start_meditation(contract_address, hero_id, trait1, trait2, trait3, attuneme
         trait3 = trait2id(trait3)
 
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     tx = contract.functions.startMeditation(hero_id, trait1, trait2, trait3, attunement_crystal_address)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
         tx = tx.buildTransaction(
-            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -135,20 +135,20 @@ def start_meditation(contract_address, hero_id, trait1, trait2, trait3, attuneme
 
 def complete_meditation(contract_address, hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     tx = contract.functions.completeMeditation(hero_id)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
         tx = tx.buildTransaction(
-            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -166,14 +166,14 @@ def complete_meditation(contract_address, hero_id, private_key, nonce, gas_price
 def parse_meditation_results(contract_address, tx_receipt, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     meditation_result = {}
-    level_up = contract.events.LevelUp().processReceipt(tx_receipt, errors=DISCARD)
+    level_up = contract.events.LevelUp().process_receipt(tx_receipt, errors=DISCARD)
     new_level = level_up[0]['args']["hero"][3][3]
     
-    stat_up = contract.events.StatUp().processReceipt(tx_receipt, errors=DISCARD)
+    stat_up = contract.events.StatUp().process_receipt(tx_receipt, errors=DISCARD)
 
     hero_id = None
     for stat in stat_up:
@@ -196,7 +196,7 @@ def parse_meditation_results(contract_address, tx_receipt, rpc_address):
 def get_active_meditations(contract_address, address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.getActiveMeditations(address).call()
@@ -205,7 +205,7 @@ def get_active_meditations(contract_address, address, rpc_address):
 def get_hero_meditation(contract_address, hero_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     result = contract.functions.getHeroMeditation(hero_id).call()
@@ -217,7 +217,7 @@ def get_hero_meditation(contract_address, hero_id, rpc_address):
 def get_meditation(contract_address, meditation_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     result = contract.functions.getMeditation(meditation_id).call()
@@ -229,7 +229,7 @@ def get_meditation(contract_address, meditation_id, rpc_address):
 def hero_to_meditation_id(contract_address, hero_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.heroToMeditation(hero_id).call()
@@ -238,7 +238,7 @@ def hero_to_meditation_id(contract_address, hero_id, rpc_address):
 def profile_active_meditations(contract_address, address, id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.profileActiveMeditations(address, id).call()

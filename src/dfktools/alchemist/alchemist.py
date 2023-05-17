@@ -50,19 +50,19 @@ def block_explorer_link(contract_address, txid):
 
 def create_potion(contract_address, potion_address, quantity, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
-	account = w3.eth.account.privateKeyToAccount(private_key)
+	account = w3.eth.account.from_key(private_key)
 	w3.eth.default_account = account.address
 
-	contract_address = Web3.toChecksumAddress(contract_address)
+	contract_address = Web3.to_checksum_address(contract_address)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	if isinstance(gas_price_gwei, dict):  # dynamic fee
 		tx = contract.functions.createPotion(potion_address, quantity).buildTransaction(
-			{'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-			 'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+			{'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+			 'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
 	else:  # legacy
 		tx = contract.functions.createPotion(potion_address, quantity).buildTransaction(
-			{'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+			{'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
 	logger.debug("Signing transaction")
 	signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -82,7 +82,7 @@ def create_potion(contract_address, potion_address, quantity, private_key, nonce
 def address_to_potion_id(contract_address, potion_address, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(contract_address)
+	contract_address = Web3.to_checksum_address(contract_address)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	return contract.functions.addressToPotionId(potion_address).call()
@@ -91,7 +91,7 @@ def address_to_potion_id(contract_address, potion_address, rpc_address):
 def potion_id_to_address_amount(contract_address, uint256, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(contract_address)
+	contract_address = Web3.to_checksum_address(contract_address)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	raw = contract.functions.potions(uint256).call()
@@ -101,7 +101,7 @@ def potion_id_to_address_amount(contract_address, uint256, rpc_address):
 def get_potion(contract_address, potion_address, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(contract_address)
+	contract_address = Web3.to_checksum_address(contract_address)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	raw = contract.functions.getPotion(potion_address).call()
@@ -111,7 +111,7 @@ def get_potion(contract_address, potion_address, rpc_address):
 def get_potions(contract_address, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(contract_address)
+	contract_address = Web3.to_checksum_address(contract_address)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	raw = contract.functions.getPotions().call()

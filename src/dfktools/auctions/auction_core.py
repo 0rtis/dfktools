@@ -1,4 +1,3 @@
-import requests
 from web3 import Web3
 
 ABI = """
@@ -56,20 +55,20 @@ def block_explorer_link(txid):
 
 def bid(auction_contract_address, token_id, bid_amount_wei, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    auction_contract_address = Web3.toChecksumAddress(auction_contract_address)
+    auction_contract_address = Web3.to_checksum_address(auction_contract_address)
     contract = w3.eth.contract(auction_contract_address, abi=ABI)
 
     tx = contract.functions.bid(token_id, bid_amount_wei)
 
     if isinstance(gas_price_gwei, dict):   # dynamic fee
         tx = tx.buildTransaction(
-            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:   # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.info("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -85,14 +84,14 @@ def bid(auction_contract_address, token_id, bid_amount_wei, private_key, nonce, 
 
 def create_auction(auction_address, token_id, starting_price_wei, ending_price_wei, duration, winner, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    auction_contract_address = Web3.toChecksumAddress(auction_address)
+    auction_contract_address = Web3.to_checksum_address(auction_address)
     auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
 
     tx = auction_contract.functions.createAuction(token_id, starting_price_wei, ending_price_wei, duration, winner).buildTransaction(
-        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.info("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -108,14 +107,14 @@ def create_auction(auction_address, token_id, starting_price_wei, ending_price_w
 
 def cancel_auction(auction_address, token_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    auction_contract_address = Web3.toChecksumAddress(auction_address)
+    auction_contract_address = Web3.to_checksum_address(auction_address)
     auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
 
     tx = auction_contract.functions.cancelAuction(token_id).buildTransaction(
-        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.info("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -132,7 +131,7 @@ def cancel_auction(auction_address, token_id, private_key, nonce, gas_price_gwei
 def is_on_auction(auction_address, token_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    auction_contract_address = Web3.toChecksumAddress(auction_address)
+    auction_contract_address = Web3.to_checksum_address(auction_address)
     auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
     return auction_contract.functions.isOnAuction(token_id).call()
 
@@ -140,7 +139,7 @@ def is_on_auction(auction_address, token_id, rpc_address):
 def get_auction(auction_address, token_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    auction_contract_address = Web3.toChecksumAddress(auction_address)
+    auction_contract_address = Web3.to_checksum_address(auction_address)
     auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
     return auction_contract.functions.getAuction(token_id).call()
 
@@ -148,7 +147,7 @@ def get_auction(auction_address, token_id, rpc_address):
 def get_auctions(auction_address, token_ids, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    auction_contract_address = Web3.toChecksumAddress(auction_address)
+    auction_contract_address = Web3.to_checksum_address(auction_address)
     auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
     return auction_contract.functions.getAuctions(token_ids).call()
 
@@ -156,7 +155,7 @@ def get_auctions(auction_address, token_ids, rpc_address):
 def total_auctions(auction_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    auction_contract_address = Web3.toChecksumAddress(auction_address)
+    auction_contract_address = Web3.to_checksum_address(auction_address)
     auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
     return auction_contract.functions.totalAuctions().call()
 
@@ -164,15 +163,15 @@ def total_auctions(auction_address, rpc_address):
 def get_user_auctions(auction_address, user, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    auction_contract_address = Web3.toChecksumAddress(auction_address)
+    auction_contract_address = Web3.to_checksum_address(auction_address)
     auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
-    return auction_contract.functions.getUserAuctions(Web3.toChecksumAddress(user)).call()
+    return auction_contract.functions.getUserAuctions(Web3.to_checksum_address(user)).call()
 
 
 def auctions(auction_address, index, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    auction_contract_address = Web3.toChecksumAddress(auction_address)
+    auction_contract_address = Web3.to_checksum_address(auction_address)
     auction_contract = w3.eth.contract(auction_contract_address, abi=ABI)
     return auction_contract.functions.auctions(index).call()
 

@@ -56,7 +56,7 @@ def block_explorer_link(contract_address, txid):
 def assisting_auction(realm_contract, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract = Web3.toChecksumAddress(realm_contract)
+    contract = Web3.to_checksum_address(realm_contract)
     contract = w3.eth.contract(contract, abi=ABI)
     result = contract.functions.assistingAuction().call()
 
@@ -66,7 +66,7 @@ def assisting_auction(realm_contract, rpc_address):
 def heroes(realm_contract, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract = Web3.toChecksumAddress(realm_contract)
+    contract = Web3.to_checksum_address(realm_contract)
     contract = w3.eth.contract(contract, abi=ABI)
     result = contract.functions.heroes().call()
 
@@ -76,21 +76,21 @@ def heroes(realm_contract, rpc_address):
 def send_hero(origin_realm_contract_address, hero_id, destination_chain_id, bridge_fee_in_wei, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
 
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    origin_realm_contract_address = Web3.toChecksumAddress(origin_realm_contract_address)
+    origin_realm_contract_address = Web3.to_checksum_address(origin_realm_contract_address)
     contract = w3.eth.contract(origin_realm_contract_address, abi=ABI)
 
     tx = contract.functions.sendHero(hero_id, destination_chain_id)
 
     if isinstance(gas_price_gwei, dict):   # dynamic fee
         tx = tx.buildTransaction(
-            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'),
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'),
              'value': bridge_fee_in_wei, 'nonce': nonce})
     else:   # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'value': bridge_fee_in_wei, 'nonce': nonce})
+        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'value': bridge_fee_in_wei, 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)

@@ -64,20 +64,20 @@ def block_explorer_link(txid):
 
 def start_quest(quest_address, hero_ids, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     tx = contract.functions.startQuest(hero_ids, quest_address, attempts)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
         tx = tx.buildTransaction(
-            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -96,10 +96,10 @@ def start_quest(quest_address, hero_ids, attempts, private_key, nonce, gas_price
 
 def start_quest_with_data(quest_address, data, hero_ids, attempts, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     if type(data) != tuple:
@@ -112,10 +112,10 @@ def start_quest_with_data(quest_address, data, hero_ids, attempts, private_key, 
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
         tx = tx.buildTransaction(
-            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -134,20 +134,20 @@ def start_quest_with_data(quest_address, data, hero_ids, attempts, private_key, 
 
 def complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     tx = contract.functions.completeQuest(hero_id)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
         tx = tx.buildTransaction(
-            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -166,18 +166,18 @@ def complete_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_secon
 def parse_complete_quest_receipt(tx_receipt, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     quest_result = {}
 
-    quest_reward = contract.events.QuestReward().processReceipt(tx_receipt)
+    quest_reward = contract.events.QuestReward().process_receipt(tx_receipt)
     quest_result['reward'] = quest_reward
 
-    quest_xp = contract.events.QuestXP().processReceipt(tx_receipt)
+    quest_xp = contract.events.QuestXP().process_receipt(tx_receipt)
     quest_result['xp'] = quest_xp
 
-    quest_skill_up = contract.events.QuestSkillUp().processReceipt(tx_receipt)
+    quest_skill_up = contract.events.QuestSkillUp().process_receipt(tx_receipt)
     quest_result['skillUp'] = quest_skill_up
 
     return quest_result
@@ -185,20 +185,20 @@ def parse_complete_quest_receipt(tx_receipt, rpc_address):
 
 def cancel_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     tx = contract.functions.cancelQuest(hero_id)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
         tx = tx.buildTransaction(
-            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -216,7 +216,7 @@ def cancel_quest(hero_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds
 
 def hero_to_quest_id(hero_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.heroToQuest(hero_id).call()
 
@@ -226,7 +226,7 @@ def hero_to_quest_id(hero_id, rpc_address):
 def get_active_quest(address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.getActiveQuests(address).call()
 
@@ -236,7 +236,7 @@ def get_active_quest(address, rpc_address):
 def get_hero_quest(hero_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.getHeroQuest(hero_id).call()
 
@@ -249,7 +249,7 @@ def get_hero_quest(hero_id, rpc_address):
 def get_quest(quest_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.getQuest(quest_id).call()
 
@@ -262,7 +262,7 @@ def get_quest(quest_id, rpc_address):
 def get_quest_data(quest_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.getQuestData(quest_id).call()
 
@@ -272,7 +272,7 @@ def get_quest_data(quest_id, rpc_address):
 def quest_address_to_type(quest_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.questAddressToType(quest_address).call()
 
@@ -282,7 +282,7 @@ def quest_address_to_type(quest_address, rpc_address):
 def get_current_stamina(hero_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(CONTRACT_ADDRESS)
+    contract_address = Web3.to_checksum_address(CONTRACT_ADDRESS)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.getCurrentStamina(hero_id).call()
 

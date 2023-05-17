@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     # Swap JEWEL for ONE
     #private_key = None #set private key of to swap coin from
-    #account_address = w3.eth.account.privateKeyToAccount(private_key).address
+    #account_address = w3.eth.account.from_key(private_key).address
     #market_place_router.swap_exact_tokens_for_eth(erc20.eth2wei(w3, 1), 60, [erc20.JEWEL, market_place_router.weth(rpc_server)], account_address,
-    #                                 int(time.time() + 60), private_key, w3.eth.getTransactionCount(account_address),
-    #                                 w3.fromWei(w3.eth.gas_price, 'gwei'), 30, rpc_server, logger)
+    #                                 int(time.time() + 60), private_key, w3.eth.get_transaction_count(account_address),
+    #                                 w3.from_wei(w3.eth.gas_price, 'gwei'), 30, rpc_server, logger)

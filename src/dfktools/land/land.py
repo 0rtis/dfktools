@@ -72,16 +72,16 @@ def block_explorer_link(contract_address, txid):
 def get_account_lands(real_contract, account, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(real_contract)
+	contract_address = Web3.to_checksum_address(real_contract)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
-	return contract.functions.getAccountLands(Web3.toChecksumAddress(account)).call()
+	return contract.functions.getAccountLands(Web3.to_checksum_address(account)).call()
 
 
 def get_land(real_contract, land_id, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(real_contract)
+	contract_address = Web3.to_checksum_address(real_contract)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	return contract.functions.getLand(land_id).call()
@@ -90,7 +90,7 @@ def get_land(real_contract, land_id, rpc_address):
 def get_lands_by_region(real_contract, region_id, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(real_contract)
+	contract_address = Web3.to_checksum_address(real_contract)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	return contract.functions.getLandsByRegion(region_id).call()
@@ -99,7 +99,7 @@ def get_lands_by_region(real_contract, region_id, rpc_address):
 def get_all_lands(real_contract, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(real_contract)
+	contract_address = Web3.to_checksum_address(real_contract)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	return contract.functions.getAllLands().call()
@@ -108,7 +108,7 @@ def get_all_lands(real_contract, rpc_address):
 def owner_of(real_contract, land_id, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(real_contract)
+	contract_address = Web3.to_checksum_address(real_contract)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	return contract.functions.ownerOf(land_id).call()
@@ -117,7 +117,7 @@ def owner_of(real_contract, land_id, rpc_address):
 def total_supply(real_contract, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-	contract_address = Web3.toChecksumAddress(real_contract)
+	contract_address = Web3.to_checksum_address(real_contract)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	return contract.functions.totalSupply().call()
@@ -125,20 +125,20 @@ def total_supply(real_contract, rpc_address):
 
 def claim(real_contract, landId, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
-	account = w3.eth.account.privateKeyToAccount(private_key)
+	account = w3.eth.account.from_key(private_key)
 	w3.eth.default_account = account.address
 
-	contract_address = Web3.toChecksumAddress(real_contract)
+	contract_address = Web3.to_checksum_address(real_contract)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	tx = contract.functions.claimLand(account.address, landId)
 
 	if isinstance(gas_price_gwei, dict):  # dynamic fee
 		tx = tx.buildTransaction(
-			{'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-			 'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+			{'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+			 'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
 	else:  # legacy
-		tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+		tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
 	logger.debug("Signing transaction")
 	signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)

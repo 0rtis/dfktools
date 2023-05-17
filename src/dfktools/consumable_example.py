@@ -19,9 +19,9 @@ if __name__ == "__main__":
 
     w3 = Web3(Web3.HTTPProvider(rpc_server))
     private_key = None  # set private key
-    account_address = w3.eth.account.privateKeyToAccount(private_key).address
+    account_address = w3.eth.account.from_key(private_key).address
     gas_price_gwei = 40
     tx_timeout_seconds = 30
 
     hero_id = 1
-    consumable.consume_item(realm_consumable_contract_address, stamina_vial_address, hero_id, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
+    consumable.consume_item(realm_consumable_contract_address, stamina_vial_address, hero_id, private_key, w3.eth.get_transaction_count(account_address), gas_price_gwei, tx_timeout_seconds, rpc_server, logger)

@@ -74,7 +74,7 @@ def block_explorer_link(txid):
 
 def balance_of(token_address, account_address, token_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(token_address)
+    contract_address = Web3.to_checksum_address(token_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.balanceOf(account_address, token_id).call()
 
@@ -83,7 +83,7 @@ def balance_of(token_address, account_address, token_id, rpc_address):
 
 def decimals(token_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(token_address)
+    contract_address = Web3.to_checksum_address(token_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.decimals().call()
 
@@ -92,7 +92,7 @@ def decimals(token_address, rpc_address):
 
 def symbol(token_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(token_address)
+    contract_address = Web3.to_checksum_address(token_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.symbol().call()
 
@@ -101,7 +101,7 @@ def symbol(token_address, rpc_address):
 
 def uri(token_address, token_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(token_address)
+    contract_address = Web3.to_checksum_address(token_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.uri(token_id).call()
 
@@ -110,13 +110,13 @@ def uri(token_address, token_id, rpc_address):
 
 def mint(token_address, receiver_address, token_id, amount, data, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(token_address)
+    contract_address = Web3.to_checksum_address(token_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     tx = contract.functions.mint(receiver_address, token_id, amount, data).buildTransaction(
-        {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
     logger.debug("Sending transaction " + str(tx))

@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     w3 = Web3(Web3.HTTPProvider(rpc_server))
     private_key = ""  # set private key
-    account_address = "0x"  # w3.eth.account.privateKeyToAccount(private_key).address
+    account_address = "0x"  # w3.eth.account.from_key(private_key).address
     gas_price_gwei = 120
     tx_timeout_seconds = 30
 
@@ -32,17 +32,17 @@ if __name__ == "__main__":
     War: 1, 5, 10
     '''
     duels.enter_duel_lobby('solo', [241730], 0.1, 'forest', 'dexterity',
-                            private_key, w3.eth.getTransactionCount(account_address),
+                            private_key, w3.eth.get_transaction_count(account_address),
                             gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
 
     # start private duel
     duels.start_private_duel('solo', [241730], '0x', 'forest', 'dexterity',
-                            private_key, w3.eth.getTransactionCount(account_address),
+                            private_key, w3.eth.get_transaction_count(account_address),
                             gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
 
     # complete duel
     duels.complete_duel(40331,
-                        private_key, w3.eth.getTransactionCount(account_address),
+                        private_key, w3.eth.get_transaction_count(account_address),
                         gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
 
     # result = duels.getDuelTurns(1,rpc_server) # get duels details based on Duel ID

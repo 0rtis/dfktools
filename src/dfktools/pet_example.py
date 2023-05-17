@@ -45,8 +45,8 @@ if __name__ == "__main__":
     gas_price_gwei = 115
     tx_timeout = 30
     w3 = Web3(Web3.HTTPProvider(rpc_server))
-    account_address = w3.eth.account.privateKeyToAccount(private_key).address
+    account_address = w3.eth.account.from_key(private_key).address
 
-    hatchery.incubate_egg(hatchery.CRYSTALVALE_CONTRACT_ADDRESS,0, 2, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout, rpc_server, logger)
-    hatchery.crack(hatchery.CRYSTALVALE_CONTRACT_ADDRESS, 404, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout,
+    hatchery.incubate_egg(hatchery.CRYSTALVALE_CONTRACT_ADDRESS,0, 2, private_key, w3.eth.get_transaction_count(account_address), gas_price_gwei, tx_timeout, rpc_server, logger)
+    hatchery.crack(hatchery.CRYSTALVALE_CONTRACT_ADDRESS, 404, private_key, w3.eth.get_transaction_count(account_address), gas_price_gwei, tx_timeout,
                   rpc_server, logger)

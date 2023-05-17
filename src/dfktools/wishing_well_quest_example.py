@@ -22,10 +22,10 @@ if __name__ == "__main__":
     #w3 = Web3(Web3.HTTPProvider(rpc_server))
     #gas_price_gwei = 10
     #private_key = # set private key
-    #account_address = w3.eth.account.privateKeyToAccount(private_key).address
-    #wishing_well.start_quest(hero_id, 5, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, 30, rpc_server, logger)
+    #account_address = w3.eth.account.from_key(private_key).address
+    #wishing_well.start_quest(hero_id, 5, private_key, w3.eth.get_transaction_count(account_address), gas_price_gwei, 30, rpc_server, logger)
     #time.sleep(60)
-    #tx_receipt = wishing_well.complete_quest(hero_id, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, 30, rpc_server, logger)
+    #tx_receipt = wishing_well.complete_quest(hero_id, private_key, w3.eth.get_transaction_count(account_address), gas_price_gwei, 30, rpc_server, logger)
 
     #quest_result = wishing_well.parse_complete_quest_receipt(tx_receipt, rpc_server)
     #logger.info("Quest earned " + str(quest_result['tear']) + " tears and " + str(quest_result['xp']) + " xp")

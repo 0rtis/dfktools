@@ -49,9 +49,9 @@ def block_explorer_link(contract_address, txid):
 def view_airdrops(contract_address, user_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract = w3.eth.contract(Web3.toChecksumAddress(contract_address), abi=ABI)
+    contract = w3.eth.contract(Web3.to_checksum_address(contract_address), abi=ABI)
 
-    raw = contract.functions.viewAirdrops().call({'from': Web3.toChecksumAddress(user_address)})
+    raw = contract.functions.viewAirdrops().call({'from': Web3.to_checksum_address(user_address)})
     airdrops = []
     for r in raw:
         airdrops.append({'tokenAddress': r[0], 'amount': r[1], 'time': r[2], 'note': r[3]})
@@ -60,19 +60,19 @@ def view_airdrops(contract_address, user_address, rpc_address):
 
 def claim_airdrop(contract_address, drop_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     if isinstance(gas_price_gwei, dict):   # dynamic fee
         tx = contract.functions.claimAirdrop(drop_id).buildTransaction(
-            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:   # legacy
         tx = contract.functions.claimAirdrop(drop_id).buildTransaction(
-            {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+            {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)

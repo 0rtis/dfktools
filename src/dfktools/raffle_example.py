@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     w3 = Web3(Web3.HTTPProvider(rpc_server))
     private_key = ""  # set private key
-    account_address = "0x"  # w3.eth.account.privateKeyToAccount(private_key).address
+    account_address = "0x"  # w3.eth.account.from_key(private_key).address
     gas_price_gwei = 115
     tx_timeout_seconds = 30
 
@@ -48,5 +48,5 @@ if __name__ == "__main__":
 
     # Enter raffle
     raffle_master.enter_raffle(realm_contract_address, 3555, 1,
-                               private_key, w3.eth.getTransactionCount(account_address),
+                               private_key, w3.eth.get_transaction_count(account_address),
                                gas_price_gwei, tx_timeout_seconds, rpc_server, logger)

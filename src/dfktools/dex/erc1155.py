@@ -69,7 +69,7 @@ def copy_items(items):
 
 def balance_of(token_address, account_address, id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(token_address)
+    contract_address = Web3.to_checksum_address(token_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.balanceOf(account_address, id).call()
 
@@ -78,7 +78,7 @@ def balance_of(token_address, account_address, id, rpc_address):
 
 def uri(token_address, id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    contract_address = Web3.toChecksumAddress(token_address)
+    contract_address = Web3.to_checksum_address(token_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     result = contract.functions.uri(id).call()
 

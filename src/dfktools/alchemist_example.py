@@ -37,7 +37,7 @@ if __name__ == "__main__":
     # crafting Stamina Vial
     w3 = Web3(Web3.HTTPProvider(rpc_server))
     private_key = None  # set private key
-    account_address = w3.eth.account.privateKeyToAccount(private_key).address
+    account_address = w3.eth.account.from_key(private_key).address
     gas_price_gwei = 40
     tx_timeout_seconds = 30
-    alchemist.create_potion(realm_contract, stamina_vial_address, 1, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
+    alchemist.create_potion(realm_contract, stamina_vial_address, 1, private_key, w3.eth.get_transaction_count(account_address), gas_price_gwei, tx_timeout_seconds, rpc_server, logger)

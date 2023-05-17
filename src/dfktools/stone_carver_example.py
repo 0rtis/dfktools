@@ -34,7 +34,7 @@ if __name__ == "__main__":
     # Crafting Lesser Chaos Stone
     w3 = Web3(Web3.HTTPProvider(rpc_server))
     private_key = None  # set private key
-    account_address = w3.eth.account.privateKeyToAccount(private_key).address
+    account_address = w3.eth.account.from_key(private_key).address
     gas_price_gwei = 100
     tx_timeout_seconds = 30
-    stone_carver.carve_stone(realm_contract_address, lesser_chaos_stone_address, 1, private_key, w3.eth.getTransactionCount(account_address), gas_price_gwei, tx_timeout_seconds, rpc_server, logger)
+    stone_carver.carve_stone(realm_contract_address, lesser_chaos_stone_address, 1, private_key, w3.eth.get_transaction_count(account_address), gas_price_gwei, tx_timeout_seconds, rpc_server, logger)

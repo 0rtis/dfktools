@@ -94,7 +94,7 @@ ABI = '''
 def pool_length(contract_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.poolLength().call()
@@ -103,7 +103,7 @@ def pool_length(contract_address, rpc_address):
 def pool_info(contract_address, pool_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.poolInfo(pool_id).call()
@@ -119,7 +119,7 @@ def pool_id1(contract_address, pool_address, rpc_address):
     """
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.poolId1(pool_address).call()
@@ -128,7 +128,7 @@ def pool_id1(contract_address, pool_address, rpc_address):
 def user_info(contract_address, pool_id, user_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(contract_address)
+    contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.userInfo(pool_id, user_address).call()

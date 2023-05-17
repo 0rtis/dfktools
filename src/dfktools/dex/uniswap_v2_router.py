@@ -51,7 +51,7 @@ def weth(router_contract_address, rpc_address):
 
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(router_contract_address)
+    contract_address = Web3.to_checksum_address(router_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.WETH().call()
@@ -60,7 +60,7 @@ def weth(router_contract_address, rpc_address):
 def factory(router_contract_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(router_contract_address)
+    contract_address = Web3.to_checksum_address(router_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.factory().call()
@@ -69,7 +69,7 @@ def factory(router_contract_address, rpc_address):
 def quote(router_contract_address, amount_a, reserve_a, reserve_b, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(router_contract_address)
+    contract_address = Web3.to_checksum_address(router_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.quote(amount_a, reserve_a, reserve_b).call()
@@ -78,7 +78,7 @@ def quote(router_contract_address, amount_a, reserve_a, reserve_b, rpc_address):
 def get_amount_in(router_contract_address, amount_out, reserve_in, reserve_out, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(router_contract_address)
+    contract_address = Web3.to_checksum_address(router_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.getAmountIn(amount_out, reserve_in, reserve_out).call()
@@ -87,7 +87,7 @@ def get_amount_in(router_contract_address, amount_out, reserve_in, reserve_out, 
 def get_amount_out(router_contract_address, amount_in, reserve_in, reserve_out, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(router_contract_address)
+    contract_address = Web3.to_checksum_address(router_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.getAmountOut(amount_in, reserve_in, reserve_out).call()
@@ -113,19 +113,19 @@ def swap_exact_tokens_for_tokens(router_contract_address, amount_in, amount_out_
     :return:
     """
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(router_contract_address)
+    contract_address = Web3.to_checksum_address(router_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
     if isinstance(gas_price_gwei, dict):
         tx = contract.functions.swapExactTokensForTokens(amount_in, amount_out_min, path, to, deadline).buildTransaction(
-            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-            'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'),
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+            'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'),
             'nonce': nonce})
     else: # legacy 
         tx = contract.functions.swapExactTokensForTokens(amount_in, amount_out_min, path, to, deadline).buildTransaction(
-            {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+            {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
     logger.debug("Sending transaction " + str(tx))
@@ -161,20 +161,20 @@ def swap_exact_tokens_for_eth(router_contract_address, amount_in, amount_out_min
     :return:
     """
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(router_contract_address)
+    contract_address = Web3.to_checksum_address(router_contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     if isinstance(gas_price_gwei, dict):
         tx = contract.functions.swapExactTokensForETH(amount_in, amount_out_min, path, to, deadline).buildTransaction(
-            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-            'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'),
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+            'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'),
             'nonce': nonce})
     else: # legacy 
         tx = contract.functions.swapExactTokensForETH(amount_in, amount_out_min, path, to, deadline).buildTransaction(
-            {'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+            {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
     logger.debug("Sending transaction " + str(tx))

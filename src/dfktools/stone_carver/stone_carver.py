@@ -60,26 +60,26 @@ def block_explorer_link(contract_address, txid):
 
 def away_until(contract_address, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
-	contract = w3.eth.contract(Web3.toChecksumAddress(contract_address), abi=ABI)
+	contract = w3.eth.contract(Web3.to_checksum_address(contract_address), abi=ABI)
 	return contract.functions.awayUntil().call()
 
 
 def carve_stone(contract_address, item_address, quantity, private_key, nonce, gas_price_gwei, tx_timeout_seconds,
 				rpc_address, logger):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
-	account = w3.eth.account.privateKeyToAccount(private_key)
+	account = w3.eth.account.from_key(private_key)
 	w3.eth.default_account = account.address
 
-	contract_address = Web3.toChecksumAddress(contract_address)
+	contract_address = Web3.to_checksum_address(contract_address)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	if isinstance(gas_price_gwei, dict):  # dynamic fee
 		tx = contract.functions.carveStone(item_address, quantity).buildTransaction(
-			{'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-			 'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+			{'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+			 'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
 	else:  # legacy
 		tx = contract.functions.carveStone(item_address, quantity).buildTransaction(
-			{'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+			{'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
 	logger.debug("Signing transaction")
 	signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -96,49 +96,49 @@ def carve_stone(contract_address, item_address, quantity, private_key, nonce, ga
 
 def get_availability(contract_address, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
-	contract = w3.eth.contract(Web3.toChecksumAddress(contract_address), abi=ABI)
+	contract = w3.eth.contract(Web3.to_checksum_address(contract_address), abi=ABI)
 	return contract.functions.getAvailability().call()
 
 
 def get_recipe(contract_address, item_address, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
-	contract = w3.eth.contract(Web3.toChecksumAddress(contract_address), abi=ABI)
+	contract = w3.eth.contract(Web3.to_checksum_address(contract_address), abi=ABI)
 	return contract.functions.getRecipe(item_address).call()
 
 
 def min_closed_time(contract_address, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
-	contract = w3.eth.contract(Web3.toChecksumAddress(contract_address), abi=ABI)
+	contract = w3.eth.contract(Web3.to_checksum_address(contract_address), abi=ABI)
 	return contract.functions.minClosedTime().call()
 
 
 def min_open_time(contract_address, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
-	contract = w3.eth.contract(Web3.toChecksumAddress(contract_address), abi=ABI)
+	contract = w3.eth.contract(Web3.to_checksum_address(contract_address), abi=ABI)
 	return contract.functions.minOpenTime().call()
 
 
 def recipes(item_address, contract_address, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
-	contract = w3.eth.contract(Web3.toChecksumAddress(contract_address), abi=ABI)
+	contract = w3.eth.contract(Web3.to_checksum_address(contract_address), abi=ABI)
 	return contract.functions.recipes(item_address).call()
 
 
 def set_up_shop(contract_address, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
-	account = w3.eth.account.privateKeyToAccount(private_key)
+	account = w3.eth.account.from_key(private_key)
 	w3.eth.default_account = account.address
 
-	contract_address = Web3.toChecksumAddress(contract_address)
+	contract_address = Web3.to_checksum_address(contract_address)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
 	if isinstance(gas_price_gwei, dict):  # dynamic fee
 		tx = contract.functions.setUpShop().buildTransaction(
-			{'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-			 'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+			{'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+			 'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
 	else:  # legacy
 		tx = contract.functions.setUpShop().buildTransaction(
-			{'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+			{'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
 	logger.debug("Signing transaction")
 	signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -155,17 +155,17 @@ def set_up_shop(contract_address, private_key, nonce, gas_price_gwei, tx_timeout
 
 def var_closed_time(contract_address, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
-	contract = w3.eth.contract(Web3.toChecksumAddress(contract_address), abi=ABI)
+	contract = w3.eth.contract(Web3.to_checksum_address(contract_address), abi=ABI)
 	return contract.functions.varClosedTime().call()
 
 
 def var_open_time(contract_address, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
-	contract = w3.eth.contract(Web3.toChecksumAddress(contract_address), abi=ABI)
+	contract = w3.eth.contract(Web3.to_checksum_address(contract_address), abi=ABI)
 	return contract.functions.varOpenTime().call()
 
 
 def working_until(contract_address, rpc_address):
 	w3 = Web3(Web3.HTTPProvider(rpc_address))
-	contract = w3.eth.contract(Web3.toChecksumAddress(contract_address), abi=ABI)
+	contract = w3.eth.contract(Web3.to_checksum_address(contract_address), abi=ABI)
 	return contract.functions.workingUntil().call()

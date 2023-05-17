@@ -51,20 +51,20 @@ def block_explorer_link(txid):
 
 def swap(pool_address, amount0_out, amount1_out, to, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
-    account = w3.eth.account.privateKeyToAccount(private_key)
+    account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
 
-    contract_address = Web3.toChecksumAddress(pool_address)
+    contract_address = Web3.to_checksum_address(pool_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     tx = contract.functions.startQuestWithData(amount0_out, amount1_out, to, None)
 
     if isinstance(gas_price_gwei, dict):  # dynamic fee
         tx = tx.buildTransaction(
-            {'maxFeePerGas': w3.toWei(gas_price_gwei['maxFeePerGas'], 'gwei'),
-             'maxPriorityFeePerGas': w3.toWei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:  # legacy
-        tx = tx.buildTransaction({'gasPrice': w3.toWei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.buildTransaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -84,7 +84,7 @@ def swap(pool_address, amount0_out, amount1_out, to, private_key, nonce, gas_pri
 def name(pool_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(pool_address)
+    contract_address = Web3.to_checksum_address(pool_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.symbol().call()
@@ -93,7 +93,7 @@ def name(pool_address, rpc_address):
 def symbol(pool_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(pool_address)
+    contract_address = Web3.to_checksum_address(pool_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.symbol().call()
@@ -102,7 +102,7 @@ def symbol(pool_address, rpc_address):
 def token_0(pool_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(pool_address)
+    contract_address = Web3.to_checksum_address(pool_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.token0().call()
@@ -111,7 +111,7 @@ def token_0(pool_address, rpc_address):
 def token_1(pool_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(pool_address)
+    contract_address = Web3.to_checksum_address(pool_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.token1().call()
@@ -120,7 +120,7 @@ def token_1(pool_address, rpc_address):
 def decimals(pool_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(pool_address)
+    contract_address = Web3.to_checksum_address(pool_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.decimals().call()
@@ -129,7 +129,7 @@ def decimals(pool_address, rpc_address):
 def total_supply(pool_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(pool_address)
+    contract_address = Web3.to_checksum_address(pool_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.totalSupply().call()
@@ -145,7 +145,7 @@ def get_reserves(pool_address, rpc_address):
     '''
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(pool_address)
+    contract_address = Web3.to_checksum_address(pool_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.getReserves().call()
@@ -154,7 +154,7 @@ def get_reserves(pool_address, rpc_address):
 def balance_of(pool_address, owner_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(pool_address)
+    contract_address = Web3.to_checksum_address(pool_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.balanceOf(owner_address).call()
@@ -163,7 +163,7 @@ def balance_of(pool_address, owner_address, rpc_address):
 def price_0_cumulative_last(pool_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(pool_address)
+    contract_address = Web3.to_checksum_address(pool_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.price0CumulativeLast().call()
@@ -172,7 +172,7 @@ def price_0_cumulative_last(pool_address, rpc_address):
 def price_1_cumulative_last(pool_address, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
-    contract_address = Web3.toChecksumAddress(pool_address)
+    contract_address = Web3.to_checksum_address(pool_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.price1CumulativeLast().call()

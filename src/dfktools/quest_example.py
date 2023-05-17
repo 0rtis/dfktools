@@ -24,7 +24,7 @@ if __name__ == "__main__":
     w3_crystalvale = Web3(Web3.HTTPProvider(crystalvale_rpc_server))
 
     # Parse completeQuest transaction receipt V2
-    tx_receipt = w3_serendale2.eth.getTransactionReceipt("0x7096f3742c27dedb5c9020d895f453524ec583b99a007238095e2cddce8e67aa")
+    tx_receipt = w3_serendale2.eth.get_transaction_receipt('0x7096f3742c27dedb5c9020d895f453524ec583b99a007238095e2cddce8e67aa')
     quest_result = quest_v2.Quest(quest_core_v2.SERENDALE2_CONTRACT_ADDRESS, serendale2_rpc_server, logger).parse_complete_quest_receipt(tx_receipt)
     quest_rewards = quest_utils.human_readable_quest_results(quest_result, very_human=True)
     logger.info("Rewards V2: {}".format(str(quest_rewards)))
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     gas_price_gwei_crystalvale = {'maxFeePerGas': 2, 'maxPriorityFeePerGas': 2}  # EIP-1559
     tx_timeout = 30
 
-    account_address = w3_serendale2.eth.account.privateKeyToAccount(private_key).address
+    account_address = w3_serendale2.eth.account.from_key(private_key).address
 
     # Fishing in Crystalvale
     questV2 = quest_v2.Quest(quest_core_v2.CRYSTALVALE_CONTRACT_ADDRESS, crystalvale_rpc_server, logger)
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     my_heroes_id = [1, 2, 3, 4]
     attempts = 3
     level = 1
-    questV2.start_quest(quest_contract, my_heroes_id, attempts, level, private_key, w3_crystalvale.eth.getTransactionCount(account_address), gas_price_gwei_crystalvale, tx_timeout)
+    questV2.start_quest(quest_contract, my_heroes_id, attempts, level, private_key, w3_crystalvale.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
     quest_info = quest_utils.human_readable_quest(questV2.get_hero_quest(my_heroes_id[0]))
 
     logger.info(
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     while time.time() < quest_info['completeAtTime']:
         time.sleep(2)
 
-    tx_receipt = questV2.complete_quest(my_heroes_id[0], private_key, w3_crystalvale.eth.getTransactionCount(account_address), gas_price_gwei_crystalvale, tx_timeout)
+    tx_receipt = questV2.complete_quest(my_heroes_id[0], private_key, w3_crystalvale.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
     quest_result = questV2.parse_complete_quest_receipt(tx_receipt)
     quest_rewards = quest_utils.human_readable_quest_results(quest_result, very_human=True)
     logger.info("Rewards: {}".format(str(quest_rewards)))
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     attempts = 1
     level = 0
     questV2.start_quest(quest_contract, my_gardener_heroes_id, attempts, level, private_key,
-                        w3_serendale2.eth.getTransactionCount(account_address), gas_price_gwei_crystalvale, tx_timeout)
+                        w3_serendale2.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
     quest_info = quest_utils.human_readable_quest(questV2.get_hero_quest(my_heroes_id[0]))
 
     logger.info(
@@ -74,7 +74,7 @@ if __name__ == "__main__":
         time.sleep(2)
 
     tx_receipt = questV2.complete_quest(my_heroes_id[0], private_key,
-                                        w3_serendale2.eth.getTransactionCount(account_address),
+                                        w3_serendale2.eth.get_transaction_count(account_address),
                                         gas_price_gwei_crystalvale, tx_timeout)
     quest_result = questV2.parse_complete_quest_receipt(tx_receipt)
     quest_rewards = quest_utils.human_readable_quest_results(quest_result, very_human=True)
@@ -86,7 +86,7 @@ if __name__ == "__main__":
     my_heroes_id = [1, 2]
     attempts = 1
     level = 0
-    questV2.start_quest(quest_contract, my_heroes_id, attempts, level, private_key, w3_crystalvale.eth.getTransactionCount(account_address), gas_price_gwei_crystalvale, tx_timeout)
+    questV2.start_quest(quest_contract, my_heroes_id, attempts, level, private_key, w3_crystalvale.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
     quest_info = quest_utils.human_readable_quest(questV2.get_hero_quest(my_heroes_id[0]))
 
     logger.info(
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     while time.time() < quest_info['completeAtTime']:
         time.sleep(2)
 
-    tx_receipt = questV2.complete_quest(my_heroes_id[0], private_key, w3_crystalvale.eth.getTransactionCount(account_address), gas_price_gwei_crystalvale, tx_timeout)
+    tx_receipt = questV2.complete_quest(my_heroes_id[0], private_key, w3_crystalvale.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
     quest_result = questV2.parse_complete_quest_receipt(tx_receipt)
     quest_rewards = quest_utils.human_readable_quest_results(quest_result, very_human=True)
     logger.info("Rewards: {}".format(str(quest_rewards)))
