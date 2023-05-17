@@ -85,6 +85,7 @@ AUCTIONS_OPEN_GRAPHQL_QUERY = """
                                 owner
                               }
                               statGenes
+                              visualGenes
                               generation
                               rarity
                               mainClass
@@ -97,6 +98,22 @@ AUCTIONS_OPEN_GRAPHQL_QUERY = """
                               vitality
                               endurance
                               dexterity
+                              strengthGrowthP
+                              intelligenceGrowthP
+                              wisdomGrowthP
+                              luckGrowthP
+                              agilityGrowthP
+                              vitalityGrowthP
+                              enduranceGrowthP
+                              dexterityGrowthP
+                              strengthGrowthS
+                              intelligenceGrowthS
+                              wisdomGrowthS
+                              luckGrowthS
+                              agilityGrowthS
+                              vitalityGrowthS
+                              enduranceGrowthS
+                              dexterityGrowthS
                               level
                               summons
                               maxSummons
@@ -136,6 +153,7 @@ AUCTIONS_TOKEN_IDS_GRAPHQL_QUERY = """
                               }
                               
                               statGenes
+                              visualGenes
                               generation
                               rarity
                               mainClass
@@ -311,16 +329,46 @@ def get_hero_open_auctions(graphql_address, hero_ids):
 
 
 def auction2hero(auction):
+    _class = {
+        0: "warrior",
+        1: "knight",
+        2: "thief",
+        3: "archer",
+        4: "priest",
+        5: "wizard",
+        6: "monk",
+        7: "pirate",
+        8: "berserker",
+        9: "seer",
+        10: "legionnaire",
+        11: "scholar",
+        16: "paladin",
+        17: "darkknight",
+        18: "summoner",
+        19: "ninja",
+        20: "shapeshifter",
+        21: "bard",
+        24: "dragoon",
+        25: "sage",
+        26: "spellbow",
+        28: "dreadknight"
+    }
+
     ah = auction['tokenId']
 
     hero = {}
     hero['id'] = ah['id']
     hero['info'] = {}
-    hero['info']['class'] = ah['mainClass'].lower()
-    hero['info']['subClass'] = ah['subClass'].lower()
+    hero['info']['class'] =  _class.get(ah['mainClass'], None)
+    if hero['info']['class'] is None:
+        raise Exception("Unknown class "  +str(ah['mainClass']))
+    hero['info']['subClass'] = _class.get(ah['subClass'], None)
+    if hero['info']['subClass'] is None:
+        raise Exception("Unknown subclass "  +str(ah['subClass']))
     hero['info']['rarity'] = ah['rarity']
     hero['info']['level'] = ah['level']
     hero['info']['statGenes'] = ah['statGenes']
+    hero['info']['visualGenes'] = ah['visualGenes']
     hero['info']['generation'] = ah['generation']
 
     hero['stats'] = {}
@@ -332,6 +380,26 @@ def auction2hero(auction):
     hero['stats']['vitality'] = ah['vitality']
     hero['stats']['endurance'] = ah['endurance']
     hero['stats']['dexterity'] = ah['dexterity']
+
+    hero['primaryStatGrowth'] = {}
+    hero['primaryStatGrowth']['strength'] = ah['strengthGrowthP']
+    hero['primaryStatGrowth']['agility'] = ah['agilityGrowthP']
+    hero['primaryStatGrowth']['intelligence'] = ah['intelligenceGrowthP']
+    hero['primaryStatGrowth']['wisdom'] = ah['wisdomGrowthP']
+    hero['primaryStatGrowth']['luck'] = ah['luckGrowthP']
+    hero['primaryStatGrowth']['vitality'] = ah['vitalityGrowthP']
+    hero['primaryStatGrowth']['endurance'] = ah['enduranceGrowthP']
+    hero['primaryStatGrowth']['dexterity'] = ah['dexterityGrowthP']
+
+    hero['secondaryStatGrowth'] = {}
+    hero['secondaryStatGrowth']['strength'] = ah['strengthGrowthS']
+    hero['secondaryStatGrowth']['agility'] = ah['agilityGrowthS']
+    hero['secondaryStatGrowth']['intelligence'] = ah['intelligenceGrowthS']
+    hero['secondaryStatGrowth']['wisdom'] = ah['wisdomGrowthS']
+    hero['secondaryStatGrowth']['luck'] = ah['luckGrowthS']
+    hero['secondaryStatGrowth']['vitality'] = ah['vitalityGrowthS']
+    hero['secondaryStatGrowth']['endurance'] = ah['enduranceGrowthS']
+    hero['secondaryStatGrowth']['dexterity'] = ah['dexterityGrowthS']
 
     hero['summoningInfo'] = {}
     hero['summoningInfo']['summonerId'] = ah['summonerId']

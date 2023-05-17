@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     for i in range(1, 10):
         logger.info("Processing serendale 2 hero #"+str(i))
-        sd2_hero_id = hero_utils.sd2sd2_sd2_hero_id(i)
+        sd2_hero_id = hero_utils.norm2sd_hero_id(i)
         owner = serendale2_heroes.get_owner(sd2_hero_id)
         hero = serendale2_heroes.get_hero(sd2_hero_id)
         readable_hero = serendale2_heroes.human_readable_hero(hero, male_first_names, female_first_names, last_names)
@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
     for i in range(1, 10):
         logger.info("Processing crystalvale hero #" + str(i))
-        cv_hero_id = hero_utils.sd2cv_cv_hero_id(i)
+        cv_hero_id = hero_utils.norm2cv_hero_id(i)
         owner = crystalvale_heroes.get_owner(cv_hero_id)
         hero = crystalvale_heroes.get_hero(cv_hero_id)
         readable_hero = crystalvale_heroes.human_readable_hero(hero, male_first_names, female_first_names, last_names)

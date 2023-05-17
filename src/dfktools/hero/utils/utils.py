@@ -56,6 +56,17 @@ visual_traits = {
     11: 'visualUnknown2'
 }
 
+background = {
+    0: "desert",
+    2: "forest",
+    4: "plains",
+    6: "island",
+    8: "swamp",
+    10: "mountains",
+    12: "city",
+    14: "arctic"
+}
+
 stat_traits = {
     0: "class",
     1: "subClass",
@@ -119,19 +130,19 @@ elements = {
 }
 
 
-def cv2sd_cv_hero_id(cv_hero_id):
+def cv2norm_hero_id(cv_hero_id):
     return cv_hero_id - CRYSTALEVALE_HERO_OFFSET
 
 
-def sd2cv_cv_hero_id(cv_hero_id):
-    return cv_hero_id + CRYSTALEVALE_HERO_OFFSET
+def norm2cv_hero_id(norm_hero_id):
+    return norm_hero_id + CRYSTALEVALE_HERO_OFFSET
 
-def sd22sd_sd2_hero_id(sd2_hero_id):
+def sd2norm_hero_id(sd2_hero_id):
     return sd2_hero_id - SERENDALE2_HERO_OFFSET
 
 
-def sd2sd2_sd2_hero_id(sd2_hero_id):
-    return sd2_hero_id + SERENDALE2_HERO_OFFSET
+def norm2sd_hero_id(norm_hero_id):
+    return norm_hero_id + SERENDALE2_HERO_OFFSET
 
 
 def parse_rarity(id):
@@ -175,6 +186,12 @@ def parse_element(id):
         raise Exception("Element not found")
     return value
 
+def parse_background(id):
+    value = background.get(id, None)
+    if FAIL_ON_NOT_FOUND and value is None:
+        raise Exception("Background not found")
+    return value
+
 
 def genes2traits(genes):
     traits = []
@@ -197,7 +214,7 @@ def genes2traits(genes):
 
 
 def parse_stat_genes(genes):
-    traits = genes2traits(genes)
+    traits = genes2traits(int(genes))
     stats = parse_stat_trait(traits[0])
     r1 = parse_stat_trait(traits[1])
     r2 = parse_stat_trait(traits[2])
@@ -243,7 +260,7 @@ def parse_stat_trait(trait):
 
 def parse_visual_genes(genes):
     visual_genes = {}
-    visual_genes['raw'] = genes
+    visual_genes['raw'] = int(genes)
 
     visual_raw_kai = "".join(__genesToKai(visual_genes['raw']).split(' '))
 
@@ -254,6 +271,8 @@ def parse_visual_genes(genes):
         visual_genes[stat_trait] = value_num
 
     visual_genes['gender'] = 'male' if visual_genes['gender'] == 1 else 'female'
+    visual_genes['background'] = parse_background(visual_genes['background'])
+
     return visual_genes
 
 
@@ -295,6 +314,14 @@ def __genesToKai(genes):
 def __kai2dec(kai):
     return ALPHABET.index(kai)
 
+
+def _encode_traits(traits):
+    assert len(traits) == 48
+    genes = 0
+    for i  in range(48):
+        genes = genes << 5
+        genes = genes | traits[47 - i]
+    return genes
 
 def parse_names(names_raw_string):
     names_raw_string = names_raw_string\

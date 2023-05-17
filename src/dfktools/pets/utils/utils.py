@@ -76,6 +76,10 @@ def human_readable_pet(raw_pet):
     i = i + 1
     pet['craftBonus'] = raw_pet[i]
     i = i + 1
+    pet['craftBonusScalar'] = raw_pet[i]
+    i = i + 1
+    pet['combatBonus'] = raw_pet[i]
+    i = i + 1
     pet['combatBonusScalar'] = raw_pet[i]
     i = i + 1
     pet['appearance'] = raw_pet[i]
@@ -86,7 +90,7 @@ def human_readable_pet(raw_pet):
     i = i + 1
     pet['hungryAt'] = raw_pet[i]
     i = i + 1
-    pet['equippableAt   '] = raw_pet[i]
+    pet['equippableAt'] = raw_pet[i]
     i = i + 1
     pet['equippedTo'] = raw_pet[i]
     i = i + 1

@@ -10,11 +10,11 @@ if __name__ == "__main__":
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
-    rpc_server = 'https://klaytn.rpc.defikingdoms.com/'
+    rpc_server = 'https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc' # Profiles are not synced across chains. A profile only exists in the contract & chain it was first created
     logger.info("Using RPC server " + rpc_server)
-    realm_contract_address = profiles.SERENDALE2_CONTRACT_ADDRESS
+    realm_contract_address = profiles.CRYSTALVALE_CONTRACT_ADDRESS
 
-    profile = profiles.get_profile(realm_contract_address, '0x2E7669F61eA77F02445A015FBdcFe2DE47083E02', rpc_server)
+    profile = profiles.get_profile(realm_contract_address, '0xEd446a4385fc2a680Db2cf590A5f6C4CC2f98FbF', rpc_server)
 
     logger.info(json.dumps(profile, indent=4, sort_keys=False))
 
