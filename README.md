@@ -7,7 +7,11 @@
 [![Follow @twitter handle](https://img.shields.io/twitter/follow/Knockturn_io.svg?style=flat-square)](https://twitter.com/intent/follow?screen_name=ortis95)
 
 
-## DefiKingdoms contract
+Install with `pip install dfktools`
+
+https://pypi.org/project/dfktools/
+
+## DefiKingdoms toolbox
 
 This is a simple toolbox to interact with the contracts of [DefiKingdoms](https://defikingdoms.com/)
 
