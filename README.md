@@ -23,7 +23,6 @@ The use of any trade name or trademark is for identification and reference purpo
 
 **Like this project ? Consider supporting future developments by:**
 - Delegating AVAX to our Avalanche node **NodeID-4btZGj8TmrycK22kwgBK5wJEFighAFWiZ**
-- Delegating ADA to our [Cardano node [KTA]](https://pooltool.io/pool/991a64a6e3d866f4af4e0a2bfd61c15486a47ccc352e61e8a6b4fef8) **991a64a6e3d866f4af4e0a2bfd61c15486a47ccc352e61e8a6b4fef8**
 - Making a donation to **0xA68fBfa3E0c86D1f3fF071853df6DAe8753095E2**
 
 *Need help ? Join the [GameFi Developers Discord](https://discord.gg/JvfPpV7but)*
