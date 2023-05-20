@@ -66,13 +66,14 @@ def claim_airdrop(contract_address, drop_id, private_key, nonce, gas_price_gwei,
     contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
+    tx = contract.functions.claimAirdrop(drop_id)
+
     if isinstance(gas_price_gwei, dict):   # dynamic fee
-        tx = contract.functions.claimAirdrop(drop_id).build_transaction(
+        tx = tx.build_transaction(
             {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
              'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
     else:   # legacy
-        tx = contract.functions.claimAirdrop(drop_id).build_transaction(
-            {'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+        tx = tx.build_transaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
     logger.debug("Signing transaction")
     signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)

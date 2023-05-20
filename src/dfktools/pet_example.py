@@ -6,7 +6,7 @@ import pets.pet_core as pet_core
 import pets.hatchery as hatchery
 import pets.exchange as exchange
 import pets.utils.utils as pet_utils
-from pets.pet import Pet
+from pets.pet import Pets
 
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
@@ -25,10 +25,10 @@ if __name__ == "__main__":
     user_balance = pet_core.balance_of(pet_core.CRYSTALVALE_CONTRACT_ADDRESS, user, rpc_server)
     logger.info("Player {} is owner of {} pets".format(user, user_balance))
 
-    crystalvale_pets = Pet(pet_core.CRYSTALVALE_CONTRACT_ADDRESS, rpc_server, logger)
+    crystalvale_pets = Pets(pet_core.CRYSTALVALE_CONTRACT_ADDRESS, rpc_server, logger)
     user_pets = crystalvale_pets.get_user_pets(user)
     for pet in user_pets:
-        logger.info(str(Pet.human_readable_pet(pet)))
+        logger.info(str(Pets.human_readable_pet(pet)))
 
     for i in range(1, 10):
         logger.info("Processing crystalvale pet {}".format(i))

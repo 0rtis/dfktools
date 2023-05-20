@@ -1,6 +1,6 @@
 from . import pet_core
 
-class Pet:
+class Pets:
     def __init__(self, contract_address, rpc_address, logger=None):
         self.contract_address = contract_address
         self.rpc_address = rpc_address
@@ -20,6 +20,12 @@ class Pet:
 
     def get_pet(self, pet_id):
         return pet_core.get_pet_v2(self.contract_address, pet_id, self.rpc_address)
+
+    def feed(self, pet_ids, treat_type, private_key, nonce, gas_price_gwei, tx_timeout_seconds):
+        feeds = []
+        for p in pet_ids:
+            feeds.append((p, treat_type,))
+        return pet_core.feed_pets(self.contract_address, feeds, private_key, nonce, gas_price_gwei, tx_timeout_seconds, self.rpc_address, self.logger)
 
     @staticmethod
     def human_readable_pet(raw_pet):

@@ -1,4 +1,4 @@
-import copy
+from typing import List, Tuple, Union
 from web3 import Web3
 from .utils import utils as pet_utils
 
@@ -98,6 +98,9 @@ ABI = '''
     ]
     '''
 
+REGULAR_TREAT_TYPE = 0
+PREMIUM_TREAT_TYPE = 1
+
 
 def block_explorer_link(contract_address, txid):
     if hasattr(contract_address, 'address'):
@@ -181,6 +184,150 @@ def is_approved_for_all(contract_address, owner, operator, rpc_address):
     contract = w3.eth.contract(contract_address, abi=ABI)
 
     return contract.functions.isApprovedForAll(Web3.to_checksum_address(owner), Web3.to_checksum_address(operator)).call()
+
+
+def is_hero_pet_hungry(contract_address, hero_id, rpc_address):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+
+    contract_address = Web3.to_checksum_address(contract_address)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    return contract.functions.isHeroPetHungry(hero_id).call()
+
+def is_pet_hungry(contract_address, pet_id, rpc_address):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+
+    contract_address = Web3.to_checksum_address(contract_address)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    return contract.functions.isPetHungry(pet_id).call()
+
+def craft_treats(contract_address, treats: List[Tuple[int, int, str, str]], private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+    """
+
+    :param contract_address:
+    :param treats: List of treats to craft [(treat_type, quantity, address_item_1, address_item_2), ...]
+    :param private_key:
+    :param nonce:
+    :param gas_price_gwei:
+    :param tx_timeout_seconds:
+    :param rpc_address:
+    :param logger:
+    :return:
+    """
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+    account = w3.eth.account.from_key(private_key)
+    w3.eth.default_account = account.address
+    contract_address = Web3.to_checksum_address(contract_address)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    tx = contract.functions.craftTreats(treats)
+
+    if isinstance(gas_price_gwei, dict):  # dynamic fee
+        tx = tx.build_transaction(
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:  # legacy
+        tx = tx.build_transaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+
+    logger.debug("Signing transaction")
+    signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
+    logger.debug("Sending transaction " + str(tx))
+    ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+    logger.debug("Transaction successfully sent !")
+    logger.info("Waiting for transaction " + block_explorer_link(contract_address, signed_tx.hash.hex()) + " to be mined")
+
+    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
+                                                     poll_latency=2)
+    logger.info("Transaction mined !")
+
+    return tx_receipt
+
+
+
+
+def feed_pets(contract_address, feeds: List[Tuple[int, int]], private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+    """
+
+    :param contract_address:
+    :param feeds: List of pets to feeds [(pet_id, treat_type), ...]
+    :param private_key:
+    :param nonce:
+    :param gas_price_gwei:
+    :param tx_timeout_seconds:
+    :param rpc_address:
+    :param logger:
+    :return:
+    """
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+    account = w3.eth.account.from_key(private_key)
+    w3.eth.default_account = account.address
+    contract_address = Web3.to_checksum_address(contract_address)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    tx = contract.functions.feedPets(feeds)
+
+    if isinstance(gas_price_gwei, dict):  # dynamic fee
+        tx = tx.build_transaction(
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:  # legacy
+        tx = tx.build_transaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+
+    logger.debug("Signing transaction")
+    signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
+    logger.debug("Sending transaction " + str(tx))
+    ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+    logger.debug("Transaction successfully sent !")
+    logger.info("Waiting for transaction " + block_explorer_link(contract_address, signed_tx.hash.hex()) + " to be mined")
+
+    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
+                                                     poll_latency=2)
+    logger.info("Transaction mined !")
+
+    return tx_receipt
+
+def feed_pets_on_behalf(contract_address, feeds: List[Tuple[int, int]], account_address, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):
+    """
+
+    :param contract_address:
+    :param feeds: List of pets to feeds [(pet_id, treat_type), ...]
+    :param account_address: account owner ?
+    :param private_key:
+    :param nonce:
+    :param gas_price_gwei:
+    :param tx_timeout_seconds:
+    :param rpc_address:
+    :param logger:
+    :return:
+    """
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+    account = w3.eth.account.from_key(private_key)
+    w3.eth.default_account = account.address
+    contract_address = Web3.to_checksum_address(contract_address)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    tx = contract.functions.feedPetsOnBehalf(feeds, account_address)
+
+    if isinstance(gas_price_gwei, dict):  # dynamic fee
+        tx = tx.build_transaction(
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:  # legacy
+        tx = tx.build_transaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+
+    logger.debug("Signing transaction")
+    signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
+    logger.debug("Sending transaction " + str(tx))
+    ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+    logger.debug("Transaction successfully sent !")
+    logger.info("Waiting for transaction " + block_explorer_link(contract_address, signed_tx.hash.hex()) + " to be mined")
+
+    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds,
+                                                     poll_latency=2)
+    logger.info("Transaction mined !")
+
+    return tx_receipt
 
 
 def safe_transfer_from(contract_address, _from, to, egg_id, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger):

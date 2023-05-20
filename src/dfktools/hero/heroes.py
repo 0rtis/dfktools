@@ -1,6 +1,6 @@
 from . import hero_core
 
-class Hero:
+class Heroes:
     def __init__(self, contract_address, rpc_address, logger=None):
         self.contract_address = contract_address
         self.rpc_address = rpc_address

@@ -73,13 +73,14 @@ def carve_stone(contract_address, item_address, quantity, private_key, nonce, ga
 	contract_address = Web3.to_checksum_address(contract_address)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
+	tx = contract.functions.carveStone(item_address, quantity)
+
 	if isinstance(gas_price_gwei, dict):  # dynamic fee
-		tx = contract.functions.carveStone(item_address, quantity).build_transaction(
+		tx = tx.build_transaction(
 			{'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
 			 'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
 	else:  # legacy
-		tx = contract.functions.carveStone(item_address, quantity).build_transaction(
-			{'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+		tx = tx.build_transaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
 	logger.debug("Signing transaction")
 	signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
@@ -132,13 +133,14 @@ def set_up_shop(contract_address, private_key, nonce, gas_price_gwei, tx_timeout
 	contract_address = Web3.to_checksum_address(contract_address)
 	contract = w3.eth.contract(contract_address, abi=ABI)
 
+	tx = contract.functions.setUpShop()
+
 	if isinstance(gas_price_gwei, dict):  # dynamic fee
-		tx = contract.functions.setUpShop().build_transaction(
+		tx = tx.build_transaction(
 			{'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
 			 'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
 	else:  # legacy
-		tx = contract.functions.setUpShop().build_transaction(
-			{'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+		tx = tx.build_transaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
 
 	logger.debug("Signing transaction")
 	signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
