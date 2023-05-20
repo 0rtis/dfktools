@@ -1,10 +1,12 @@
 import logging
 import sys
+import json
 from web3 import Web3
 import pets.pet_core as pet_core
 import pets.hatchery as hatchery
 import pets.exchange as exchange
 import pets.utils.utils as pet_utils
+from pets.pet import Pet
 
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'
@@ -23,9 +25,18 @@ if __name__ == "__main__":
     user_balance = pet_core.balance_of(pet_core.CRYSTALVALE_CONTRACT_ADDRESS, user, rpc_server)
     logger.info("Player {} is owner of {} pets".format(user, user_balance))
 
-    user_pets = pet_core.get_user_pets(pet_core.CRYSTALVALE_CONTRACT_ADDRESS, user, rpc_server)
+    crystalvale_pets = Pet(pet_core.CRYSTALVALE_CONTRACT_ADDRESS, rpc_server, logger)
+    user_pets = crystalvale_pets.get_user_pets(user)
     for pet in user_pets:
-        logger.info(str(pet_utils.human_readable_pet(pet)))
+        logger.info(str(Pet.human_readable_pet(pet)))
+
+    for i in range(1, 10):
+        logger.info("Processing crystalvale pet {}".format(i))
+        cv_pet_id = pet_utils.norm2cv_pet_id(i)
+        owner = crystalvale_pets.get_owner(cv_pet_id)
+        pet = crystalvale_pets.get_pet(cv_pet_id)
+        readable_pet = crystalvale_pets.human_readable_pet(pet)
+        logger.info(json.dumps(readable_pet, indent=4, sort_keys=False) + "\n Owned by " + owner)
 
     # exchange
     logger.info("Total pet exchange: {}".format(exchange.total_exchanges(exchange.CRYSTALVALE_CONTRACT_ADDRESS, rpc_server)))
