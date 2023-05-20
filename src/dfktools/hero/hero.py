@@ -9,6 +9,9 @@ class Hero:
     def transfer(self, hero_id, receiver_address, owner_private_key, owner_nonce, gas_price_gwei, tx_timeout_seconds):
         return hero_core.transfer_from(self.contract_address, hero_id, receiver_address, owner_private_key, owner_nonce, gas_price_gwei, tx_timeout_seconds, self.rpc_address, self.logger)
 
+    def transfer_with_equipment(self, hero_id, receiver_address, owner_private_key, owner_nonce, gas_price_gwei, tx_timeout_seconds):
+        return hero_core.transfer_hero_and_equipment_from(self.contract_address, hero_id, receiver_address, owner_private_key, owner_nonce, gas_price_gwei, tx_timeout_seconds, self.rpc_address, self.logger)
+
     def get_owner(self, hero_id, block_identifier="latest"):
         return hero_core.get_owner(self.contract_address, hero_id, self.rpc_address, block_identifier)
 

@@ -152,7 +152,7 @@ def transfer_from(contract_address, hero_id, receiver_address, private_key, nonc
     logger.info(str(tx_receipt))
 
 
-def transfer_with_equipment_from(contract_address, hero_id, receiver_address, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger=None):
+def transfer_hero_and_equipment_from(contract_address, hero_id, receiver_address, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger=None):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
     account = w3.eth.account.from_key(private_key)
     w3.eth.default_account = account.address
