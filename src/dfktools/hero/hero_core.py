@@ -391,7 +391,7 @@ def get_hero_v2(contract_address, hero_id, rpc_address, block_identifier="latest
     hero_state['mpFullAt'] = contract_entry[tuple_index][2]
     hero_state['level'] = contract_entry[tuple_index][3]
     hero_state['xp'] = contract_entry[tuple_index][4]
-    hero_state['currentQuest'] = contract_entry[tuple_index][5]
+    hero_state['currentQuest'] = contract_entry[tuple_index][5] #0x0 if no quest or quest like
     hero_state['sp'] = contract_entry[tuple_index][6]
     hero_state['status'] = contract_entry[tuple_index][7]
 

@@ -4,7 +4,7 @@ import time
 from web3 import Web3
 import quests.professions.fishing as fishing
 import quests.professions.gardening as gardening
-import quests.quest_v2 as quest_v2, quests.quest_core_v2 as quest_core_v2, quests.quest_v1 as quest_v1
+import quests.quest_v3 as quest_v3, quests.quest_core_v3 as quest_core_v3, quests.quest_v2 as quest_v2, quests.quest_core_v2 as quest_core_v2, quests.quest_v1 as quest_v1
 import quests.utils.utils as quest_utils
 
 ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
@@ -38,63 +38,61 @@ if __name__ == "__main__":
     account_address = w3_serendale2.eth.account.from_key(private_key).address
 
     # Fishing in Crystalvale
-    questV2 = quest_v2.Quest(quest_core_v2.CRYSTALVALE_CONTRACT_ADDRESS, crystalvale_rpc_server, logger)
-    quest_contract = fishing.CRYSTALVALE_QUEST_CONTRACT_ADDRESS
+    questV3 = quest_v3.Quest(quest_core_v3.CRYSTALVALE_CONTRACT_ADDRESS, crystalvale_rpc_server, logger)
     my_heroes_id = [1, 2, 3, 4]
     attempts = 3
     level = 1
-    questV2.start_quest(quest_contract, my_heroes_id, attempts, level, private_key, w3_crystalvale.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
-    quest_info = quest_utils.human_readable_quest(questV2.get_hero_quest(my_heroes_id[0]))
+    questV3.start_quest(my_heroes_id, quest_core_v3.QUEST_TYPE_FISHING, attempts, level, private_key, w3_crystalvale.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
+    quest_info = quest_utils.human_readable_quest(questV3.get_hero_quest(my_heroes_id[0]))
 
     logger.info(
         "Waiting " + str(quest_info['completeAtTime'] - time.time()) + " secs to complete quest " + str(quest_info))
     while time.time() < quest_info['completeAtTime']:
         time.sleep(2)
 
-    tx_receipt = questV2.complete_quest(my_heroes_id[0], private_key, w3_crystalvale.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
-    quest_result = questV2.parse_complete_quest_receipt(tx_receipt)
+    tx_receipt = questV3.complete_quest(my_heroes_id[0], private_key, w3_crystalvale.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
+    quest_result = questV3.parse_complete_quest_receipt(tx_receipt)
     quest_rewards = quest_utils.human_readable_quest_results(quest_result, very_human=True)
     logger.info("Rewards: {}".format(str(quest_rewards)))
 
     # Gardening in Serendale
-    pool_id = 0  # See gardens.master_gardener
-    questV2 = quest_v2.Quest(quest_core_v2.SERENDALE2_CONTRACT_ADDRESS, serendale2_rpc_server, logger)
-    quest_contract = gardening.get_pool_id_contract_address(gardening.SERENDALE2_QUEST_CONTRACT_ADDRESSES, 0) # 'wJEWEL-xJEWEL'
+    questV3 = quest_v3.Quest(quest_core_v3.SERENDALE2_CONTRACT_ADDRESS, serendale2_rpc_server, logger)
+    pool_id = 0 # 'wJEWEL-xJEWEL' (see gardens.master_gardener)
     quest_data = (pool_id, 0, 0, 0, 0, 0, '', '', ZERO_ADDRESS, ZERO_ADDRESS, ZERO_ADDRESS, ZERO_ADDRESS)
     my_gardener_heroes_id = [5]
     attempts = 1
     level = 0
-    questV2.start_quest(quest_contract, my_gardener_heroes_id, attempts, level, private_key,
+    questV3.start_quest(my_gardener_heroes_id, quest_core_v3.QUEST_TYPE_GARDENING, attempts, level, pool_id, private_key,
                         w3_serendale2.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
-    quest_info = quest_utils.human_readable_quest(questV2.get_hero_quest(my_heroes_id[0]))
+    quest_info = quest_utils.human_readable_quest(questV3.get_hero_quest(my_heroes_id[0]))
 
     logger.info(
         "Waiting " + str(quest_info['completeAtTime'] - time.time()) + " secs to complete quest " + str(quest_info))
     while time.time() < quest_info['completeAtTime']:
         time.sleep(2)
 
-    tx_receipt = questV2.complete_quest(my_heroes_id[0], private_key,
+    tx_receipt = questV3.complete_quest(my_heroes_id[0], private_key,
                                         w3_serendale2.eth.get_transaction_count(account_address),
                                         gas_price_gwei_crystalvale, tx_timeout)
-    quest_result = questV2.parse_complete_quest_receipt(tx_receipt)
+    quest_result = questV3.parse_complete_quest_receipt(tx_receipt)
     quest_rewards = quest_utils.human_readable_quest_results(quest_result, very_human=True)
     logger.info("Rewards: {}".format(str(quest_rewards)))
 
     # Gardening in Crystalvale
-    questV2 = quest_v2.Quest(quest_core_v2.CRYSTALVALE_CONTRACT_ADDRESS, crystalvale_rpc_server, logger)
-    quest_contract = gardening.get_pool_id_contract_address(gardening.CRYSTALVALE_QUEST_CONTRACT_ADDRESSES_V2, 0) # 'wJEWEL-xJEWEL'
+    questV3 = quest_v3.Quest(quest_core_v3.CRYSTALVALE_CONTRACT_ADDRESS, crystalvale_rpc_server, logger)
+    pool_id = 0 # 'wJEWEL-xJEWEL'
     my_heroes_id = [1, 2]
     attempts = 1
     level = 0
-    questV2.start_quest(quest_contract, my_heroes_id, attempts, level, private_key, w3_crystalvale.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
-    quest_info = quest_utils.human_readable_quest(questV2.get_hero_quest(my_heroes_id[0]))
+    questV3.start_quest(my_heroes_id, quest_core_v3.QUEST_TYPE_GARDENING, attempts, level, pool_id, private_key, w3_crystalvale.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
+    quest_info = quest_utils.human_readable_quest(questV3.get_hero_quest(my_heroes_id[0]))
 
     logger.info(
         "Waiting " + str(quest_info['completeAtTime'] - time.time()) + " secs to complete quest " + str(quest_info))
     while time.time() < quest_info['completeAtTime']:
         time.sleep(2)
 
-    tx_receipt = questV2.complete_quest(my_heroes_id[0], private_key, w3_crystalvale.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
-    quest_result = questV2.parse_complete_quest_receipt(tx_receipt)
+    tx_receipt = questV3.complete_quest(my_heroes_id[0], private_key, w3_crystalvale.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
+    quest_result = questV3.parse_complete_quest_receipt(tx_receipt)
     quest_rewards = quest_utils.human_readable_quest_results(quest_result, very_human=True)
     logger.info("Rewards: {}".format(str(quest_rewards)))
