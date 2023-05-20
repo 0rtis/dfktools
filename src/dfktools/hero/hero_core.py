@@ -152,6 +152,45 @@ def transfer_from(contract_address, hero_id, receiver_address, private_key, nonc
     logger.info(str(tx_receipt))
 
 
+def transfer_with_equipment_from(contract_address, hero_id, receiver_address, private_key, nonce, gas_price_gwei, tx_timeout_seconds, rpc_address, logger=None):
+    w3 = Web3(Web3.HTTPProvider(rpc_address))
+    account = w3.eth.account.from_key(private_key)
+    w3.eth.default_account = account.address
+
+    contract_address = Web3.to_checksum_address(contract_address)
+    contract = w3.eth.contract(contract_address, abi=ABI)
+
+    owner = contract.functions.ownerOf(hero_id).call()
+    if logger is not None:
+        logger.info("Hero's owner " + str(owner))
+
+    if owner != account.address:
+        raise Exception("Owner mismatch")
+
+    tx = contract.functions.transferHeroAndEquipmentFrom(owner, receiver_address, hero_id)
+
+    if isinstance(gas_price_gwei, dict):  # dynamic fee
+        tx = tx.build_transaction(
+            {'maxFeePerGas': w3.to_wei(gas_price_gwei['maxFeePerGas'], 'gwei'),
+             'maxPriorityFeePerGas': w3.to_wei(gas_price_gwei['maxPriorityFeePerGas'], 'gwei'), 'nonce': nonce})
+    else:  # legacy
+        tx = tx.build_transaction({'gasPrice': w3.to_wei(gas_price_gwei, 'gwei'), 'nonce': nonce})
+
+    if logger is not None:
+        logger.debug("Signing transaction")
+    signed_tx = w3.eth.account.sign_transaction(tx, private_key=private_key)
+    if logger is not None:
+        logger.debug("Sending transaction " + str(tx))
+    ret = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+    if logger is not None:
+        logger.debug("Transaction successfully sent !")
+        logger.info("Waiting for transaction " + block_explorer_link(contract_address, signed_tx.hash.hex()) + " to be mined")
+    tx_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash=signed_tx.hash, timeout=tx_timeout_seconds, poll_latency=2)
+    if logger is not None:
+        logger.info("Transaction mined !")
+    logger.info(str(tx_receipt))
+
+
 def get_owner(contract_address, hero_id, rpc_address, block_identifier="latest"):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
