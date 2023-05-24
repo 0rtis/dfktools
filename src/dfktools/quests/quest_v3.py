@@ -28,8 +28,8 @@ class Quest:
     def is_hero_questing(self, hero_id):
         return self.hero_to_quest_id(hero_id) > 0
 
-    def get_active_quest(self, address):
-        return quest_core_v3.get_active_quest(self.quest_core_contract_address, address, self.rpc_address)
+    def get_active_quests(self, address):
+        return quest_core_v3.get_active_quests(self.quest_core_contract_address, address, self.rpc_address)
 
     def get_hero_quest(self, hero_id):
         return quest_core_v3.get_hero_quest(self.quest_core_contract_address, hero_id, self.rpc_address)

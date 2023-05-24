@@ -1,4 +1,5 @@
 from typing import List, Tuple, Union
+import copy
 from web3 import Web3
 from .utils import utils as pet_utils
 
@@ -131,7 +132,7 @@ def get_pet_v1(contract_address, pet_id, rpc_address):
     contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    return contract.functions.getPet(pet_id).call()
+    return _parse_pet_struct(contract.functions.getPet(pet_id).call())
 
 
 def get_pet_v2(contract_address, pet_id, rpc_address):
@@ -140,7 +141,7 @@ def get_pet_v2(contract_address, pet_id, rpc_address):
     contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    return contract.functions.getPetV2(pet_id).call()
+    return _parse_pet_struct(contract.functions.getPetV2(pet_id).call())
 
 def get_user_pets_v1(contract_address, account, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
@@ -157,7 +158,38 @@ def get_user_pets_v2(contract_address, account, rpc_address):
     contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
 
-    return contract.functions.getUserPetsV2(account).call()
+    pet_structs = contract.functions.getUserPetsV2(account).call()
+    pets = []
+    for p in pet_structs:
+        pets.append(_parse_pet_struct(p))
+    return pets
+
+def _parse_pet_struct(pet_struct):
+    pet = {}
+    pet['id'] = pet_struct[0]
+    pet['originId'] = pet_struct[1]
+    pet['name'] = pet_struct[2]
+    pet['season'] = pet_struct[3]
+    pet['eggType'] = pet_struct[4]
+    pet['rarity'] = pet_struct[5]
+    pet['element'] = pet_struct[6]
+    pet['bonusCount'] = pet_struct[7]
+    pet['profBonus'] = pet_struct[8]
+    pet['profBonusScalar'] = pet_struct[9]
+    pet['craftBonus'] = pet_struct[10]
+    pet['craftBonusScalar'] = pet_struct[11]
+    pet['combatBonus'] = pet_struct[12]
+    pet['combatBonusScalar'] = pet_struct[13]
+    pet['appearance'] = pet_struct[14]
+    pet['background'] = pet_struct[15]
+    pet['shiny'] = pet_struct[16]
+    pet['hungryAt'] = pet_struct[17]
+    pet['equippableAt'] = pet_struct[18]
+    pet['equippedTo'] = pet_struct[19]
+    if len(pet_struct) > 20:
+        pet['fedBy'] = pet_struct[20]
+        pet['foodType'] = pet_struct[21]  # TODO: overwrite with -1 when hungry so food type is 'none'
+    return pet
 
 def owner_of(contract_address, pet_id, rpc_address):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
@@ -400,30 +432,17 @@ def transfer_from(contract_address, receiver_address, egg_id, private_key, nonce
 
 
 def human_readable_pet(raw_pet):
-    readable_pet = {}
+    readable_pet = copy.deepcopy(raw_pet)
 
-    readable_pet['id'] = raw_pet[0]
-    readable_pet['originId'] = raw_pet[1]
-    readable_pet['name'] = raw_pet[2]
-    readable_pet['season'] = raw_pet[3]
-    readable_pet['eggType'] = pet_utils.parse_egg_type(raw_pet[4])
-    readable_pet['rarity'] = pet_utils.parse_egg_rarity(raw_pet[5])
-    readable_pet['element'] = pet_utils.parse_egg_element(raw_pet[6])
-    readable_pet['bonusCount'] = raw_pet[7]
-    readable_pet['profBonus'] = pet_utils.parse_bonus_type(readable_pet['eggType'], raw_pet[8])
-    readable_pet['profBonusScalar'] = raw_pet[9]
-    readable_pet['craftBonus'] = raw_pet[10]
-    readable_pet['craftBonusScalar'] = raw_pet[11]
-    readable_pet['combatBonus'] = raw_pet[12]
-    readable_pet['combatBonusScalar'] = raw_pet[13]
-    readable_pet['appearance'] = raw_pet[14]
-    readable_pet['background'] = pet_utils.parse_background(raw_pet[15])
-    readable_pet['shiny'] = raw_pet[16]
-    readable_pet['hungryAt'] = raw_pet[17]
-    readable_pet['equippableAt'] = raw_pet[18]
-    readable_pet['equippedTo'] = raw_pet[19]
+    readable_pet['eggType'] = pet_utils.parse_egg_type(readable_pet['eggType'])
+    readable_pet['rarity'] = pet_utils.parse_egg_rarity(readable_pet['rarity'])
+    readable_pet['element'] = pet_utils.parse_egg_element(readable_pet['element'])
+
+    readable_pet['profBonus'] = pet_utils.parse_bonus_type(readable_pet['eggType'], readable_pet['profBonus'])
+
+    readable_pet['background'] = pet_utils.parse_background(readable_pet['background'])
+
     if len(raw_pet) > 20:
-        readable_pet['fedBy'] = raw_pet[20]
-        readable_pet['foodType'] = pet_utils.parse_food_type(raw_pet[21]) #TODO: overwrite with -1 when hungry so food type is 'none'
+        readable_pet['foodType'] = pet_utils.parse_food_type(readable_pet['foodType']) #TODO: overwrite with -1 when hungry so food type is 'none'
 
     return readable_pet

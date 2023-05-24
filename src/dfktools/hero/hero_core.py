@@ -348,135 +348,137 @@ def get_hero_v2(contract_address, hero_id, rpc_address, block_identifier="latest
 
     contract_address = Web3.to_checksum_address(contract_address)
     contract = w3.eth.contract(contract_address, abi=ABI)
-    contract_entry = contract.functions.getHeroV2(hero_id).call(block_identifier=block_identifier)
+    hero_struct = contract.functions.getHeroV2(hero_id).call(block_identifier=block_identifier)
+    return _parse_hero_struct(hero_struct)
 
+def _parse_hero_struct(hero_struct):
     hero = {}
     tuple_index = 0
 
-    hero['id'] = contract_entry[tuple_index]
+    hero['id'] = hero_struct[tuple_index]
     tuple_index = tuple_index + 1
 
     # SummoningInfo
     summoning_info = {}
-    summoning_info['summonedTime'] = contract_entry[tuple_index][0]
-    summoning_info['nextSummonTime'] = contract_entry[tuple_index][1]
-    summoning_info['summonerId'] = contract_entry[tuple_index][2]
-    summoning_info['assistantId'] = contract_entry[tuple_index][3]
-    summoning_info['summons'] = contract_entry[tuple_index][4]
-    summoning_info['maxSummons'] = contract_entry[tuple_index][5]
+    summoning_info['summonedTime'] = hero_struct[tuple_index][0]
+    summoning_info['nextSummonTime'] = hero_struct[tuple_index][1]
+    summoning_info['summonerId'] = hero_struct[tuple_index][2]
+    summoning_info['assistantId'] = hero_struct[tuple_index][3]
+    summoning_info['summons'] = hero_struct[tuple_index][4]
+    summoning_info['maxSummons'] = hero_struct[tuple_index][5]
 
     hero['summoningInfo'] = summoning_info
     tuple_index = tuple_index + 1
 
     # HeroInfo
     hero_info = {}
-    hero_info['statGenes'] = contract_entry[tuple_index][0]
-    hero_info['visualGenes'] = contract_entry[tuple_index][1]
-    hero_info['rarity'] = contract_entry[tuple_index][2]
-    hero_info['shiny'] = contract_entry[tuple_index][3]
-    hero_info['generation'] = contract_entry[tuple_index][4]
-    hero_info['firstName'] = contract_entry[tuple_index][5]
-    hero_info['lastName'] = contract_entry[tuple_index][6]
-    hero_info['shinyStyle'] = contract_entry[tuple_index][7]
-    hero_info['class'] = contract_entry[tuple_index][8]
-    hero_info['subClass'] = contract_entry[tuple_index][9]
+    hero_info['statGenes'] = hero_struct[tuple_index][0]
+    hero_info['visualGenes'] = hero_struct[tuple_index][1]
+    hero_info['rarity'] = hero_struct[tuple_index][2]
+    hero_info['shiny'] = hero_struct[tuple_index][3]
+    hero_info['generation'] = hero_struct[tuple_index][4]
+    hero_info['firstName'] = hero_struct[tuple_index][5]
+    hero_info['lastName'] = hero_struct[tuple_index][6]
+    hero_info['shinyStyle'] = hero_struct[tuple_index][7]
+    hero_info['class'] = hero_struct[tuple_index][8]
+    hero_info['subClass'] = hero_struct[tuple_index][9]
 
     hero['info'] = hero_info
     tuple_index = tuple_index + 1
 
     # HeroState
     hero_state = {}
-    hero_state['staminaFullAt'] = contract_entry[tuple_index][0]
-    hero_state['hpFullAt'] = contract_entry[tuple_index][1]
-    hero_state['mpFullAt'] = contract_entry[tuple_index][2]
-    hero_state['level'] = contract_entry[tuple_index][3]
-    hero_state['xp'] = contract_entry[tuple_index][4]
-    hero_state['currentQuest'] = contract_entry[tuple_index][5] #0x0 if no quest or quest like
-    hero_state['sp'] = contract_entry[tuple_index][6]
-    hero_state['status'] = contract_entry[tuple_index][7]
+    hero_state['staminaFullAt'] = hero_struct[tuple_index][0]
+    hero_state['hpFullAt'] = hero_struct[tuple_index][1]
+    hero_state['mpFullAt'] = hero_struct[tuple_index][2]
+    hero_state['level'] = hero_struct[tuple_index][3]
+    hero_state['xp'] = hero_struct[tuple_index][4]
+    hero_state['currentQuest'] = hero_struct[tuple_index][5] #0x0 if no quest or quest like
+    hero_state['sp'] = hero_struct[tuple_index][6]
+    hero_state['status'] = hero_struct[tuple_index][7]
 
     hero['state'] = hero_state
     tuple_index = tuple_index + 1
 
     # HeroStats
     hero_stats = {}
-    hero_stats['strength'] = contract_entry[tuple_index][0]
-    hero_stats['intelligence'] = contract_entry[tuple_index][1]
-    hero_stats['wisdom'] = contract_entry[tuple_index][2]
-    hero_stats['luck'] = contract_entry[tuple_index][3]
-    hero_stats['agility'] = contract_entry[tuple_index][4]
-    hero_stats['vitality'] = contract_entry[tuple_index][5]
-    hero_stats['endurance'] = contract_entry[tuple_index][6]
-    hero_stats['dexterity'] = contract_entry[tuple_index][7]
-    hero_stats['hp'] = contract_entry[tuple_index][8]
-    hero_stats['mp'] = contract_entry[tuple_index][9]
-    hero_stats['stamina'] = contract_entry[tuple_index][10]
+    hero_stats['strength'] = hero_struct[tuple_index][0]
+    hero_stats['intelligence'] = hero_struct[tuple_index][1]
+    hero_stats['wisdom'] = hero_struct[tuple_index][2]
+    hero_stats['luck'] = hero_struct[tuple_index][3]
+    hero_stats['agility'] = hero_struct[tuple_index][4]
+    hero_stats['vitality'] = hero_struct[tuple_index][5]
+    hero_stats['endurance'] = hero_struct[tuple_index][6]
+    hero_stats['dexterity'] = hero_struct[tuple_index][7]
+    hero_stats['hp'] = hero_struct[tuple_index][8]
+    hero_stats['mp'] = hero_struct[tuple_index][9]
+    hero_stats['stamina'] = hero_struct[tuple_index][10]
 
     hero['stats'] = hero_stats
     tuple_index = tuple_index + 1
 
     # primary HeroStatGrowth
     hero_primary_stat_growth = {}
-    hero_primary_stat_growth['strength'] = contract_entry[tuple_index][0]
-    hero_primary_stat_growth['intelligence'] = contract_entry[tuple_index][1]
-    hero_primary_stat_growth['wisdom'] = contract_entry[tuple_index][2]
-    hero_primary_stat_growth['luck'] = contract_entry[tuple_index][3]
-    hero_primary_stat_growth['agility'] = contract_entry[tuple_index][4]
-    hero_primary_stat_growth['vitality'] = contract_entry[tuple_index][5]
-    hero_primary_stat_growth['endurance'] = contract_entry[tuple_index][6]
-    hero_primary_stat_growth['dexterity'] = contract_entry[tuple_index][7]
-    hero_primary_stat_growth['hpSm'] = contract_entry[tuple_index][8]
-    hero_primary_stat_growth['hpRg'] = contract_entry[tuple_index][9]
-    hero_primary_stat_growth['hpLg'] = contract_entry[tuple_index][10]
-    hero_primary_stat_growth['mpSm'] = contract_entry[tuple_index][11]
-    hero_primary_stat_growth['mpRg'] = contract_entry[tuple_index][12]
-    hero_primary_stat_growth['mpLg'] = contract_entry[tuple_index][13]
+    hero_primary_stat_growth['strength'] = hero_struct[tuple_index][0]
+    hero_primary_stat_growth['intelligence'] = hero_struct[tuple_index][1]
+    hero_primary_stat_growth['wisdom'] = hero_struct[tuple_index][2]
+    hero_primary_stat_growth['luck'] = hero_struct[tuple_index][3]
+    hero_primary_stat_growth['agility'] = hero_struct[tuple_index][4]
+    hero_primary_stat_growth['vitality'] = hero_struct[tuple_index][5]
+    hero_primary_stat_growth['endurance'] = hero_struct[tuple_index][6]
+    hero_primary_stat_growth['dexterity'] = hero_struct[tuple_index][7]
+    hero_primary_stat_growth['hpSm'] = hero_struct[tuple_index][8]
+    hero_primary_stat_growth['hpRg'] = hero_struct[tuple_index][9]
+    hero_primary_stat_growth['hpLg'] = hero_struct[tuple_index][10]
+    hero_primary_stat_growth['mpSm'] = hero_struct[tuple_index][11]
+    hero_primary_stat_growth['mpRg'] = hero_struct[tuple_index][12]
+    hero_primary_stat_growth['mpLg'] = hero_struct[tuple_index][13]
 
     hero['primaryStatGrowth'] = hero_primary_stat_growth
     tuple_index = tuple_index + 1
 
     # secondary HeroStatGrowth
     hero_secondary_stat_growth = {}
-    hero_secondary_stat_growth['strength'] = contract_entry[tuple_index][0]
-    hero_secondary_stat_growth['intelligence'] = contract_entry[tuple_index][1]
-    hero_secondary_stat_growth['wisdom'] = contract_entry[tuple_index][2]
-    hero_secondary_stat_growth['luck'] = contract_entry[tuple_index][3]
-    hero_secondary_stat_growth['agility'] = contract_entry[tuple_index][4]
-    hero_secondary_stat_growth['vitality'] = contract_entry[tuple_index][5]
-    hero_secondary_stat_growth['endurance'] = contract_entry[tuple_index][6]
-    hero_secondary_stat_growth['dexterity'] = contract_entry[tuple_index][7]
-    hero_secondary_stat_growth['hpSm'] = contract_entry[tuple_index][8]
-    hero_secondary_stat_growth['hpRg'] = contract_entry[tuple_index][9]
-    hero_secondary_stat_growth['hpLg'] = contract_entry[tuple_index][10]
-    hero_secondary_stat_growth['mpSm'] = contract_entry[tuple_index][11]
-    hero_secondary_stat_growth['mpRg'] = contract_entry[tuple_index][12]
-    hero_secondary_stat_growth['mpLg'] = contract_entry[tuple_index][13]
+    hero_secondary_stat_growth['strength'] = hero_struct[tuple_index][0]
+    hero_secondary_stat_growth['intelligence'] = hero_struct[tuple_index][1]
+    hero_secondary_stat_growth['wisdom'] = hero_struct[tuple_index][2]
+    hero_secondary_stat_growth['luck'] = hero_struct[tuple_index][3]
+    hero_secondary_stat_growth['agility'] = hero_struct[tuple_index][4]
+    hero_secondary_stat_growth['vitality'] = hero_struct[tuple_index][5]
+    hero_secondary_stat_growth['endurance'] = hero_struct[tuple_index][6]
+    hero_secondary_stat_growth['dexterity'] = hero_struct[tuple_index][7]
+    hero_secondary_stat_growth['hpSm'] = hero_struct[tuple_index][8]
+    hero_secondary_stat_growth['hpRg'] = hero_struct[tuple_index][9]
+    hero_secondary_stat_growth['hpLg'] = hero_struct[tuple_index][10]
+    hero_secondary_stat_growth['mpSm'] = hero_struct[tuple_index][11]
+    hero_secondary_stat_growth['mpRg'] = hero_struct[tuple_index][12]
+    hero_secondary_stat_growth['mpLg'] = hero_struct[tuple_index][13]
 
     hero['secondaryStatGrowth'] = hero_secondary_stat_growth
     tuple_index = tuple_index + 1
 
     # HeroProfessions V2
     hero_professions = {}
-    hero_professions['mining'] = contract_entry[tuple_index][0]
-    hero_professions['gardening'] = contract_entry[tuple_index][1]
-    hero_professions['foraging'] = contract_entry[tuple_index][2]
-    hero_professions['fishing'] = contract_entry[tuple_index][3]
-    hero_professions['craft1'] = contract_entry[tuple_index][2]
-    hero_professions['craft2'] = contract_entry[tuple_index][3]
+    hero_professions['mining'] = hero_struct[tuple_index][0]
+    hero_professions['gardening'] = hero_struct[tuple_index][1]
+    hero_professions['foraging'] = hero_struct[tuple_index][2]
+    hero_professions['fishing'] = hero_struct[tuple_index][3]
+    hero_professions['craft1'] = hero_struct[tuple_index][2]
+    hero_professions['craft2'] = hero_struct[tuple_index][3]
 
     hero['professions'] = hero_professions
     tuple_index = tuple_index + 1
 
     # HeroEquipment
     hero_equipment = {}
-    hero_equipment['equippedSlots'] = contract_entry[tuple_index][0]
-    hero_equipment['petId'] = contract_entry[tuple_index][1]
-    hero_equipment['weapon1Id'] = contract_entry[tuple_index][2]
-    hero_equipment['weapon2Id'] = contract_entry[tuple_index][3]
-    hero_equipment['offhand1Id'] = contract_entry[tuple_index][4]
-    hero_equipment['offhand2Id'] = contract_entry[tuple_index][5]
-    hero_equipment['armorId'] = contract_entry[tuple_index][6]
-    hero_equipment['accessoryId'] = contract_entry[tuple_index][7]
+    hero_equipment['equippedSlots'] = hero_struct[tuple_index][0]
+    hero_equipment['petId'] = hero_struct[tuple_index][1]
+    hero_equipment['weapon1Id'] = hero_struct[tuple_index][2]
+    hero_equipment['weapon2Id'] = hero_struct[tuple_index][3]
+    hero_equipment['offhand1Id'] = hero_struct[tuple_index][4]
+    hero_equipment['offhand2Id'] = hero_struct[tuple_index][5]
+    hero_equipment['armorId'] = hero_struct[tuple_index][6]
+    hero_equipment['accessoryId'] = hero_struct[tuple_index][7]
 
     hero['equipment'] = hero_equipment
 
@@ -496,9 +498,10 @@ def human_readable_hero(raw_hero, hero_male_first_names=None, hero_female_first_
     readable_hero['info']['statGenes'] = hero_utils.parse_stat_genes(readable_hero['info']['statGenes'])
 
     if 'craft1' in readable_hero['professions']:
-        readable_hero['professions']['craft1'] = hero_utils.parse_craft(readable_hero['professions']['craft1'])
-        readable_hero['professions']['craft2'] = hero_utils.parse_craft(readable_hero['professions']['craft2'])
-
+        readable_hero['professions'][readable_hero['info']['statGenes']['craft1']] = readable_hero['professions']['craft1']
+        del readable_hero['professions']['craft1']
+        readable_hero['professions'][readable_hero['info']['statGenes']['craft2']] = readable_hero['professions']['craft2']
+        del readable_hero['professions']['craft2']
 
     # names
     if readable_hero['info']['visualGenes']['gender'] == 'male':

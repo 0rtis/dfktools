@@ -6,7 +6,7 @@ import pets.pet_core as pet_core
 import pets.hatchery as hatchery
 import pets.exchange as exchange
 import pets.utils.utils as pet_utils
-from pets.pet import Pets
+from pets.pets import Pets
 
 if __name__ == "__main__":
     log_format = '%(asctime)s|%(name)s|%(levelname)s: %(message)s'

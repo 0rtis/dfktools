@@ -2,9 +2,8 @@ import copy
 from web3 import Web3
 from defikingdoms.lib.src.dfktools.hero.utils import utils as hero_utils
 
-SERENDALE_CONTRACT_ADDRESS = None
-CRYSTALVALE_CONTRACT_ADDRESS = None
-SERENDALE2_CONTRACT_ADDRESS = None
+CRYSTALVALE_CONTRACT_ADDRESS = "0x530fff22987E137e7C8D2aDcC4c15eb45b4FA752"
+SERENDALE2_CONTRACT_ADDRESS = "0x1Ac6Cd893EDdb6Cac15E5A9FC549335b8b449015"
 
 
 ABI = """
@@ -60,9 +59,7 @@ def block_explorer_link(contract_address: str, txid: str):
     if hasattr(contract_address, 'address'):
         contract_address = str(contract_address.address)
     contract_address = str(contract_address).upper()
-    if contract_address == SERENDALE_CONTRACT_ADDRESS.upper():
-        return 'https://explorer.harmony.one/tx/' + str(txid)
-    elif contract_address == CRYSTALVALE_CONTRACT_ADDRESS.upper():
+    if contract_address == CRYSTALVALE_CONTRACT_ADDRESS.upper():
         return 'https://subnets.avax.network/defi-kingdoms/dfk-chain/explorer/tx/' + str(txid)
     elif contract_address == SERENDALE2_CONTRACT_ADDRESS.upper():
         return 'https://scope.klaytn.com/tx/' + str(txid)
@@ -354,7 +351,7 @@ def hero_to_quest_id(quest_core_contract_address: str, hero_id: int, rpc_address
     return result
 
 
-def get_active_quest(quest_core_contract_address: str, address: str, rpc_address: str):
+def get_active_quests(quest_core_contract_address: str, address: str, rpc_address: str):
     w3 = Web3(Web3.HTTPProvider(rpc_address))
 
     quest_core_contract_address = Web3.to_checksum_address(quest_core_contract_address)

@@ -77,9 +77,9 @@ stat_traits = {
     6: "active2",
     7: "statBoost1",
     8: "statBoost2",
-    9: "statsUnknown1",
+    9: "craft1",
     10: "element",
-    11: "statsUnknown2"
+    11: "craft2"
 }
 
 ability_traits = {
@@ -270,8 +270,8 @@ def parse_stat_trait(trait):
 
     stats['statBoost1'] = parse_stat(stats['statBoost1'])
     stats['statBoost2'] = parse_stat(stats['statBoost2'])
-    stats['statsUnknown1'] = stats.get(stats['statsUnknown1'], None)  # parse_stat(stat_genes['statsUnknown1'])
-    stats['statsUnknown2'] = stats.get(stats['statsUnknown2'], None)  # parse_stat(stat_genes['statsUnknown2'])
+    stats['craft1'] = parse_craft(stats['craft1'])
+    stats['craft2'] = parse_craft(stats['craft2'])
 
     stats['element'] = parse_element(stats['element'])
 

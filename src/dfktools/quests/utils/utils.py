@@ -93,7 +93,7 @@ def human_readable_quest(raw_quest):
         quest['attempts'] = raw_quest[8]
         quest['status'] = parse_v3_quest_status(raw_quest[9])
         quest['param'] = parse_v3_training_quest_param_label(raw_quest[10]) if quest['type'] == 'Training' else raw_quest[10]
-    if len(raw_quest) == 10:  # v2
+    elif len(raw_quest) == 10:  # v2
         quest['id'] = raw_quest[0]
         quest['address'] = raw_quest[1]
         quest['level'] = raw_quest[2]

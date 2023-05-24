@@ -3,7 +3,7 @@ import json
 import sys
 import hero.utils.utils as hero_utils
 import hero.hero_core as hero_core
-from hero.hero import Heroes
+from hero.heroes import Heroes
 
 
 if __name__ == "__main__":
