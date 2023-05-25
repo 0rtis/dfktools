@@ -42,7 +42,7 @@ if __name__ == "__main__":
     my_heroes_id = [1, 2, 3, 4]
     attempts = 3
     level = 1
-    questV3.start_quest(my_heroes_id, quest_core_v3.QUEST_TYPE_FISHING, attempts, level, private_key, w3_crystalvale.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
+    questV3.start_quest(my_heroes_id, quest_core_v3.QUEST_TYPE_FISHING, attempts, level, 0, private_key, w3_crystalvale.eth.get_transaction_count(account_address), gas_price_gwei_crystalvale, tx_timeout)
     quest_info = quest_utils.human_readable_quest(questV3.get_hero_quest(my_heroes_id[0]))
 
     logger.info(
