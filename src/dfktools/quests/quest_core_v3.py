@@ -1,6 +1,4 @@
-import copy
 from web3 import Web3
-from defikingdoms.lib.src.dfktools.hero.utils import utils as hero_utils
 
 CRYSTALVALE_CONTRACT_ADDRESS = "0x530fff22987E137e7C8D2aDcC4c15eb45b4FA752"
 SERENDALE2_CONTRACT_ADDRESS = "0x1Ac6Cd893EDdb6Cac15E5A9FC549335b8b449015"
