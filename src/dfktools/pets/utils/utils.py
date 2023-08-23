@@ -220,16 +220,17 @@ def parse_bonus_rarity(bonus):
         return 'mythic'
 
 def parse_bonus_type(egg_type, bonus):
-    if type(egg_type) == int:
+    bonus_id = bonus - (10000 * egg_type)
+    if isinstance(egg_type, int):
         egg_type = parse_egg_type(egg_type)
 
     value = None
     if egg_type == 'blue':
-        value = blue_pet_bonuses.get(bonus, None)
+        value = blue_pet_bonuses.get(bonus_id, None)
     elif egg_type == 'grey':
-        value = grey_pet_bonuses.get(bonus, None)
+        value = grey_pet_bonuses.get(bonus_id, None)
     elif egg_type == 'green':
-        value = green_pet_bonuses.get(bonus, None)
+        value = green_pet_bonuses.get(bonus_id, None)
     elif egg_type == 'yellow':
         value = None
     elif egg_type == 'golden':
